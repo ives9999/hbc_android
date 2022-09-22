@@ -8,6 +8,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 
@@ -22,9 +23,12 @@ class MainActivity : BaseActivity() {
 //        Thread.sleep(1000)
         val splashScreen = installSplashScreen()
 
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        findViewById<TextView>(R.id.title)?.let {
+            it.setText("我需要血")
+        }
 
 //        setSupportActionBar(binding.toolbar)
 
