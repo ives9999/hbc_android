@@ -32,4 +32,8 @@ enum class TabEnum(val englishName: String, val chineseName: String) {
     fun setIn(it: ImageView) {
         it.setImage(this.englishName + "_in")
     }
+
+    fun getAllEnum(): Array<TabEnum> {
+        return arrayOf(need_blood, donate_blood, donate, member)
+    }
 }

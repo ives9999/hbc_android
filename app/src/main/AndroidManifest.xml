@@ -14,13 +14,16 @@
         android:theme="@style/Theme.Hbc.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".MemberActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.NeedBloodActivity"
-            android:theme="@style/Theme.App.SplashScreen"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

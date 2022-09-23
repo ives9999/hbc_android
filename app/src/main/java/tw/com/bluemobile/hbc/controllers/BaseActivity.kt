@@ -3,6 +3,7 @@ package tw.com.bluemobile.hbc.controllers
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 var able_type: String = "member"//每一組頁面，都有一個專屬的代號，就稱為able_type
@@ -21,6 +22,17 @@ open class BaseActivity : AppCompatActivity() {
 
         findViewById<ImageView>(tabIconID) ?. let {
             able_enum.setIn(it)
+        }
+
+        val allEnum: Array<TabEnum> = able_enum.getAllEnum()
+        for (enum in allEnum) {
+            val containerIDString: String = enum.englishName + "TabContainer"
+            val containerID: Int = resources.getIdentifier(containerIDString, "id", packageName)
+            findViewById<LinearLayout>(containerID) ?. let {
+                it.setOnClickListener {
+                    println(enum.englishName)
+                }
+            }
         }
     }
 }
