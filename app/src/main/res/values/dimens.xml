@@ -5,4 +5,8 @@
     <dimen name="top_title">20sp</dimen>
     <dimen name="bottom_height">64dp</dimen>
     <dimen name="bottom_text">14sp</dimen>
+    <dimen name="bottom_icon_width">35dp</dimen>
+    <dimen name="bottom_icon_height">35dp</dimen>
+    <dimen name="bottom_icon_marginTop">5dp</dimen>
+    <dimen name="bottom_text_height">16dp</dimen>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/top_height"
     android:id="@+id/top"
-    android:background="@color/TOP">
+    android:background="@drawable/top">
 
     <TextView
         android:layout_width="wrap_content"

@@ -5,11 +5,11 @@
     android:id="@+id/bottom"
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_height"
-    android:background="@color/BOTTOM">
+    android:background="@drawable/bottom">
 
 
     <LinearLayout
-        android:id="@+id/teamTabContainer"
+        android:id="@+id/need_bloodTabContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -17,45 +17,68 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/needBloodTabIcon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:id="@+id/need_bloodTabIcon"
+            android:layout_width="@dimen/bottom_icon_width"
+            android:layout_height="@dimen/bottom_icon_height"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            app:srcCompat="@drawable/need_blood_in" />
+            android:layout_marginTop="@dimen/bottom_icon_marginTop"
+            app:srcCompat="@drawable/need_blood_out" />
 
         <TextView
-            android:id="@+id/needBloodTabTitle"
+            android:id="@+id/need_bloodTabTitle"
             style="@style/bottom_text"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="@dimen/bottom_text_height"
             android:layout_gravity="center"
             android:text="@string/need_blood" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/courseTabContainer"
+        android:id="@+id/donate_bloodTabContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:onClick="tabToCourse"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/courseTabIcon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            app:srcCompat="@drawable/donate_blood_in" />
+            android:id="@+id/donate_bloodTabIcon"
+            android:layout_width="@dimen/bottom_icon_width"
+            android:layout_height="@dimen/bottom_icon_height"
+            android:layout_marginTop="@dimen/bottom_icon_marginTop"
+            app:srcCompat="@drawable/donate_blood_out" />
 
         <TextView
-            android:id="@+id/courseTabTitle"
+            android:id="@+id/donate_bloodTabTitle"
             style="@style/bottom_text"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="@dimen/bottom_text_height"
             android:text="@string/donate_blood" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/donateTabContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/donateTabIcon"
+            android:layout_width="@dimen/bottom_icon_width"
+            android:layout_height="@dimen/bottom_icon_height"
+            android:layout_marginTop="@dimen/bottom_icon_marginTop"
+            app:srcCompat="@drawable/donate_out" />
+
+        <TextView
+            android:id="@+id/donateTabTitle"
+            style="@style/bottom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/bottom_text_height"
+            android:text="@string/donate" />
 
     </LinearLayout>
 
@@ -65,46 +88,20 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:onClick="tabToMember"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/donateTabIcon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            app:srcCompat="@drawable/donate_in" />
+            android:id="@+id/memberTabIcon"
+            android:layout_width="@dimen/bottom_icon_width"
+            android:layout_height="@dimen/bottom_icon_height"
+            android:layout_marginTop="@dimen/bottom_icon_marginTop"
+            app:srcCompat="@drawable/member_out" />
 
         <TextView
-            android:id="@+id/donateTabTitle"
+            android:id="@+id/memberTabTitle"
             style="@style/bottom_text"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:text="@string/donate" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/arenaTabContainer"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:onClick="tabToArena"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/arenaTabIcon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            app:srcCompat="@drawable/member_in" />
-
-        <TextView
-            android:id="@+id/arenaTabTitle"
-            style="@style/bottom_text"
-            android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="@dimen/bottom_text_height"
             android:text="@string/member" />
 
     </LinearLayout>

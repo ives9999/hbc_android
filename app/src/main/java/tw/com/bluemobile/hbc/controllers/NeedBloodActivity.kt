@@ -1,23 +1,24 @@
-package tw.com.bluemobile.hbc
+package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 
-class MainActivity : BaseActivity() {
+class NeedBloodActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        able_type = "need_blood"
         super.onCreate(savedInstanceState)
 
 //        Thread.sleep(1000)
@@ -26,8 +27,10 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setBottomTabFocus()
+
         findViewById<TextView>(R.id.title)?.let {
-            it.setText("我需要血")
+            it.setText(getString(R.string.need_blood))
         }
 
 //        setSupportActionBar(binding.toolbar)
