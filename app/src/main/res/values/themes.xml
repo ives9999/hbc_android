@@ -30,6 +30,13 @@
         <item name="windowSplashScreenBackground">@color/black</item>
         <item name="postSplashScreenTheme">@style/Theme.Hbc.NoActionBar</item>
     </style>
+
+    <style name="bottom_text">
+        <item name="android:textColor">@color/MY_BLACK</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>
 
 
