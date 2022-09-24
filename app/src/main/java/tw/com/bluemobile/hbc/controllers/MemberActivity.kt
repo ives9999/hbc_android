@@ -33,7 +33,7 @@ class MemberActivity : BaseActivity() {
 
         val adapter: SimpleAdapter = SimpleAdapter(this, items, R.layout.member_home_cell, arrayOf("image", "text"), intArrayOf(R.id.image, R.id.text))
         findViewById<GridView>(R.id.grid) ?. let {
-            it.numColumns = 3
+            it.numColumns = 2
             it.adapter = adapter
         }
     }
