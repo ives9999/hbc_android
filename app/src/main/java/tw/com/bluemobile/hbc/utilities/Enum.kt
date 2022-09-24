@@ -6,7 +6,7 @@ import tw.com.bluemobile.hbc.extensions.setImage
 
 enum class TabEnum(val englishName: String, val chineseName: String) {
     
-    need_blood("need_blood", "我需要寫"),
+    need_blood("need_blood", "我需要血"),
     donate_blood("donate_blood", "我要捐血"),
     donate("donate", "我要捐款"),
     member("member", "我的資訊");

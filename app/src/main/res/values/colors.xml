@@ -13,4 +13,6 @@
     <color name="BOTTOM">#DDDDDD</color>
     <color name="MY_BLACK">#000000</color>
     <color name="MY_WHITE">#FFFFFF</color>
+
+    <color name="MEMBER_HOME_ICON_BG">#A8D5E2</color>
 </resources>

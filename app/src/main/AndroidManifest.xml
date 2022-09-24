@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Hbc.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".MemberActivity"
+            android:name=".controllers.MemberActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.BaseActivity"

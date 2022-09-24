@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
+import tw.com.bluemobile.hbc.routes.ToMember
+import tw.com.bluemobile.hbc.utilities.TabEnum
 
 class NeedBloodActivity : BaseActivity() {
 
@@ -18,7 +20,7 @@ class NeedBloodActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        able_type = "need_blood"
+        able_enum = TabEnum.need_blood
         super.onCreate(savedInstanceState)
 
 //        Thread.sleep(1000)
@@ -27,11 +29,8 @@ class NeedBloodActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setTop()
         setBottomTabFocus()
-
-        findViewById<TextView>(R.id.title)?.let {
-            it.setText(getString(R.string.need_blood))
-        }
 
 //        setSupportActionBar(binding.toolbar)
 
@@ -45,25 +44,25 @@ class NeedBloodActivity : BaseActivity() {
 //        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.menu_main, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        return when (item.itemId) {
+//            R.id.action_settings -> true
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
+//
+//    override fun onSupportNavigateUp(): Boolean {
+//        val navController = findNavController(R.id.nav_host_fragment_content_main)
+//        return navController.navigateUp(appBarConfiguration)
+//                || super.onSupportNavigateUp()
+//    }
 }
