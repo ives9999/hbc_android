@@ -30,11 +30,15 @@ class MemberActivity : BaseActivity() {
             itemList.add(GridViewModal(image[i], imgText[i]))
         }
 
-        val adapter: GridAdapter = GridAdapter(this, itemList)
+        val adapter: GridAdapter = GridAdapter(this, this, itemList)
         findViewById<GridView>(R.id.grid) ?. let {
             it.numColumns = 2
             it.adapter = adapter
         }
+    }
+
+    fun onClick(idx: Int) {
+        println(idx)
     }
 }
 
@@ -46,6 +50,7 @@ data class GridViewModal (
 // on below line we are createing an adapter class for our grid view.
 internal class GridAdapter (
     private val context: Context,
+    private val memberActivity: MemberActivity,
     private val itemList: List<GridViewModal>): BaseAdapter() {
 
     // in base adapter class we are creating variables
@@ -90,6 +95,10 @@ internal class GridAdapter (
         // on below line we are setting image and text in view
         iconIV.setImageResource(itemList[position].itemImg)
         textTV.setText(itemList[position].itemName)
+
+        holderView.setOnClickListener {
+            memberActivity.onClick(position)
+        }
 
         return holderView
     }
