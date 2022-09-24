@@ -14,6 +14,8 @@ class MemberActivity : BaseActivity() {
     private val image = intArrayOf(R.drawable.member_account, R.drawable.member_change_password, R.drawable.donate_blood_out, R.drawable.need_blood_out)
     private val imgText = arrayOf("帳戶資料", "更改密碼", "我的捐血", "我需要血")
 
+    lateinit var itemList: ArrayList<GridViewModal>
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         able_enum = TabEnum.member
@@ -23,15 +25,12 @@ class MemberActivity : BaseActivity() {
         setTop()
         setBottomTabFocus()
 
-        val items: ArrayList<Map<String, Any>> = arrayListOf()
+        itemList = ArrayList<GridViewModal>()
         for (i in image.indices) {
-            val item: HashMap<String, Any> = hashMapOf()
-            item["image"] = image[i]
-            item["text"] = imgText[i]
-            items.add(item)
+            itemList.add(GridViewModal(image[i], imgText[i]))
         }
 
-        val adapter: SimpleAdapter = SimpleAdapter(this, items, R.layout.member_home_cell, arrayOf("image", "text"), intArrayOf(R.id.image, R.id.text))
+        val adapter: GridAdapter = GridAdapter(this, itemList)
         findViewById<GridView>(R.id.grid) ?. let {
             it.numColumns = 2
             it.adapter = adapter
@@ -44,38 +43,53 @@ data class GridViewModal (
     val itemName: String
 )
 
+// on below line we are createing an adapter class for our grid view.
 internal class GridAdapter (
-    private val itemList: List<GridViewModal>,
-    private val context: Context): BaseAdapter() {
+    private val context: Context,
+    private val itemList: List<GridViewModal>): BaseAdapter() {
 
-            private var layoutInflater: LayoutInflater? = null
-            private lateinit var iconIV: ImageView
-            private lateinit var textTV: TextView
+    // in base adapter class we are creating variables
+    // for layout inflater, image view and text view.
+    private var layoutInflater: LayoutInflater? = null
+    private lateinit var iconIV: ImageView
+    private lateinit var textTV: TextView
 
+    // below method is use to return the count of list.
     override fun getCount(): Int {
         return itemList.size
     }
 
+    // below function is use to return the item of grid view.
     override fun getItem(position: Int): Any? {
         return null
     }
 
+    // below function is use to return item id of grid view.
     override fun getItemId(position: Int): Long {
         return 0
     }
 
-    override fun getView(position: Int, view: View, paretn: ViewGroup): View {
-        val holderView: View = view
+    // in below function we are getting individual item of grid view.
+    override fun getView(position: Int, view: View?, paretn: ViewGroup?): View? {
+        var holderView = view
 
+        // on blow line we are checking if layout inflater
+        // is null, if it is null we are initializing it.
         if (layoutInflater == null) {
             layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         }
 
-        iconIV = holderView.findViewById(R.id.image)
+        if (holderView == null) {
+            holderView = layoutInflater!!.inflate(R.layout.member_home_cell, null)
+        }
+
+        // on below line we are initializing our image view and text view with their ids
+        iconIV = holderView!!.findViewById(R.id.image)
         textTV = holderView.findViewById(R.id.text)
 
-        iconIV.setImageResource(itemList.get(position).itemImg)
-        textTV.setText(itemList.get(position).itemName)
+        // on below line we are setting image and text in view
+        iconIV.setImageResource(itemList[position].itemImg)
+        textTV.setText(itemList[position].itemName)
 
         return holderView
     }
