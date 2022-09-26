@@ -7,20 +7,15 @@
     android:orientation="vertical"
     tools:context=".controllers.NeedBloodActivity">
 
-    <tw.com.bluemobile.hbc.compones.Top
+    <tw.com.bluemobile.hbc.Views.Top
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
 
-    <LinearLayout
-        android:id="@+id/bottom"
+    <tw.com.bluemobile.hbc.Views.Bottom
+        android:id="@id/bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_height"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <include layout="@layout/bottom" />
-
-    </LinearLayout>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

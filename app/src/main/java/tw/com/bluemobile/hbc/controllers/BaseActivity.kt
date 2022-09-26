@@ -4,26 +4,21 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.compones.Top
+import tw.com.bluemobile.hbc.Views.Bottom
+import tw.com.bluemobile.hbc.Views.Top
 import tw.com.bluemobile.hbc.routes.*
 import tw.com.bluemobile.hbc.utilities.TabEnum
-import tw.com.bluemobile.hbc.utilities.then
 
 var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
-var isPrevIconShow: Boolean = false
-lateinit var top: Top
+//var isPrevIconShow: Boolean = false
 
 open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val top = findViewById<Top>(R.id.top)
     }
 
     open fun init() {
@@ -37,42 +32,49 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood {
         finish()
     }
 
-    protected fun setBottomTabFocus() {
+    protected fun setBottom() {
 
-        able_enum = TabEnum.enumFromString(able_enum.englishName)
-
-        val tabIconID: Int = able_enum.getIconID(resources, packageName)
-
-        findViewById<ImageView>(tabIconID) ?. let {
-            able_enum.setIn(it)
+        findViewById<Bottom>(R.id.bottom) ?. let {
+            it.setFocus(packageName)
         }
+    }
 
-        val allEnum: Array<TabEnum> = TabEnum.getAllEnum()
-        for (enum in allEnum) {
-            val containerIDString: String = enum.englishName + "TabContainer"
-            val containerID: Int = resources.getIdentifier(containerIDString, "id", packageName)
-            findViewById<LinearLayout>(containerID) ?. let {
-                it.setOnClickListener {
-                    when (enum) {
-                        TabEnum.need_blood -> toNeedBlood(this)
-                        TabEnum.member -> toMember(this)
-
-                        else -> toMember(this)
-                    }
-                }
+    protected fun setTitle(title: String? = null) {
+        findViewById<Top>(R.id.top) ?. let { itTop ->
+            title?.let {
+                itTop.setTitle(it)
+            } ?: run {
+                itTop.setTitle(able_enum.chineseName)
             }
         }
     }
 
-    protected fun setTitle(title: String) {
-//        findViewById<TextView>(R.id.title)?.let {
-//            it.setText(title)
-//        }
-    }
+    protected fun setTop(isPrevShow: Boolean = false, title: String? = null) {
 
-    protected fun setTop() {
+        findViewById<Top>(R.id.top) ?. let { itTop->
+            itTop.showPrev(isPrevShow)
+        }
 
-        val title: String = able_enum.chineseName
         setTitle(title)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

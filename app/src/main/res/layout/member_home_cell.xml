@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="@dimen/member_home_icon_bg_width"
         android:layout_height="@dimen/member_home_icon_bg_height"
+        android:layout_marginTop="@dimen/bottom_margin_top"
         android:background="@drawable/member_home_item"
         android:gravity="center">
 

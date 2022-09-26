@@ -6,7 +6,10 @@
     android:orientation="vertical"
     tools:context=".controllers.RegisterActivity">
 
-    <include layout="@layout/top" />
+    <tw.com.bluemobile.hbc.Views.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height" />
 
 
 </RelativeLayout>

@@ -21,7 +21,7 @@ class MemberActivity : BaseActivity() {
         setContentView(R.layout.activity_member)
 
         setTop()
-        setBottomTabFocus()
+        setBottom()
 
         itemList = ArrayList<GridViewModal>()
         for (enum in MemberHomeEnum.getAllEnum()) {
