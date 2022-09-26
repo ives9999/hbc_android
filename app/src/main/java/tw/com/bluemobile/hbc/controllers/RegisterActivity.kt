@@ -12,12 +12,5 @@ class RegisterActivity : BaseActivity() {
         setContentView(R.layout.activity_register)
 
         setTop(true, "註冊")
-
-        init()
-    }
-
-    override fun init() {
-        //isPrevIconShow = true
-        super.init()
     }
 }
