@@ -15,11 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom"
         android:layout_below="@id/top"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:columnWidth="50pt"
         android:gravity="center"
-        android:numColumns="auto_fit"
+        android:verticalSpacing="@dimen/member_home_gridview_vertical_spacing"
+        android:paddingTop="@dimen/member_home_gridview_padding_top"
+        android:numColumns="2"
+        android:columnWidth="@dimen/member_home_gridview_column_width"
         android:stretchMode="columnWidth" />
 
     <LinearLayout

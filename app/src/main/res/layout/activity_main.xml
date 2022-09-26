@@ -7,7 +7,10 @@
     android:orientation="vertical"
     tools:context=".controllers.NeedBloodActivity">
 
-    <include layout="@layout/top" />
+    <tw.com.bluemobile.hbc.compones.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height" />
 
     <LinearLayout
         android:id="@+id/bottom"

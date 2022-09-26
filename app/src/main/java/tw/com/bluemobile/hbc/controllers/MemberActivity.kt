@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.utilities.MemberHomeEnum
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 class MemberActivity : BaseActivity() {
-
-    private val image = intArrayOf(R.drawable.member_account, R.drawable.member_change_password, R.drawable.donate_blood_out, R.drawable.need_blood_out)
-    private val imgText = arrayOf("帳戶資料", "更改密碼", "我的捐血", "我需要血")
 
     lateinit var itemList: ArrayList<GridViewModal>
 
@@ -26,19 +24,24 @@ class MemberActivity : BaseActivity() {
         setBottomTabFocus()
 
         itemList = ArrayList<GridViewModal>()
-        for (i in image.indices) {
-            itemList.add(GridViewModal(image[i], imgText[i]))
+        for (enum in MemberHomeEnum.getAllEnum()) {
+            val text: String = enum.chineseName
+            val icon: Int = enum.getIconID(resources, packageName)
+            itemList.add(GridViewModal(icon, text))
         }
 
         val adapter: GridAdapter = GridAdapter(this, this, itemList)
         findViewById<GridView>(R.id.grid) ?. let {
-            it.numColumns = 2
+//            it.numColumns = 2
             it.adapter = adapter
         }
     }
 
     fun onClick(idx: Int) {
-        println(idx)
+        //println(idx)
+        if (idx == 0) {
+            toRegister(this)
+        }
     }
 }
 
