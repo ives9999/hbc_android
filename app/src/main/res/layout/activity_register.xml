@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,5 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
 
+    <tw.com.bluemobile.hbc.Views.EditTextNormal
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        app:titleTV="Email"
+        />
 
-</RelativeLayout>
+    <tw.com.bluemobile.hbc.Views.EditTextNormal
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        app:titleTV="真實姓名"
+        />
+
+</LinearLayout>

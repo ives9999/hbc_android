@@ -22,4 +22,6 @@
     <dimen name="member_home_gridview_vertical_spacing">30dp</dimen>
     <dimen name="member_home_gridview_padding_top">30dp</dimen>
     <dimen name="member_home_gridview_column_width">120dp</dimen>
+
+    <dimen name="star">12dp</dimen>
 </resources>

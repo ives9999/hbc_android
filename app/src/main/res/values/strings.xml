@@ -15,4 +15,7 @@
     <string name="donate">我要捐款</string>
     <string name="member">我的資訊</string>
 
+    <string name="email">Email</string>
+    <string name="common">：</string>
+
 </resources>
