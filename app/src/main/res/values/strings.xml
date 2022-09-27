@@ -18,4 +18,6 @@
     <string name="email">Email</string>
     <string name="common">：</string>
 
+    <string name="submit">送出</string>
+
 </resources>

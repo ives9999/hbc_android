@@ -48,8 +48,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="button_submit">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <declare-styleable name="EditTextNormal">
         <attr name="titleTV" format="string" />
+        <attr name="valueET" format="string" />
     </declare-styleable>
 </resources>
 

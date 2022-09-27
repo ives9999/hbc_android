@@ -12,17 +12,36 @@
         android:layout_height="@dimen/top_height" />
 
     <tw.com.bluemobile.hbc.Views.EditTextNormal
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="12dp"
-        app:titleTV="Email"
-        />
+        app:titleTV="Email" />
 
     <tw.com.bluemobile.hbc.Views.EditTextNormal
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="12dp"
-        app:titleTV="真實姓名"
-        />
+        app:titleTV="真實姓名" />
+
+    <LinearLayout
+        android:id="@+id/submit"
+        android:layout_width="224dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_submit"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/button_submit"
+            android:text="@string/submit" />
+
+    </LinearLayout>
 
 </LinearLayout>

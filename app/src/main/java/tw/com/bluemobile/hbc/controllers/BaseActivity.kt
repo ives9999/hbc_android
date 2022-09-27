@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.Views.Bottom
 import tw.com.bluemobile.hbc.Views.Top
@@ -13,7 +11,7 @@ import tw.com.bluemobile.hbc.routes.*
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
-//var isPrevIconShow: Boolean = false
+var msg: String = "" //目前使用在傳送錯誤訊息
 
 open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood {
 
