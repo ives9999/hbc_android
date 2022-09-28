@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextNormal">
+        <attr name="titleTV" format="string" />
+        <attr name="valueET" format="string" />
+        <attr name="keyboard" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="More">
+        <attr name="moreTitleTV" format="string" />
+    </declare-styleable>
+</resources>

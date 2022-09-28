@@ -24,4 +24,7 @@
     <dimen name="member_home_gridview_column_width">120dp</dimen>
 
     <dimen name="star">12dp</dimen>
+
+    <dimen name="formitem_container_height">70dp</dimen>
+    <dimen name="formitem_container_marginTop">12dp</dimen>
 </resources>

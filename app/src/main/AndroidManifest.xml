@@ -14,6 +14,9 @@
         android:theme="@style/Theme.Hbc.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.SelectCity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.RegisterActivity"
             android:exported="false" />
         <activity

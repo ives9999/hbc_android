@@ -1,6 +1,7 @@
 package tw.com.bluemobile.hbc.Views
 
 import android.content.Context
+import android.text.InputType
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
@@ -17,16 +18,24 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
     private var editET: EditText? = null
 
     init {
-        if (attrs != null) {
-            val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.EditTextNormal, 0, 0)
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.EditTextNormal, 0, 0)
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
-                it.text = attributes.getString(R.styleable.EditTextNormal_titleTV) ?: ""
+                it.text = typedArray.getString(R.styleable.EditTextNormal_titleTV) ?: ""
             }
 
             view.findViewById<EditText>(R.id.valueET) ?. let {
                 editET = it
-                editET!!.text = (attributes.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
+
+                val keyboard: String = typedArray.getString(R.styleable.EditTextNormal_keyboard) ?: ""
+                if (keyboard == "password") {
+                    //editET!!.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    editET!!.inputType =
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                }
+
+                editET!!.text = (typedArray.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
             }
         }
 
