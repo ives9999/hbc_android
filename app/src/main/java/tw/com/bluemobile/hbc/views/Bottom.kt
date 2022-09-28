@@ -1,4 +1,4 @@
-package tw.com.bluemobile.hbc.Views
+package tw.com.bluemobile.hbc.views
 
 import android.content.Context
 import android.util.AttributeSet

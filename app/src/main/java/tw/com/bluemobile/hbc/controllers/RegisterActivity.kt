@@ -3,7 +3,7 @@ package tw.com.bluemobile.hbc.controllers
 import android.os.Bundle
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.Views.EditTextNormal
+import tw.com.bluemobile.hbc.views.EditTextNormal
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 class RegisterActivity : BaseActivity() {
@@ -25,7 +25,7 @@ class RegisterActivity : BaseActivity() {
 
     fun submit() {
 
-        if (checkIsEmpty(R.id.email)) {
+        if (isEmpty(R.id.email)) {
             msg += "請填郵件\n"
         }
 
@@ -36,7 +36,7 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun checkIsEmpty(resource: Int): Boolean {
+    private fun isEmpty(resource: Int): Boolean {
 
         var b: Boolean = true
         findViewById<EditTextNormal>(resource) ?. let { editTextNormal->

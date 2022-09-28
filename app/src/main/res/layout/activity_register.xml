@@ -6,12 +6,12 @@
     android:orientation="vertical"
     tools:context=".controllers.RegisterActivity">
 
-    <tw.com.bluemobile.hbc.Views.Top
+    <tw.com.bluemobile.hbc.views.Top
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
 
-    <tw.com.bluemobile.hbc.Views.EditTextNormal
+    <tw.com.bluemobile.hbc.views.EditTextNormal
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="@dimen/formitem_container_height"
@@ -19,7 +19,7 @@
         app:titleTV="Email"
         />
 
-    <tw.com.bluemobile.hbc.Views.EditTextNormal
+    <tw.com.bluemobile.hbc.views.EditTextNormal
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="@dimen/formitem_container_height"
@@ -28,7 +28,7 @@
         app:keyboard="password"
         />
 
-    <tw.com.bluemobile.hbc.Views.EditTextNormal
+    <tw.com.bluemobile.hbc.views.EditTextNormal
         android:id="@+id/repassword"
         android:layout_width="match_parent"
         android:layout_height="@dimen/formitem_container_height"
@@ -37,14 +37,14 @@
         app:keyboard="password"
         />
 
-    <tw.com.bluemobile.hbc.Views.EditTextNormal
+    <tw.com.bluemobile.hbc.views.EditTextNormal
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="@dimen/formitem_container_height"
         android:layout_marginTop="@dimen/formitem_container_marginTop"
         app:titleTV="真實姓名" />
 
-    <tw.com.bluemobile.hbc.Views.More
+    <tw.com.bluemobile.hbc.views.More
         android:layout_width="match_parent"
         android:layout_height="@dimen/formitem_container_height"
         android:layout_marginTop="@dimen/formitem_container_marginTop"

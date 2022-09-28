@@ -5,8 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.Views.Bottom
-import tw.com.bluemobile.hbc.Views.Top
+import tw.com.bluemobile.hbc.views.Bottom
+import tw.com.bluemobile.hbc.views.Top
 import tw.com.bluemobile.hbc.routes.*
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
@@ -17,6 +17,10 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    open fun cellClick(idx: Int) {
+        println(idx)
     }
 
     open fun init() {

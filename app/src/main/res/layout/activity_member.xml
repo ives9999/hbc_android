@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".controllers.MemberActivity">
 
-    <tw.com.bluemobile.hbc.Views.Top
+    <tw.com.bluemobile.hbc.views.Top
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
@@ -24,7 +24,7 @@
         android:stretchMode="columnWidth"
          />
 
-    <tw.com.bluemobile.hbc.Views.Bottom
+    <tw.com.bluemobile.hbc.views.Bottom
         android:id="@id/bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_height"

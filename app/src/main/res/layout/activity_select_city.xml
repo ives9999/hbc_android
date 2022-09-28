@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".controllers.SelectCity">
 
-    <tw.com.bluemobile.hbc.Views.Top
+    <tw.com.bluemobile.hbc.views.Top
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
