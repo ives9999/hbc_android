@@ -8,5 +8,6 @@
 
     <declare-styleable name="More">
         <attr name="moreTitleTV" format="string" />
+        <attr name="key" format="string" />
     </declare-styleable>
 </resources>

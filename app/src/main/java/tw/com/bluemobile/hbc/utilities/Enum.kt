@@ -72,5 +72,19 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
     fun getIconID(resources: Resources, packageName: String): Int {
         return resources.getIdentifier("member_" + this.englishName, "drawable", packageName)
     }
+}
 
+enum class KeyEnum(val englishName: String, val chineseName: String) {
+    city_id(CITY_KEY, "縣市"),
+    area_id(AREA_KEY, "區域");
+
+    companion object {
+        fun enumFromString(value: String): KeyEnum {
+            when (value) {
+                CITY_KEY -> return city_id
+                AREA_KEY -> return area_id
+            }
+            return city_id
+        }
+    }
 }

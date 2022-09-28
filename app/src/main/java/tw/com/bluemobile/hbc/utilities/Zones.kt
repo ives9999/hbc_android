@@ -2,7 +2,7 @@ package tw.com.bluemobile.hbc.utilities
 
 import tw.com.bluemobile.hbc.models.City
 
-object Zone {
+object Zones {
 
     val zones: ArrayList<HashMap<String, Any>> = arrayListOf(
         hashMapOf("id" to 1, "parent" to 0, "name" to "台北市", "zip" to 100),
@@ -401,7 +401,7 @@ object Zone {
     fun getCitys(): ArrayList<City> {
 
         val citys: ArrayList<City> = arrayListOf()
-        for (zone in Zone.zones) {
+        for (zone in Zones.zones) {
             if (zone.containsKey("parent")) {
                 val parent: Int = zone["parent"] as Int
                 if (parent == 0) {
@@ -422,5 +422,17 @@ object Zone {
         }
 
         return citys
+    }
+
+    fun zoneIDToName(zone_id: Int): String {
+        var value = ""
+        for (zone in Zones.zones) {
+            val id = zone["id"] as Int
+            if (id == zone_id) {
+                value = zone["name"] as String
+                break
+            }
+        }
+        return value
     }
 }

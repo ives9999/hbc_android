@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,39 +16,55 @@ import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.data.SelectRow
 import tw.com.bluemobile.hbc.utilities.AREA_KEY
 import tw.com.bluemobile.hbc.utilities.CITY_KEY
-import tw.com.bluemobile.hbc.utilities.Zone
+import tw.com.bluemobile.hbc.utilities.KeyEnum
+import tw.com.bluemobile.hbc.utilities.Zones
 
-class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null, val delegate: BaseActivity): Dialog(context) {
+class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: KeyEnum, private val selected: String, private val delegate: BaseActivity): Dialog(context) {
 
     var city_id: Int? = null
+    private val selectRows: ArrayList<SelectRow> = arrayListOf()
 
-    fun setBottomButtonPadding(bottom_button_count: Int, button_width: Int) {
+    fun init(isPrev: Boolean, title: String) {
+
+        findViewById<Top>(R.id.top) ?. let { itTop->
+            itTop.showPrev(isPrev)
+            itTop.setTitle(title)
+        }
+
+        findViewById<Action>(R.id.action) ?. let {
+            it.setOnCancelListener() {
+                this.hide()
+            }
+        }
+
+        setBottomButtonPadding(1, 300)
+    }
+
+    private fun setBottomButtonPadding(bottom_button_count: Int, button_width: Int) {
 
         val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
 
-//        findViewById<Button>(R.id.submitBtn) ?. let {
-//            if (it.visibility == View.VISIBLE) {
-//                val params: ViewGroup.MarginLayoutParams =
-//                    it.layoutParams as ViewGroup.MarginLayoutParams
-//                params.width = button_width
-//                params.marginStart = padding
-//                it.layoutParams = params
-//            }
-//        }
-//
-//        findViewById<Button>(R.id.cancelBtn) ?. let {
-//            if (it.visibility == View.VISIBLE) {
-//                val params: ViewGroup.MarginLayoutParams =
-//                    it.layoutParams as ViewGroup.MarginLayoutParams
-//                params.width = button_width
-//                params.marginStart = padding
-//                it.layoutParams = params
-//
-//                it.setOnClickListener {
-//                    this.dismiss()
-//                }
-//            }
-//        }
+        findViewById<Button>(R.id.submit) ?. let {
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                //params.bottomMargin = 60
+                it.layoutParams = params
+            }
+        }
+
+        findViewById<Button>(R.id.cancel) ?. let {
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                //params.bottomMargin = 60
+                it.layoutParams = params
+            }
+        }
     }
 
 //    private fun rowBridgeForArea(): ArrayList<SelectRow> {
@@ -66,22 +83,20 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
 //    }
 
     private fun rowBridgeForCity(): ArrayList<SelectRow> {
-        val citys = Zone.getCitys()
-
-        val selectRows: ArrayList<SelectRow> = arrayListOf()
+        val citys = Zones.getCitys()
 
         for(city in citys) {
             val title = city.name
             val id = city.id
-            selectRows.add(SelectRow(title, id.toString()))
+            selectRows.add(SelectRow(id, title, id.toString()))
         }
 
         return selectRows
     }
 
-    fun setSelectSingle(selected: String, delegate: BaseActivity): SelectSingleAdapter {
+    fun setAdapter(): SelectSingleAdapter {
 
-        val selectSingleAdapter: SelectSingleAdapter = SelectSingleAdapter(selected, delegate)
+        val selectSingleAdapter: SelectSingleAdapter = SelectSingleAdapter(keyEnum, selected, delegate)
 
         val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
@@ -91,9 +106,9 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
 //            it.visibility = View.GONE
 //        }
 //
-        if (key == CITY_KEY) {
+        if (keyEnum == KeyEnum.city_id) {
             selectSingleAdapter.rows = rowBridgeForCity()
-        } else if (key == AREA_KEY) {
+        } else if (keyEnum == KeyEnum.area_id) {
             //singleSelectAdapter.rows = rowBridgeForArea()
         }
         
@@ -112,7 +127,7 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
     }
 }
 
-class SelectSingleAdapter(var selected: String?, val delegate: BaseActivity): RecyclerView.Adapter<SelectSingleViewHolder>() {
+class SelectSingleAdapter(val keyEnum: KeyEnum, var selected: String?, val delegate: BaseActivity): RecyclerView.Adapter<SelectSingleViewHolder>() {
 
     var rows: ArrayList<SelectRow> = arrayListOf()
 
@@ -123,14 +138,13 @@ class SelectSingleAdapter(var selected: String?, val delegate: BaseActivity): Re
 
         if (selected == row.value) {
             holder.selected.visibility = View.VISIBLE
-            //holder.title.selected()
         } else {
             holder.selected.visibility = View.INVISIBLE
-            //holder.title.unSelected()
         }
 
         holder.viewHolder.setOnClickListener {
-            delegate.cellClick(position)
+            holder.selected.visibility = View.VISIBLE
+            delegate.cellClick(keyEnum, row.id)
         }
     }
 

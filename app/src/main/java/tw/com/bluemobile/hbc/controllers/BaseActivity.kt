@@ -8,6 +8,7 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.views.Bottom
 import tw.com.bluemobile.hbc.views.Top
 import tw.com.bluemobile.hbc.routes.*
+import tw.com.bluemobile.hbc.utilities.KeyEnum
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
@@ -19,8 +20,12 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
         super.onCreate(savedInstanceState)
     }
 
-    open fun cellClick(idx: Int) {
-        println(idx)
+    open fun cancel() {
+        prev()
+    }
+
+    open fun cellClick(keyEnum: KeyEnum, id: Int) {
+        //println(id)
     }
 
     open fun init() {
@@ -58,6 +63,10 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
         }
 
         setTitle(title)
+    }
+
+    open fun submit() {
+
     }
 }
 
