@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -27,6 +28,7 @@
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:titleTV="Email"
                 app:keyboard="email"
+                app:key="email"
                 />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
@@ -36,6 +38,7 @@
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:titleTV="@string/password"
                 app:keyboard="password"
+                app:key="password"
                 />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
@@ -52,14 +55,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="真實姓名" />
+                app:titleTV="真實姓名"
+                app:key="name"
+                />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/nickname"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="暱稱" />
+                app:titleTV="暱稱"
+                app:key="nickname"
+                />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/mobile"
@@ -67,14 +74,16 @@
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:titleTV="行動電話"
-                app:keyboard="number"/>
+                app:keyboard="number"
+                app:key="mobile"
+                />
 
             <tw.com.bluemobile.hbc.views.More
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:id="@+id/city_id"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:key="city_id"
+                app:moreKey="city_id"
                 app:moreTitleTV="縣市" />
 
             <tw.com.bluemobile.hbc.views.More
@@ -82,7 +91,7 @@
                 android:layout_height="@dimen/formitem_container_height"
                 android:id="@+id/area_id"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:key="area_id"
+                app:moreKey="area_id"
                 app:moreTitleTV="區域" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
@@ -90,7 +99,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="路、街，巷等" />
+                app:titleTV="路、街，巷等"
+                app:key="road"
+                />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:titleTV="line"
+                app:key="line"
+                />
 
             <LinearLayout
                 android:id="@+id/submit"

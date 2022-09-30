@@ -17,6 +17,7 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
     private val view: View = View.inflate(context, R.layout.edit_text_normal, this)
     private var editET: EditText? = null
     private var value: String = ""
+    private var key: String = ""
 
     init {
         attrs?.let {
@@ -42,6 +43,8 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
 
                 editET!!.text = (typedArray.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
             }
+
+            key = typedArray.getString(R.styleable.EditTextNormal_key) ?: ""
         }
 
         view.findViewById<ImageView>(R.id.clear) ?. let {
@@ -49,6 +52,10 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
                 editET?.text = "".toEditable()
             }
         }
+    }
+
+    fun getKey(): String {
+        return key
     }
 
     fun getValue(): String {

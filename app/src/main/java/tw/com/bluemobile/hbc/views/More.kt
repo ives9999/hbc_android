@@ -20,14 +20,15 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
     private var keyEnum: KeyEnum = KeyEnum.city_id
     private var valueTV: TextView? = null
     private var cancelIV: ImageView? = null
-    var value: String = ""
+    private var key: String? = null
+    private var value: String = ""
 
     init {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.More, 0, 0)
 
-            val key = typedArray.getString(R.styleable.More_key) ?: ""
-            keyEnum = KeyEnum.enumFromString(key)
+            key = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
+            keyEnum = KeyEnum.enumFromString(key!!)
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
                 it.text = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
@@ -51,6 +52,20 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
         valueTV?.text = ""
     }
 
+    fun getKey(): String {
+        return key!!
+    }
+
+    fun getValue(): String {
+        return value
+    }
+
+    fun isEmpty(): Boolean {
+
+        return value.isEmpty()
+    }
+
+
     fun setOnClickListener(lambda: () -> Unit) {
         valueTV?.setOnClickListener {
             lambda()
@@ -65,6 +80,10 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
 
     fun setText(text: String) {
         valueTV?.text = text
+    }
+
+    fun setValue(value: String) {
+        this.value = value
     }
 
     fun toMoreDialog(screenWidth: Int, selected: String, delegate: BaseActivity): MoreDialog {

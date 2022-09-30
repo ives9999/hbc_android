@@ -4,10 +4,11 @@
         <attr name="titleTV" format="string" />
         <attr name="valueET" format="string" />
         <attr name="keyboard" format="string" />
+        <attr name="key" format="string" />
     </declare-styleable>
 
     <declare-styleable name="More">
         <attr name="moreTitleTV" format="string" />
-        <attr name="key" format="string" />
+        <attr name="moreKey" format="string" />
     </declare-styleable>
 </resources>

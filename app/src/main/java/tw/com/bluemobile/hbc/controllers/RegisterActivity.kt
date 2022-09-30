@@ -1,14 +1,13 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
+import android.provider.SyncStateContract.Helpers.update
 import android.widget.LinearLayout
-import androidx.core.view.isEmpty
-import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.EditTextNormal
 import tw.com.bluemobile.hbc.views.More
-import tw.com.bluemobile.hbc.views.Action
 import tw.com.bluemobile.hbc.views.MoreDialog
 
 class RegisterActivity : BaseActivity() {
@@ -22,8 +21,11 @@ class RegisterActivity : BaseActivity() {
     var moreCity: More? = null
     var moreArea: More? = null
     var editTextRoad: EditTextNormal? = null
+    var editTextLine: EditTextNormal? = null
 
     var moreDialog: MoreDialog? = null
+
+    var filePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         able_enum = TabEnum.member
@@ -61,7 +63,7 @@ class RegisterActivity : BaseActivity() {
             moreCity = it
             it.setOnClickListener() {
                 val screenWidth = Global.getScreenWidth(resources)
-                moreDialog = it.toMoreDialog(screenWidth, it.value, this)
+                moreDialog = it.toMoreDialog(screenWidth, it.getValue(), this)
                 //println(moreCity?.value)
             }
 
@@ -74,17 +76,21 @@ class RegisterActivity : BaseActivity() {
         findViewById<More>(R.id.area_id) ?. let {
             moreArea = it
             it .setOnClickListener() {
-                if (moreCity == null || moreCity!!.value.isEmpty()) {
+                if (moreCity == null || moreCity!!.getValue().isEmpty()) {
                     warning("請先選擇縣市")
                 } else {
                     val screenWidth = Global.getScreenWidth(resources)
-                    moreDialog = it.toMoreDialog(screenWidth, moreCity!!.value, this)
+                    moreDialog = it.toMoreDialog(screenWidth, moreCity!!.getValue(), this)
                 }
             }
         }
 
         findViewById<EditTextNormal>(R.id.road) ?. let {
             editTextRoad = it
+        }
+
+        findViewById<EditTextNormal>(R.id.line) ?. let {
+            editTextLine = it
         }
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
@@ -99,24 +105,67 @@ class RegisterActivity : BaseActivity() {
 //        println(id)
         if (keyEnum == KeyEnum.city_id) {
             moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.value = id.toString()
+            moreCity?.setValue(id.toString())
             moreDialog?.hide()
         } else if (keyEnum == KeyEnum.area_id) {
             moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.value = id.toString()
+            moreArea?.setValue(id.toString())
             moreDialog?.hide()
+        }
+    }
+
+    private fun inputToParams(editTextNormal: EditTextNormal?, errMsg: String): HashMap<String, String> {
+
+        if (editTextNormal?.isEmpty() == true) {
+            msg += errMsg
+            return hashMapOf()
+        } else {
+            val key: String = editTextNormal!!.getKey()
+            val params: HashMap<String, String> = hashMapOf(key to editTextNormal.getValue())
+            return params
+        }
+    }
+
+    private fun moreToParams(more: More?, errMsg: String): HashMap<String, String> {
+        if (more?.isEmpty() == true) {
+            msg += errMsg
+            return hashMapOf()
+        } else {
+            val key: String = more!!.getKey()
+            val params: HashMap<String, String> = hashMapOf(key to more.getValue())
+            return params
         }
     }
 
     override fun submit() {
 
-        if (editTextEmail?.getValue()?.isEmpty() == true) {
-            msg += "請填郵件\n"
-        }
+        val params: MutableMap<String, String> = hashMapOf()
 
-        if (editTextPassword?.getValue()?.isEmpty() == true) {
-            msg += "請填密碼\n"
-        }
+        var temp: HashMap<String, String> = inputToParams(editTextEmail, "請填郵件\n")
+        params.putAll(temp)
+
+        temp = inputToParams(editTextPassword, "請填密碼\n")
+        params.putAll(temp)
+
+        temp = inputToParams(editTextName, "請填真實姓名\n")
+        params.putAll(temp)
+
+        temp = inputToParams(editTextEmail, "請填暱稱\n")
+        params.putAll(temp)
+
+        temp = inputToParams(editTextMobile, "請填行動電話\n")
+        params.putAll(temp)
+
+//        if (editTextEmail?.getValue()?.isEmpty() == true) {
+//            msg += "請填郵件\n"
+//        } else {
+//            val key: String = editTextEmail!!.getKey()
+//            params[key] = editTextEmail!!.getValue()
+//        }
+//
+//        if (editTextPassword?.getValue()?.isEmpty() == true) {
+//            msg += "請填密碼\n"
+//        }
 
         if (editTextRePassword?.getValue()?.isEmpty() == true) {
             msg += "請填確認密碼\n"
@@ -128,41 +177,58 @@ class RegisterActivity : BaseActivity() {
             }
         }
 
-        if (editTextName?.getValue()?.isEmpty() == true) {
-            msg += "請填真實姓名\n"
-        }
+//        if (editTextName?.getValue()?.isEmpty() == true) {
+//            msg += "請填真實姓名\n"
+//        }
+//
+//        if (editTextNickname?.getValue()?.isEmpty() == true) {
+//            msg += "請填暱稱\n"
+//        }
 
-        if (editTextNickname?.getValue()?.isEmpty() == true) {
-            msg += "請填暱稱\n"
-        }
+        temp = moreToParams(moreCity, "請選擇縣市\n")
+        params.putAll(temp)
 
-        if (moreCity?.value?.isEmpty() == true) {
-            msg += "請選擇縣市\n"
-        }
+        temp = moreToParams(moreArea, "請選擇區域\n")
+        params.putAll(temp)
 
-        if (moreArea?.value?.isEmpty() == true) {
-            msg += "請選擇區域\n"
-        }
+//        if (moreCity?.isEmpty() == true) {
+//            msg += "請選擇縣市\n"
+//        }
+//
+//        if (moreArea?.isEmpty() == true) {
+//            msg += "請選擇區域\n"
+//        }
 
-        if (editTextRoad?.getValue()?.isEmpty() == true) {
-            msg += "請填路名\n"
-        }
+        temp = inputToParams(editTextRoad, "請填路名\n")
+        params.putAll(temp)
+
+//        if (editTextRoad?.getValue()?.isEmpty() == true) {
+//            msg += "請填路名\n"
+//        }
+
+        temp = inputToParams(editTextLine, "請填line\n")
+        params.putAll(temp)
 
         if (msg.isNotEmpty()) {
             warning(msg)
             return
         }
-    }
 
-    private fun isEmpty(resource: Int): Boolean {
+        MemberService.update(this, params, filePath) { success ->
 
-        var b: Boolean = true
-        findViewById<EditTextNormal>(resource) ?. let { editTextNormal->
-            if (!editTextNormal.isEmpty()) {
-                b = false
-            }
         }
 
-        return b
     }
+
+//    private fun isEmpty(resource: Int): Boolean {
+//
+//        var b: Boolean = true
+//        findViewById<EditTextNormal>(resource) ?. let { editTextNormal->
+//            if (!editTextNormal.isEmpty()) {
+//                b = false
+//            }
+//        }
+//
+//        return b
+//    }
 }
