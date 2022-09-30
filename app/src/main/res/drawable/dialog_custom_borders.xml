@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UnusedResources">
+    <item>
+        <shape android:shape="oval">
+            <size
+                android:width="34dp"
+                android:height="34dp" />
+            <solid android:color="@color/purple_200" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/MY_BLACK" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/button_cancel"
+        android:gravity="center" />
+</layer-list>

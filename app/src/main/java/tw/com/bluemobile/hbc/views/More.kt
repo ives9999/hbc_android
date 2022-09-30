@@ -18,8 +18,8 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
 
     private val view: View = View.inflate(context, R.layout.more, this)
     private var keyEnum: KeyEnum = KeyEnum.city_id
-    private var moreDialog: MoreDialog? = null
     private var valueTV: TextView? = null
+    private var cancelIV: ImageView? = null
     var value: String = ""
 
     init {
@@ -36,29 +36,29 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
 
         view.findViewById<TextView>(R.id.valueTV) ?. let {
             valueTV = it
-//            it.setOnClickListener {
-//                if (keyEnum == KeyEnum.area_id) {
-//
-//                }
-//
-//                (context as? BaseActivity) ?. let { delegate->
-//                    val screenWidth = Global.getScreenWidth(delegate.resources)
-//                    moreDialog = toMoreDialog(screenWidth,value, delegate)
-//                }
-//            }
         }
 
         view.findViewById<ImageView>(R.id.clear) ?. let {
+            cancelIV = it
             it.setOnClickListener {
-                value = ""
-                valueTV?.text = ""
+                clear()
             }
         }
     }
 
+    fun clear() {
+        value = ""
+        valueTV?.text = ""
+    }
+
     fun setOnClickListener(lambda: () -> Unit) {
-        println("aaa")
         valueTV?.setOnClickListener {
+            lambda()
+        }
+    }
+
+    fun setOnCancelClickListener(lambda: () -> Unit) {
+        cancelIV?.setOnClickListener {
             lambda()
         }
     }
@@ -67,19 +67,11 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
         valueTV?.text = text
     }
 
-    fun closeMoreDialog() {
-        moreDialog?.hide()
-    }
-
     fun toMoreDialog(screenWidth: Int, selected: String, delegate: BaseActivity): MoreDialog {
 
         val moreDialog = MoreDialog(context, screenWidth, keyEnum, selected, delegate)
         moreDialog.setContentView(R.layout.select_single)
         moreDialog.init(false, keyEnum.chineseName)
-
-//        if (key == AREA_KEY) {
-//            moreDialog.city_id = city_id
-//        }
         moreDialog.setAdapter()
         moreDialog.show(30)
 

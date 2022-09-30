@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.views.Bottom
 import tw.com.bluemobile.hbc.views.Top
@@ -67,6 +68,42 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     open fun submit() {
 
+    }
+
+    fun warning(msg: String) {
+        val box = IonAlert(this, IonAlert.WARNING_TYPE)
+        box.titleText = "警吿"
+        box.contentText = msg
+        box.confirmText = "關閉"
+        box.show()
+    }
+
+    fun warning(msg: String, buttonAction: () -> Unit) {
+        val box = IonAlert(this, IonAlert.WARNING_TYPE)
+        box.titleText = "警吿"
+        box.contentText = msg
+        box.confirmText = "關閉"
+
+        box.setConfirmClickListener {
+            buttonAction()
+            it.cancel()
+        }
+        box.show()
+    }
+
+    fun warning(msg: String, cancelButtonTitle: String, buttonAction: () -> Unit) {
+        val box = IonAlert(this, IonAlert.WARNING_TYPE)
+        box.titleText = "警吿"
+        box.contentText = msg
+        box.confirmText = "關閉"
+        box.cancelText = cancelButtonTitle
+        box.showCancelButton(true)
+
+        box.setConfirmClickListener {
+            buttonAction()
+            it.cancel()
+        }
+        box.show()
     }
 }
 

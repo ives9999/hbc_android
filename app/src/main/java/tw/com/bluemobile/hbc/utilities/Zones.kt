@@ -1,6 +1,7 @@
 package tw.com.bluemobile.hbc.utilities
 
 import tw.com.bluemobile.hbc.models.City
+import tw.com.bluemobile.hbc.models.Area
 
 object Zones {
 
@@ -397,6 +398,32 @@ object Zones {
         hashMapOf("id" to 393, "parent" to 389, "name" to "東引鄉", "zip" to 212),
         hashMapOf("id" to 395, "parent" to 0, "name" to "全省", "zip" to 0)
     )
+
+    fun getAreasByCityID(city_id: Int): ArrayList<Area> {
+
+        val areas: ArrayList<Area> = arrayListOf()
+        for (zone in Zones.zones) {
+            if (zone.containsKey("parent")) {
+                val parent: Int = zone["parent"] as Int
+                if (parent == city_id) {
+                    var id: Int? = null
+                    var name: String? = null
+                    if (zone.containsKey("id")) {
+                        id = zone["id"] as Int
+                    }
+                    if (zone.containsKey("name")) {
+                        name = zone["name"] as String
+                    }
+                    if (id != null && name != null) {
+                        val area = Area(id, name)
+                        areas.add(area)
+                    }
+                }
+            }
+        }
+
+        return areas
+    }
 
     fun getCitys(): ArrayList<City> {
 

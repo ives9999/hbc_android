@@ -16,6 +16,7 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private val view: View = View.inflate(context, R.layout.edit_text_normal, this)
     private var editET: EditText? = null
+    private var value: String = ""
 
     init {
         attrs?.let {
@@ -33,6 +34,10 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
                     //editET!!.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
                     editET!!.inputType =
                         InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                } else if (keyboard == "number") {
+                    editET!!.inputType = InputType.TYPE_CLASS_PHONE
+                } else if (keyboard == "email") {
+                    editET!!.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 }
 
                 editET!!.text = (typedArray.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
@@ -44,6 +49,14 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
                 editET?.text = "".toEditable()
             }
         }
+    }
+
+    fun getValue(): String {
+        editET?.text ?. let {
+            value = it.toString()
+        }
+
+        return value
     }
 
     fun isEmpty(): Boolean {

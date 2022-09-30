@@ -23,4 +23,9 @@
     <string name="submit">送出</string>
     <string name="cancel">取消</string>
 
+    <string name="show_dialog">Show dialog</string>
+    <string name="show_custom_dialog">Show custom dialog</string>
+    <string name="ok">OK</string>
+    <string name="greetings_sent_successfully">Greetings sent successfully</string>
+
 </resources>

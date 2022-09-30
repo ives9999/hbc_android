@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.data.SelectRow
-import tw.com.bluemobile.hbc.utilities.AREA_KEY
-import tw.com.bluemobile.hbc.utilities.CITY_KEY
+import tw.com.bluemobile.hbc.models.Area
 import tw.com.bluemobile.hbc.utilities.KeyEnum
 import tw.com.bluemobile.hbc.utilities.Zones
 
@@ -25,6 +24,10 @@ class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: Ke
     private val selectRows: ArrayList<SelectRow> = arrayListOf()
 
     fun init(isPrev: Boolean, title: String) {
+
+         if (selected != "") {
+            city_id = selected.toInt()
+         }
 
         findViewById<Top>(R.id.top) ?. let { itTop->
             itTop.showPrev(isPrev)
@@ -67,20 +70,19 @@ class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: Ke
         }
     }
 
-//    private fun rowBridgeForArea(): ArrayList<SelectRow> {
-//        val selectRows: ArrayList<SelectRow> = arrayListOf()
-//        if (city_id != null) {
-//            val areas: ArrayList<Area> = Global.getAreasByCityID(city_id!!)
-//
-//            for (area in areas) {
-//                val title = area.name
-//                val id = area.id
-//                selectRows.add(SelectRow(title, id.toString()))
-//            }
-//        }
-//
-//        return selectRows
-//    }
+    private fun rowBridgeForArea(): ArrayList<SelectRow> {
+        if (city_id != null) {
+            val areas: ArrayList<Area> = Zones.getAreasByCityID(city_id!!)
+
+            for (area in areas) {
+                val title = area.name
+                val id = area.id
+                selectRows.add(SelectRow(id, title, id.toString()))
+            }
+        }
+
+        return selectRows
+    }
 
     private fun rowBridgeForCity(): ArrayList<SelectRow> {
         val citys = Zones.getCitys()
@@ -102,14 +104,10 @@ class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: Ke
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = selectSingleAdapter
 
-//        this.findViewById<Button>(R.id.submitBtn) ?.let {
-//            it.visibility = View.GONE
-//        }
-//
         if (keyEnum == KeyEnum.city_id) {
             selectSingleAdapter.rows = rowBridgeForCity()
         } else if (keyEnum == KeyEnum.area_id) {
-            //singleSelectAdapter.rows = rowBridgeForArea()
+            selectSingleAdapter.rows = rowBridgeForArea()
         }
         
         return selectSingleAdapter
