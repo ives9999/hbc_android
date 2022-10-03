@@ -78,7 +78,7 @@
                 app:key="mobile"
                 />
 
-            <tw.com.bluemobile.hbc.views.More
+            <tw.com.bluemobile.hbc.views.SelectCity
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:id="@+id/city_id"
@@ -86,7 +86,7 @@
                 app:moreKey="city_id"
                 app:moreTitleTV="縣市" />
 
-            <tw.com.bluemobile.hbc.views.More
+            <tw.com.bluemobile.hbc.views.SelectArea
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:id="@+id/area_id"
@@ -110,6 +110,14 @@
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:titleTV="line"
                 app:key="line"
+                />
+
+            <tw.com.bluemobile.hbc.views.Privacy
+                android:id="@+id/privacy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:privacyKey="privacy"
                 />
 
             <LinearLayout

@@ -4,28 +4,46 @@ import android.os.Bundle
 import android.provider.SyncStateContract.Helpers.update
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.isInt
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
-import tw.com.bluemobile.hbc.views.EditTextNormal
-import tw.com.bluemobile.hbc.views.More
-import tw.com.bluemobile.hbc.views.MoreDialog
+import tw.com.bluemobile.hbc.views.*
 
 class RegisterActivity : BaseActivity() {
 
-    var editTextEmail: EditTextNormal? = null
+//    var editTextEmail: EditTextNormal? = null
     var editTextPassword: EditTextNormal? = null
     var editTextRePassword: EditTextNormal? = null
-    var editTextName: EditTextNormal? = null
-    var editTextNickname: EditTextNormal? = null
-    var editTextMobile: EditTextNormal? = null
-    var moreCity: More? = null
-    var moreArea: More? = null
-    var editTextRoad: EditTextNormal? = null
-    var editTextLine: EditTextNormal? = null
+//    var editTextName: EditTextNormal? = null
+//    var editTextNickname: EditTextNormal? = null
+//    var editTextMobile: EditTextNormal? = null
+    var moreCity: SelectCity? = null
+    var moreArea: SelectArea? = null
+//    var editTextRoad: EditTextNormal? = null
+//    var editTextLine: EditTextNormal? = null
+    var privacy: Privacy? = null
+
+//    val editTextNormals: ArrayList<EditTextNormal> = arrayListOf()
+//    val mores: ArrayList<More> = arrayListOf()
+    val formItems: ArrayList<HashMap<RegisterEnum, MyLayout>> = arrayListOf()
 
     var moreDialog: MoreDialog? = null
 
     var filePath: String = ""
+
+    val initData: HashMap<String, String> = hashMapOf(
+        EMAIL_KEY to "john@housetube.tw",
+        PASSWORD_KEY to "1234",
+        REPASSWORD_KEY to "1234",
+        NAME_KEY to "孫士君",
+        NICKNAME_KEY to "孫士君",
+        MOBILE_KEY to "0911299998",
+        CITY_KEY to "218",
+        AREA_KEY to "219",
+        ROAD_KEY to "南華街101號8樓",
+        LINE_KEY to "ives9999",
+        PRIVACY_KEY to "1"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         able_enum = TabEnum.member
@@ -35,63 +53,7 @@ class RegisterActivity : BaseActivity() {
 
         setTop(true, "註冊")
 
-        findViewById<EditTextNormal>(R.id.email) ?. let {
-            editTextEmail = it
-        }
-
-        findViewById<EditTextNormal>(R.id.password) ?. let {
-            editTextPassword = it
-        }
-
-        findViewById<EditTextNormal>(R.id.repassword) ?. let {
-            editTextRePassword = it
-        }
-
-        findViewById<EditTextNormal>(R.id.name) ?. let {
-            editTextName = it
-        }
-
-        findViewById<EditTextNormal>(R.id.nickname) ?. let {
-            editTextNickname = it
-        }
-
-        findViewById<EditTextNormal>(R.id.mobile) ?. let {
-            editTextMobile = it
-        }
-
-        findViewById<More>(R.id.city_id) ?. let {
-            moreCity = it
-            it.setOnClickListener() {
-                val screenWidth = Global.getScreenWidth(resources)
-                moreDialog = it.toMoreDialog(screenWidth, it.getValue(), this)
-                //println(moreCity?.value)
-            }
-
-            it.setOnCancelClickListener {
-                moreCity?.clear()
-                moreArea?.clear()
-            }
-        }
-
-        findViewById<More>(R.id.area_id) ?. let {
-            moreArea = it
-            it .setOnClickListener() {
-                if (moreCity == null || moreCity!!.getValue().isEmpty()) {
-                    warning("請先選擇縣市")
-                } else {
-                    val screenWidth = Global.getScreenWidth(resources)
-                    moreDialog = it.toMoreDialog(screenWidth, moreCity!!.getValue(), this)
-                }
-            }
-        }
-
-        findViewById<EditTextNormal>(R.id.road) ?. let {
-            editTextRoad = it
-        }
-
-        findViewById<EditTextNormal>(R.id.line) ?. let {
-            editTextLine = it
-        }
+        init()
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
             it.setOnClickListener {
@@ -114,61 +76,264 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun inputToParams(editTextNormal: EditTextNormal?, errMsg: String): HashMap<String, String> {
+    override fun init() {
+        val allEnum: Array<RegisterEnum> = RegisterEnum.getRegisterAllEnum()
+        for (enum in allEnum) {
+            val key: String = enum.englishName
+            val r: Int = resources.getIdentifier(key, "id", packageName)
+            findViewById<MyLayout>(r) ?. let {
 
-        if (editTextNormal?.isEmpty() == true) {
-            msg += errMsg
-            return hashMapOf()
-        } else {
-            val key: String = editTextNormal!!.getKey()
-            val params: HashMap<String, String> = hashMapOf(key to editTextNormal.getValue())
-            return params
+                if (key == PASSWORD_KEY) {
+                    editTextPassword = it as EditTextNormal
+                } else if (key == REPASSWORD_KEY) {
+                    editTextRePassword = it as EditTextNormal
+                } else if (key == CITY_KEY || key == AREA_KEY) {
+                    if (key == CITY_KEY) {
+                        moreCity = it as SelectCity
+                        it.setOnClickListener() {
+                            val screenWidth = Global.getScreenWidth(resources)
+                            moreDialog = moreCity?.toMoreDialog(screenWidth, it.getValue(), this)
+                            //println(moreCity?.value)
+                        }
+
+                        it.setOnCancelClickListener {
+                            it.clear()
+                            moreArea?.clear()
+                        }
+                    } else {
+                        moreArea = it as SelectArea
+                        it.setOnClickListener {
+                            if (moreCity == null || moreCity!!.getValue().isEmpty()) {
+                                warning("請先選擇縣市")
+                            } else {
+                                val screenWidth = Global.getScreenWidth(resources)
+                                val city_id: Int = moreCity?.getValue()?.toInt() ?: 0
+                                moreDialog = moreArea?.toMoreDialog(screenWidth, city_id, moreArea!!.getValue(), this)
+                            }
+                        }
+
+                    }
+                } else if (key == PRIVACY_KEY) {
+                    privacy = it as Privacy
+                    it.setValue("1")
+                    privacy!!.setOnCheckChangeListener { isCheck ->
+                        if (!isCheck) {
+                            warning("必須同意隱私權")
+                        }
+                    }
+                }
+
+                if (initData.containsKey(key)) {
+                    it.setValue(initData[key]!!)
+
+                    if (key == CITY_KEY || key == AREA_KEY) {
+                        val b = it.setZone()
+                        if (!b) {
+                            warning("縣市或區域不是整數值")
+                        }
+                    }
+
+                    if (key == PRIVACY_KEY) {
+                        privacy = it as Privacy
+                        if (initData[PRIVACY_KEY]!!.isInt()) {
+                            val value: Int = initData[PRIVACY_KEY]!!.toInt()
+                            it.setValue(value.toString())
+                            it.setCheck(true)
+                        }
+                    }
+                }
+
+                val h: HashMap<RegisterEnum, MyLayout> = hashMapOf(enum to it)
+                formItems.add(h)
+            }
         }
+
+//        var k: String = EMAIL_KEY
+//        var r: Int = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextEmail = it
+//            setEditText(it, k)
+//
+//            val h: HashMap<String, MyLayout> = hashMapOf(k to it)
+//            formItems.add(h)
+//        }
+//
+//        k = PASSWORD_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextPassword = it
+//            setEditText(it, k)
+//        }
+//
+//        k = REPASSWORD_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextRePassword = it
+//            setEditText(it, k)
+//        }
+//
+//        k = NAME_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextName = it
+//            setEditText(it, k)
+//        }
+//
+//        k = NICKNAME_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(R.id.nickname) ?. let {
+//            editTextNickname = it
+//            setEditText(it, NICKNAME_KEY)
+//        }
+//
+//        k = MOBILE_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextMobile = it
+//            setEditText(it, k)
+//        }
+//
+//        k = CITY_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<More>(r) ?. let {
+//            moreCity = it
+//            setMore(it, k)
+//
+//            it.setOnClickListener() {
+//                val screenWidth = Global.getScreenWidth(resources)
+//                moreDialog = it.toMoreDialog(screenWidth, it.getValue(), this)
+//                //println(moreCity?.value)
+//            }
+//
+//            it.setOnCancelClickListener {
+//                moreCity?.clear()
+//                moreArea?.clear()
+//            }
+//        }
+//
+//        k = AREA_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<More>(r) ?. let {
+//            moreArea = it
+//            setMore(it, k)
+//
+//            it.setOnClickListener {
+//                if (moreCity == null || moreCity!!.getValue().isEmpty()) {
+//                    warning("請先選擇縣市")
+//                } else {
+//                    val screenWidth = Global.getScreenWidth(resources)
+//                    moreDialog = it.toMoreDialog(screenWidth, moreCity!!.getValue(), this)
+//                }
+//            }
+//        }
+//
+//        k = ROAD_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextRoad = it
+//            setEditText(it, k)
+//        }
+//
+//        k = LINE_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<EditTextNormal>(r) ?. let {
+//            editTextLine = it
+//            setEditText(it, k)
+//        }
+//
+//        k = PRIVACY_KEY
+//        r = resources.getIdentifier(k, "id", packageName)
+//        findViewById<Privacy>(r) ?. let {
+//            privacy = it
+//            it.setValue("1")
+//
+//            it.setOnCheckChangeListener { isCheck ->
+//                if (!isCheck) {
+//                    warning("必須同意隱私權")
+//                }
+//            }
+//
+//            if (initData.containsKey(PRIVACY_KEY)) {
+//                if (initData[PRIVACY_KEY]!!.isInt()) {
+//                    val value: Int = initData[PRIVACY_KEY]!!.toInt()
+//                    it.setValue(value.toString())
+//                    it.setCheck(true)
+//                }
+//            }
+//        }
     }
 
-    private fun moreToParams(more: More?, errMsg: String): HashMap<String, String> {
-        if (more?.isEmpty() == true) {
-            msg += errMsg
-            return hashMapOf()
-        } else {
-            val key: String = more!!.getKey()
-            val params: HashMap<String, String> = hashMapOf(key to more.getValue())
-            return params
-        }
-    }
+//    private fun inputToParams(editTextNormal: EditTextNormal?, errMsg: String): HashMap<String, String> {
+//
+//        if (editTextNormal?.isEmpty() == true) {
+//            msg += errMsg
+//            return hashMapOf()
+//        } else {
+//            val key: String = editTextNormal!!.getKey()
+//            val params: HashMap<String, String> = hashMapOf(key to editTextNormal.getValue())
+//            return params
+//        }
+//    }
+//
+//    private fun moreToParams(more: More?, errMsg: String): HashMap<String, String> {
+//        if (more?.isEmpty() == true) {
+//            msg += errMsg
+//            return hashMapOf()
+//        } else {
+//            val key: String = more!!.getKey()
+//            val params: HashMap<String, String> = hashMapOf(key to more.getValue())
+//            return params
+//        }
+//    }
+//
+//    private fun privacyToParams(privacy: Privacy?, errMsg: String): HashMap<String, String> {
+//        if (privacy?.getCheck() == false) {
+//            msg += errMsg
+//            return hashMapOf()
+//        } else {
+//            val key: String = privacy!!.getKey()
+//            val params: HashMap<String, String> = hashMapOf(key to privacy.getValue())
+//            return params
+//        }
+//    }
+
+//    private fun setEditText(it: EditTextNormal, key: String) {
+//        editTextNormals.add(it)
+//
+//        if (initData.containsKey(key)) {
+//            it.setValue(initData[key]!!)
+//        }
+//    }
+//
+//    private fun setMore(it: More, key: String) {
+//        mores.add(it)
+//
+//        if (initData.containsKey(key)) {
+//            val value: String = initData[key]!!
+//            it.setValue(value)
+//
+//            if (value.isInt()) {
+//                val text: String = Zones.zoneIDToName(value.toInt())
+//                it.setText(text)
+//            } else {
+//                warning("縣市或區域不是整數值")
+//            }
+//        }
+//    }
 
     override fun submit() {
 
         val params: MutableMap<String, String> = hashMapOf()
 
-        var temp: HashMap<String, String> = inputToParams(editTextEmail, "請填郵件\n")
-        params.putAll(temp)
-
-        temp = inputToParams(editTextPassword, "請填密碼\n")
-        params.putAll(temp)
-
-        temp = inputToParams(editTextName, "請填真實姓名\n")
-        params.putAll(temp)
-
-        temp = inputToParams(editTextEmail, "請填暱稱\n")
-        params.putAll(temp)
-
-        temp = inputToParams(editTextMobile, "請填行動電話\n")
-        params.putAll(temp)
-
-//        if (editTextEmail?.getValue()?.isEmpty() == true) {
-//            msg += "請填郵件\n"
-//        } else {
-//            val key: String = editTextEmail!!.getKey()
-//            params[key] = editTextEmail!!.getValue()
-//        }
-//
-//        if (editTextPassword?.getValue()?.isEmpty() == true) {
-//            msg += "請填密碼\n"
-//        }
-
-        if (editTextRePassword?.getValue()?.isEmpty() == true) {
-            msg += "請填確認密碼\n"
+        for (formItem in formItems) {
+            for ((enum, layout) in formItem) {
+                if (layout.isEmpty()) {
+                    msg += enum.errMsg()
+                } else {
+                    val temp: HashMap<String, String> = hashMapOf(enum.englishName to layout.getValue())
+                    params.putAll(temp)
+                }
+            }
         }
 
         if (editTextPassword != null && editTextRePassword != null) {
@@ -176,43 +341,50 @@ class RegisterActivity : BaseActivity() {
                 msg += "密碼不符合\n"
             }
         }
+        //println(params)
 
-//        if (editTextName?.getValue()?.isEmpty() == true) {
-//            msg += "請填真實姓名\n"
-//        }
+//        var temp: HashMap<String, String> = inputToParams(editTextEmail, RegisterEnum.password.errMsg())
+//        params.putAll(temp)
 //
-//        if (editTextNickname?.getValue()?.isEmpty() == true) {
-//            msg += "請填暱稱\n"
-//        }
-
-        temp = moreToParams(moreCity, "請選擇縣市\n")
-        params.putAll(temp)
-
-        temp = moreToParams(moreArea, "請選擇區域\n")
-        params.putAll(temp)
-
-//        if (moreCity?.isEmpty() == true) {
-//            msg += "請選擇縣市\n"
-//        }
+//        temp = inputToParams(editTextPassword, RegisterEnum.password.errMsg())
+//        params.putAll(temp)
 //
-//        if (moreArea?.isEmpty() == true) {
-//            msg += "請選擇區域\n"
+//        temp = inputToParams(editTextName, RegisterEnum.realname.errMsg())
+//        params.putAll(temp)
+//
+//        temp = inputToParams(editTextNickname, RegisterEnum.nickname.errMsg())
+//        params.putAll(temp)
+//
+//        temp = inputToParams(editTextMobile, RegisterEnum.mobile.errMsg())
+//        params.putAll(temp)
+//
+//        if (editTextRePassword?.getValue()?.isEmpty() == true) {
+//            msg += RegisterEnum.repassword.errMsg()
 //        }
 
-        temp = inputToParams(editTextRoad, "請填路名\n")
-        params.putAll(temp)
 
-//        if (editTextRoad?.getValue()?.isEmpty() == true) {
-//            msg += "請填路名\n"
-//        }
 
-        temp = inputToParams(editTextLine, "請填line\n")
-        params.putAll(temp)
+//        temp = moreToParams(moreCity, RegisterEnum.city_id.errMsg())
+//        params.putAll(temp)
+//
+//        temp = moreToParams(moreArea, RegisterEnum.area_id.errMsg())
+//        params.putAll(temp)
+//
+//        temp = inputToParams(editTextRoad, RegisterEnum.road.errMsg())
+//        params.putAll(temp)
+//
+//        temp = inputToParams(editTextLine, RegisterEnum.line.errMsg())
+//        params.putAll(temp)
+//
+//        temp = privacyToParams(privacy, RegisterEnum.privacy.errMsg())
+//        params.putAll(temp)
 
         if (msg.isNotEmpty()) {
             warning(msg)
             return
         }
+
+        println(params)
 
         MemberService.update(this, params, filePath) { success ->
 

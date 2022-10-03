@@ -20,6 +20,9 @@ class Global {
 
             return screenWidth
         }
-    }
 
+        fun isEmulator(): Boolean {
+            return isEmulator
+        }
+    }
 }

@@ -3,32 +3,28 @@ package tw.com.bluemobile.hbc.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
-import tw.com.bluemobile.hbc.utilities.CITY_KEY
-import tw.com.bluemobile.hbc.utilities.Global
+import tw.com.bluemobile.hbc.extensions.isInt
 import tw.com.bluemobile.hbc.utilities.KeyEnum
+import tw.com.bluemobile.hbc.utilities.Zones
 
-class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
-    LinearLayout(context, attrs, defStyleAttr) {
+open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+    MyLayout(context, attrs, defStyleAttr) {
 
-    private val view: View = View.inflate(context, R.layout.more, this)
-    private var keyEnum: KeyEnum = KeyEnum.city_id
-    private var valueTV: TextView? = null
-    private var cancelIV: ImageView? = null
-    private var key: String? = null
-    private var value: String = ""
+    protected val view: View = View.inflate(context, R.layout.more, this)
+    protected var keyEnum: KeyEnum = KeyEnum.city_id
+    protected var valueTV: TextView? = null
+    protected var cancelIV: ImageView? = null
 
     init {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.More, 0, 0)
 
-            key = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
-            keyEnum = KeyEnum.enumFromString(key!!)
+            key = typedArray.getString(R.styleable.More_moreKey) ?: ""
+            keyEnum = KeyEnum.enumFromString(key)
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
                 it.text = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
@@ -47,32 +43,24 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
         }
     }
 
-    fun clear() {
+    override fun clear() {
         value = ""
         valueTV?.text = ""
     }
 
-    fun getKey(): String {
-        return key!!
-    }
-
-    fun getValue(): String {
-        return value
-    }
-
-    fun isEmpty(): Boolean {
+    override fun isEmpty(): Boolean {
 
         return value.isEmpty()
     }
 
 
-    fun setOnClickListener(lambda: () -> Unit) {
+    override fun setOnClickListener(lambda: () -> Unit) {
         valueTV?.setOnClickListener {
             lambda()
         }
     }
 
-    fun setOnCancelClickListener(lambda: () -> Unit) {
+    override fun setOnCancelClickListener(lambda: () -> Unit) {
         cancelIV?.setOnClickListener {
             lambda()
         }
@@ -82,8 +70,15 @@ class More @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nu
         valueTV?.text = text
     }
 
-    fun setValue(value: String) {
-        this.value = value
+    override fun setZone(): Boolean {
+
+        if (value.isInt()) {
+            val text: String = Zones.zoneIDToName(value.toInt())
+            this.setText(text)
+            return true
+        } else {
+            return false
+        }
     }
 
     fun toMoreDialog(screenWidth: Int, selected: String, delegate: BaseActivity): MoreDialog {

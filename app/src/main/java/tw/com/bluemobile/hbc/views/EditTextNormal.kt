@@ -6,18 +6,16 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.toEditable
 
-class EditTextNormal @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
-    LinearLayout(context, attrs, defStyleAttr) {
+class EditTextNormal @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
+):
+    MyLayout(context, attrs, defStyleAttr) {
 
     private val view: View = View.inflate(context, R.layout.edit_text_normal, this)
     private var editET: EditText? = null
-    private var value: String = ""
-    private var key: String = ""
 
     init {
         attrs?.let {
@@ -49,16 +47,16 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
 
         view.findViewById<ImageView>(R.id.clear) ?. let {
             it.setOnClickListener {
-                editET?.text = "".toEditable()
+                clear()
             }
         }
     }
 
-    fun getKey(): String {
-        return key
+    override fun clear() {
+        editET?.text = "".toEditable()
     }
 
-    fun getValue(): String {
+    override fun getValue(): String {
         editET?.text ?. let {
             value = it.toString()
         }
@@ -66,7 +64,7 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         return value
     }
 
-    fun isEmpty(): Boolean {
+    override fun isEmpty(): Boolean {
 
         var res = false
 
@@ -80,6 +78,10 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         }
 
         return res
+    }
+
+    override fun setValue(value: String) {
+        editET?.text = value.toEditable()
     }
 }
 

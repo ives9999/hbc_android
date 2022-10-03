@@ -1,7 +1,7 @@
 package tw.com.bluemobile.hbc.utilities
 
-import tw.com.bluemobile.hbc.models.City
-import tw.com.bluemobile.hbc.models.Area
+import tw.com.bluemobile.hbc.models.CityModel
+import tw.com.bluemobile.hbc.models.AreaModel
 
 object Zones {
 
@@ -399,9 +399,9 @@ object Zones {
         hashMapOf("id" to 395, "parent" to 0, "name" to "全省", "zip" to 0)
     )
 
-    fun getAreasByCityID(city_id: Int): ArrayList<Area> {
+    fun getAreasByCityID(city_id: Int): ArrayList<AreaModel> {
 
-        val areas: ArrayList<Area> = arrayListOf()
+        val areas: ArrayList<AreaModel> = arrayListOf()
         for (zone in Zones.zones) {
             if (zone.containsKey("parent")) {
                 val parent: Int = zone["parent"] as Int
@@ -415,7 +415,7 @@ object Zones {
                         name = zone["name"] as String
                     }
                     if (id != null && name != null) {
-                        val area = Area(id, name)
+                        val area = AreaModel(id, name)
                         areas.add(area)
                     }
                 }
@@ -425,9 +425,9 @@ object Zones {
         return areas
     }
 
-    fun getCitys(): ArrayList<City> {
+    fun getCitys(): ArrayList<CityModel> {
 
-        val citys: ArrayList<City> = arrayListOf()
+        val citys: ArrayList<CityModel> = arrayListOf()
         for (zone in Zones.zones) {
             if (zone.containsKey("parent")) {
                 val parent: Int = zone["parent"] as Int
@@ -441,7 +441,7 @@ object Zones {
                         name = zone["name"] as String
                     }
                     if (id != null && name != null) {
-                        val city = City(id, name)
+                        val city = CityModel(id, name)
                         citys.add(city)
                     }
                 }
