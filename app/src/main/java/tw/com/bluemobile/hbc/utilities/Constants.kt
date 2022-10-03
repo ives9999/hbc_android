@@ -19,11 +19,11 @@ val ROAD_KEY: String = "road"
 
 val PARAMS: HashMap<String, String> = hashMapOf()
 
-const val REMOTE_BASE_URL = "http://192.168.100.120"
+const val REMOTE_BASE_URL = "https://sandbox.hbc.com"
 const val LOCALHOST_BASE_URL = "http://192.168.100.120"
 
-val BASE_URL = (Global.isEmulator() then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
-val URL_HOME: String = "$BASE_URL/"
+var BASE_URL = REMOTE_BASE_URL
+var URL_HOME: String = "$BASE_URL/"
 
 
 

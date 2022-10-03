@@ -1,15 +1,18 @@
 package tw.com.bluemobile.hbc.services
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
-import tw.com.bluemobile.hbc.utilities.CompletionHandler
-import tw.com.bluemobile.hbc.utilities.PARAMS
-import tw.com.bluemobile.hbc.utilities.mergeWith
+import tw.com.bluemobile.hbc.utilities.*
+import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
+import java.io.InputStreamReader
 import java.lang.Exception
+import java.lang.reflect.Method
 
 open class BaseService {
 
@@ -23,6 +26,37 @@ open class BaseService {
     var jsonString: String = ""
     val okHttpClient = OkHttpClient()
 
+    fun _isEmulator(): Boolean {
+
+        val result = (Build.FINGERPRINT.startsWith("google/sdk_gphone_")
+                && Build.FINGERPRINT.endsWith(":user/release-keys")
+                && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
+                && Build.MODEL.startsWith("sdk_gphone_"))
+                //
+                || Build.FINGERPRINT.contains("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                //bluestacks
+                || "QC_Reference_Phone" == Build.BOARD && !"Xiaomi".equals(Build.MANUFACTURER, ignoreCase = true) //bluestacks
+                || Build.MANUFACTURER.contains("Genymotion")
+
+                //Sony is true, so mark it. HOST:BuildHost
+//                || Build.HOST.startsWith("Build") //MSI App Player
+                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+                || Build.PRODUCT == "google_sdk"
+                // another Android SDK emulator check
+                || SystemProperties.getProp("ro.kernel.qemu") == "1"
+        return result
+    }
+
+    protected fun getBaseUrl() {
+        isEmulator = _isEmulator()
+        BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
+        URL_HOME = "$BASE_URL/"
+    }
+
     open fun getUpdateURL(): String {
         return ""
     }
@@ -33,7 +67,7 @@ open class BaseService {
         filePath: String,
         complete: CompletionHandler
     ) {
-
+        getBaseUrl()
         val url: String = getUpdateURL()
 
         var _params: Map<String, String> = hashMapOf()
@@ -70,7 +104,7 @@ open class BaseService {
 
                 try {
                     jsonString = response.body!!.string()
-                    println(jsonString)
+                    //println(jsonString)
                     success = true
                 } catch (e: Exception) {
                     success = false
@@ -80,5 +114,34 @@ open class BaseService {
                 complete(success)
             }
         })
+    }
+}
+
+object SystemProperties {
+    private var failedUsingReflection = false
+    private var getPropMethod: Method? = null
+
+    @SuppressLint("PrivateApi")
+    fun getProp(propName: String, defaultResult: String = ""): String {
+        if (!failedUsingReflection) try {
+            if (getPropMethod == null) {
+                val clazz = Class.forName("android.os.SystemProperties")
+                getPropMethod = clazz.getMethod("get", String::class.java, String::class.java)
+            }
+            return getPropMethod!!.invoke(null, propName, defaultResult) as String? ?: defaultResult
+        } catch (e: Exception) {
+            getPropMethod = null
+            failedUsingReflection = true
+        }
+        var process: Process? = null
+        try {
+            process = Runtime.getRuntime().exec("getprop \"$propName\" \"$defaultResult\"")
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            return reader.readLine()
+        } catch (e: IOException) {
+        } finally {
+            process?.destroy()
+        }
+        return defaultResult
     }
 }

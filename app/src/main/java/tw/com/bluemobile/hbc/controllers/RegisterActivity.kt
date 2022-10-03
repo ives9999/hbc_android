@@ -1,10 +1,14 @@
 package tw.com.bluemobile.hbc.controllers
 
+import android.app.Activity
 import android.os.Bundle
 import android.provider.SyncStateContract.Helpers.update
 import android.widget.LinearLayout
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.isInt
+import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
@@ -384,10 +388,53 @@ class RegisterActivity : BaseActivity() {
             return
         }
 
-        println(params)
+        //println(params)
 
         MemberService.update(this, params, filePath) { success ->
-
+            if (success) {
+                if (MemberService.success) {
+                    runOnUiThread {
+                        try {
+                            //println(MemberService.jsonString)
+                            val table = Gson().fromJson<RegisterResTable>(
+                                MemberService.jsonString,
+                                RegisterResTable::class.java
+                            )
+                            if (table != null) {
+                                if (!table.success) {
+                                    msg = ""
+                                    for (error in table.errors) {
+                                        msg += error + "\n"
+                                    }
+                                    warning(msg)
+                                } else {
+                                    if (table.model != null) {
+                                        val memberModel: MemberModel = table.model!!
+                                        //memberModel.toSession(this, true)
+//                                        info(msg, "", "關閉") {
+//                                            setResult(Activity.RESULT_OK, intent)
+//                                            finish()
+//                                            //prev()
+//                                        }
+                                    }
+                                }
+                            } else {
+                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
+                            }
+                        } catch (e: JsonParseException) {
+                            warning(e.localizedMessage!!)
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        warning(MemberService.msg)
+                    }
+                }
+            } else {
+                runOnUiThread {
+                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
+                }
+            }
         }
 
     }
@@ -403,4 +450,13 @@ class RegisterActivity : BaseActivity() {
 //
 //        return b
 //    }
+}
+
+
+class RegisterResTable {
+    var success: Boolean = false
+    var errors: ArrayList<String> = arrayListOf()
+    var id: Int = 0
+    var update: String = ""
+    var model: MemberModel? = null
 }

@@ -1,6 +1,5 @@
 package tw.com.bluemobile.hbc.controllers
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
@@ -11,13 +10,7 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.views.Bottom
 import tw.com.bluemobile.hbc.views.Top
 import tw.com.bluemobile.hbc.routes.*
-import tw.com.bluemobile.hbc.utilities.KeyEnum
-import tw.com.bluemobile.hbc.utilities.TabEnum
-import tw.com.bluemobile.hbc.utilities.isEmulator
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.lang.reflect.Method
+import tw.com.bluemobile.hbc.utilities.*
 
 var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
 var msg: String = "" //目前使用在傳送錯誤訊息
@@ -26,37 +19,10 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        isEmulator = _isEmulator()
     }
 
     open fun cancel() {
         prev()
-    }
-
-    private fun _isEmulator(): Boolean {
-
-        val result = (Build.FINGERPRINT.startsWith("google/sdk_gphone_")
-                && Build.FINGERPRINT.endsWith(":user/release-keys")
-                && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
-                && Build.MODEL.startsWith("sdk_gphone_"))
-                //
-                || Build.FINGERPRINT.contains("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                //bluestacks
-                || "QC_Reference_Phone" == Build.BOARD && !"Xiaomi".equals(Build.MANUFACTURER, ignoreCase = true) //bluestacks
-                || Build.MANUFACTURER.contains("Genymotion")
-
-                //Sony is true, so mark it. HOST:BuildHost
-//                || Build.HOST.startsWith("Build") //MSI App Player
-                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
-                || Build.PRODUCT == "google_sdk"
-                // another Android SDK emulator check
-                || SystemProperties.getProp("ro.kernel.qemu") == "1"
-        return result
     }
 
     open fun cellClick(keyEnum: KeyEnum, id: Int) {
@@ -141,34 +107,6 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     }
 }
 
-object SystemProperties {
-    private var failedUsingReflection = false
-    private var getPropMethod: Method? = null
-
-    @SuppressLint("PrivateApi")
-    fun getProp(propName: String, defaultResult: String = ""): String {
-        if (!failedUsingReflection) try {
-            if (getPropMethod == null) {
-                val clazz = Class.forName("android.os.SystemProperties")
-                getPropMethod = clazz.getMethod("get", String::class.java, String::class.java)
-            }
-            return getPropMethod!!.invoke(null, propName, defaultResult) as String? ?: defaultResult
-        } catch (e: Exception) {
-            getPropMethod = null
-            failedUsingReflection = true
-        }
-        var process: Process? = null
-        try {
-            process = Runtime.getRuntime().exec("getprop \"$propName\" \"$defaultResult\"")
-            val reader = BufferedReader(InputStreamReader(process.inputStream))
-            return reader.readLine()
-        } catch (e: IOException) {
-        } finally {
-            process?.destroy()
-        }
-        return defaultResult
-    }
-}
 
 
 

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,11 +9,14 @@
     <tw.com.bluemobile.hbc.views.Top
         android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_height" />
+        android:layout_height="@dimen/top_height"
+        android:layout_alignParentTop="true" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@id/submit"
+        android:layout_below="@id/top"
         android:background="@android:color/transparent">
 
         <LinearLayout
@@ -26,70 +29,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="Email"
-                app:keyboard="email"
                 app:key="email"
-                />
+                app:keyboard="email"
+                app:titleTV="Email" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="@string/password"
-                app:keyboard="password"
                 app:key="password"
-                />
+                app:keyboard="password"
+                app:titleTV="@string/password" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/repassword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="確認密碼"
                 app:keyboard="password"
-                />
+                app:titleTV="確認密碼" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="真實姓名"
                 app:key="name"
-                />
+                app:titleTV="真實姓名" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/nickname"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="暱稱"
                 app:key="nickname"
-                />
+                app:titleTV="暱稱" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="行動電話"
-                app:keyboard="number"
                 app:key="mobile"
-                />
+                app:keyboard="number"
+                app:titleTV="行動電話" />
 
             <tw.com.bluemobile.hbc.views.SelectCity
+                android:id="@+id/city_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
-                android:id="@+id/city_id"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:moreKey="city_id"
                 app:moreTitleTV="縣市" />
 
             <tw.com.bluemobile.hbc.views.SelectArea
+                android:id="@+id/area_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
-                android:id="@+id/area_id"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:moreKey="area_id"
                 app:moreTitleTV="區域" />
@@ -99,47 +96,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="路、街，巷等"
                 app:key="road"
-                />
+                app:titleTV="路、街，巷等" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:titleTV="line"
                 app:key="line"
-                />
+                app:titleTV="line" />
 
             <tw.com.bluemobile.hbc.views.Privacy
                 android:id="@+id/privacy"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:privacyKey="privacy"
-                />
+                app:privacyKey="privacy" />
 
-            <LinearLayout
-                android:id="@+id/submit"
-                android:layout_width="224dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/button_submit"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/button_submit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/submit" />
-
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/submit"
+        android:layout_width="224dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_submit"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/submit" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
