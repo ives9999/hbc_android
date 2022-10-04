@@ -93,7 +93,7 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getRegisterAllEnum(): Array<RegisterEnum> {
-            return arrayOf(email, password, realname, realname, nickname, city_id, area_id, road, mobile, line, privacy)
+            return arrayOf(email, password, repassword, realname, realname, nickname, city_id, area_id, road, mobile, line, privacy)
         }
 
         fun getUpdateAllEnum(): Array<RegisterEnum> {

@@ -1,21 +1,29 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatImageView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.isInt
+import tw.com.bluemobile.hbc.extensions.setLocalImage
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
+import java.io.File
 
 class RegisterActivity : BaseActivity() {
 
@@ -27,6 +35,11 @@ class RegisterActivity : BaseActivity() {
         private const val GALLERY_IMAGE_REQ_CODE = 102
         private const val CAMERA_IMAGE_REQ_CODE = 103
     }
+
+    private var mCameraUri: Uri? = null
+    private var mGalleryUri: Uri? = null
+    private var mProfileUri: Uri? = null
+    private var imgProfile: AppCompatImageView? = null
 
 //    var editTextEmail: EditTextNormal? = null
     var editTextPassword: EditTextNormal? = null
@@ -46,7 +59,7 @@ class RegisterActivity : BaseActivity() {
 
     var moreDialog: MoreDialog? = null
 
-    var filePath: String = ""
+//    var filePath: String = ""
 
     val initData: HashMap<String, String> = hashMapOf(
         EMAIL_KEY to "john@housetube.tw",
@@ -71,6 +84,10 @@ class RegisterActivity : BaseActivity() {
         setTop(true, "註冊")
 
         init()
+
+        findViewById<AppCompatImageView>(R.id.imgProfile) ?. let {
+            imgProfile = it
+        }
 
         findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
             it.setOnClickListener {
@@ -344,12 +361,34 @@ class RegisterActivity : BaseActivity() {
 //        }
 //    }
 
+    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res: ActivityResult ->
+        val resultCode: Int = res.resultCode
+        val data: Intent? = res.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null && data.data != null) {
+                //val fileUri: Uri = data.data!!
+                mProfileUri = data.data!!
+                //mProfileUri = fileUri
+                //val a = mProfileUri.toString()
+                imgProfile?.setLocalImage(mProfileUri!!, true)
+            } else {
+                warning("選擇圖片後，回傳為空值")
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            warning(ImagePicker.getError(data))
+        } else {
+            warning("選取圖片錯誤")
+        }
+    }
+
     @Suppress("UNUSED_PARAMETER")
     fun pickProfileImage() {
         ImagePicker.with(this)
             // Crop Square image
             .galleryOnly()
             .cropSquare()
+            .saveDir(getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
             .setImageProviderInterceptor { imageProvider -> // Intercept ImageProvider
                 Log.d("ImagePicker", "Selected ImageProvider: " + imageProvider.name)
             }
@@ -358,7 +397,10 @@ class RegisterActivity : BaseActivity() {
             }
             // Image resolution will be less than 512 x 512
             .maxResultSize(200, 200)
-            .start(PROFILE_IMAGE_REQ_CODE)
+            .createIntent { intent ->
+                startForProfileImageResult.launch(intent)
+            }
+            //.start(PROFILE_IMAGE_REQ_CODE)
     }
 
     override fun submit() {
@@ -426,7 +468,9 @@ class RegisterActivity : BaseActivity() {
 
         //println(params)
 
-        MemberService.update(this, params, filePath) { success ->
+        val featured: String? = mProfileUri?.path
+
+        MemberService.update(this, params, featured) { success ->
             if (success) {
                 if (MemberService.success) {
                     runOnUiThread {

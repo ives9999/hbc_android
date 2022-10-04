@@ -53,6 +53,7 @@ open class BaseService {
 
     protected fun getBaseUrl() {
         isEmulator = _isEmulator()
+        isEmulator = true
         BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
         URL_HOME = "$BASE_URL/"
     }
@@ -64,7 +65,7 @@ open class BaseService {
     open fun update(
         context: Context,
         params: MutableMap<String, String>,
-        filePath: String,
+        filePath: String?,
         complete: CompletionHandler
     ) {
         getBaseUrl()
@@ -80,10 +81,12 @@ open class BaseService {
             bodyBuilder.addFormDataPart(key, value)
         }
 
-        val file: File = File(filePath)
-        if (file.exists()) {
-            val filePart = file.asRequestBody("image/png".toMediaType())
-            bodyBuilder.addFormDataPart("file", file.name, filePart)
+        if (filePath != null) {
+            val file: File = File(filePath)
+            if (file.exists()) {
+                val filePart = file.asRequestBody("image/png".toMediaType())
+                bodyBuilder.addFormDataPart("avatar", file.name, filePart)
+            }
         }
 
         val body: RequestBody = bodyBuilder.build()
@@ -104,7 +107,7 @@ open class BaseService {
 
                 try {
                     jsonString = response.body!!.string()
-                    //println(jsonString)
+                    println(jsonString)
                     success = true
                 } catch (e: Exception) {
                     success = false
