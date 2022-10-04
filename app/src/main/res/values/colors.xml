@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
     <color name="TOP">#E8838D</color>
     <color name="TOP_TITLE">#FFFFFF</color>
     <color name="BOTTOM">#DDDDDD</color>
@@ -16,4 +8,6 @@
     <color name="MY_WHITE">#FFFFFF</color>
 
     <color name="MEMBER_HOME_ICON_BG">#A8D5E2</color>
+
+    <color name="colorPrimary">@color/teal_500</color>
 </resources>

@@ -119,24 +119,6 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
         }
     }
 
-//    fun getClassType(): KClass<EditTextNormal> {
-//        when (this) {
-//            email -> return EditTextNormal::class
-//            password -> return "請填密碼\n"
-//            repassword -> return "請填確認密碼\n"
-//            realname -> return "請填真實姓名\n"
-//            nickname -> return "請填暱稱\n"
-//            city_id -> return "請選擇縣市\n"
-//            area_id -> return "請選擇區域\n"
-//            road -> return "請填路名\n"
-//            mobile -> return "請填行動電話\n"
-//            line -> return "請填line\n"
-//            privacy -> return "請同意隱私權條款\n"
-//
-//            else -> return ""
-//        }
-//    }
-
     fun getLayout(resources: Resources, packageName: String) {
         var r: Int = resources.getIdentifier(this.englishName, "id", packageName)
     }

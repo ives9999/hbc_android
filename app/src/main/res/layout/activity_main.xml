@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
     android:orientation="vertical"
     tools:context=".controllers.NeedBloodActivity">
 
@@ -11,6 +12,12 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom"
+        android:layout_below="@id/top" />
 
     <tw.com.bluemobile.hbc.views.Bottom
         android:id="@id/bottom"

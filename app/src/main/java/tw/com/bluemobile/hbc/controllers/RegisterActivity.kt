@@ -3,7 +3,11 @@ package tw.com.bluemobile.hbc.controllers
 import android.app.Activity
 import android.os.Bundle
 import android.provider.SyncStateContract.Helpers.update
+import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
@@ -14,6 +18,15 @@ import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 
 class RegisterActivity : BaseActivity() {
+
+    companion object {
+
+        private const val GITHUB_REPOSITORY = "https://github.com/Dhaval2404/ImagePicker"
+
+        private const val PROFILE_IMAGE_REQ_CODE = 101
+        private const val GALLERY_IMAGE_REQ_CODE = 102
+        private const val CAMERA_IMAGE_REQ_CODE = 103
+    }
 
 //    var editTextEmail: EditTextNormal? = null
     var editTextPassword: EditTextNormal? = null
@@ -58,6 +71,12 @@ class RegisterActivity : BaseActivity() {
         setTop(true, "註冊")
 
         init()
+
+        findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
+            it.setOnClickListener {
+                pickProfileImage()
+            }
+        }
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
             it.setOnClickListener {
@@ -325,6 +344,23 @@ class RegisterActivity : BaseActivity() {
 //        }
 //    }
 
+    @Suppress("UNUSED_PARAMETER")
+    fun pickProfileImage() {
+        ImagePicker.with(this)
+            // Crop Square image
+            .galleryOnly()
+            .cropSquare()
+            .setImageProviderInterceptor { imageProvider -> // Intercept ImageProvider
+                Log.d("ImagePicker", "Selected ImageProvider: " + imageProvider.name)
+            }
+            .setDismissListener {
+                Log.d("ImagePicker", "Dialog Dismiss")
+            }
+            // Image resolution will be less than 512 x 512
+            .maxResultSize(200, 200)
+            .start(PROFILE_IMAGE_REQ_CODE)
+    }
+
     override fun submit() {
 
         val params: MutableMap<String, String> = hashMapOf()
@@ -396,20 +432,23 @@ class RegisterActivity : BaseActivity() {
                     runOnUiThread {
                         try {
                             //println(MemberService.jsonString)
-                            val table = Gson().fromJson<RegisterResTable>(
+                            val registerResModel = Gson().fromJson<RegisterResModel>(
                                 MemberService.jsonString,
-                                RegisterResTable::class.java
+                                RegisterResModel::class.java
                             )
-                            if (table != null) {
-                                if (!table.success) {
+                            if (registerResModel != null) {
+                                if (!registerResModel.success) {
                                     msg = ""
-                                    for (error in table.errors) {
+                                    for (error in registerResModel.errors) {
                                         msg += error + "\n"
                                     }
                                     warning(msg)
                                 } else {
-                                    if (table.model != null) {
-                                        val memberModel: MemberModel = table.model!!
+                                    if (registerResModel.model != null) {
+                                        val memberModel: MemberModel = registerResModel.model!!
+                                        memberModel.filterRow()
+                                        memberModel.dump()
+                                        memberModel.zoneModel!!.dump()
                                         //memberModel.toSession(this, true)
 //                                        info(msg, "", "關閉") {
 //                                            setResult(Activity.RESULT_OK, intent)
@@ -453,7 +492,7 @@ class RegisterActivity : BaseActivity() {
 }
 
 
-class RegisterResTable {
+class RegisterResModel {
     var success: Boolean = false
     var errors: ArrayList<String> = arrayListOf()
     var id: Int = 0

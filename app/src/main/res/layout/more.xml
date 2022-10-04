@@ -24,14 +24,16 @@
                 style="@style/edit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/common" />
+                android:text="@string/common"
+                android:textColor="@color/MY_BLACK" />
 
             <TextView
                 android:id="@+id/titleTV"
                 style="@style/edit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/city" />
+                android:text="@string/city"
+                android:textColor="@color/MY_BLACK" />
 
             <ImageView
                 android:layout_width="@dimen/star"
@@ -58,7 +60,7 @@
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                 />
+                android:textColor="@color/MY_BLACK" />
 
             <ImageView
                 android:id="@+id/clear"

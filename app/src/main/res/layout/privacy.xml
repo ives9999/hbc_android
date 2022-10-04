@@ -43,7 +43,8 @@
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="同意隱私權條款" />
+            android:text="同意隱私權條款"
+            android:textColor="@color/MY_BLACK" />
 
     </LinearLayout>
 

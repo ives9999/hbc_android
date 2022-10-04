@@ -1,5 +1,7 @@
 package tw.com.bluemobile.hbc.models
 
+import com.google.gson.annotations.SerializedName
+
 class MemberModel: BaseModel() {
 
     var email: String = ""
@@ -20,4 +22,10 @@ class MemberModel: BaseModel() {
     var validate: Int = 0
     var player_id: String = ""
 
+    @SerializedName("zone") var zoneModel: ZoneModel? = null
+
+    override fun filterRow() {
+        super.filterRow()
+        zoneModel?.filterRow()
+    }
 }

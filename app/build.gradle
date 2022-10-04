@@ -66,4 +66,7 @@ dependencies {
     //reflect
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 
+    //image picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
 }

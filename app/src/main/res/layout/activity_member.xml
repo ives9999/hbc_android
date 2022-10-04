@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
     android:orientation="vertical"
     tools:context=".controllers.MemberActivity">
 
@@ -21,8 +22,7 @@
         android:columnWidth="@dimen/member_home_gridview_column_width"
         android:gravity="center"
         android:numColumns="2"
-        android:stretchMode="columnWidth"
-         />
+        android:stretchMode="columnWidth" />
 
     <tw.com.bluemobile.hbc.views.Bottom
         android:id="@id/bottom"

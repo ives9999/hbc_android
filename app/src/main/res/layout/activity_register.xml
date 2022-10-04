@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
     android:orientation="vertical"
     tools:context=".controllers.RegisterActivity">
 
@@ -23,6 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <tw.com.bluemobile.hbc.views.Featured
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="@dimen/formitem_container_marginTop" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/email"

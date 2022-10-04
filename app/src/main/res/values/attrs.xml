@@ -15,4 +15,8 @@
     <declare-styleable name="Privacy">
         <attr name="privacyKey" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="Featured">
+    </declare-styleable>
+
 </resources>
