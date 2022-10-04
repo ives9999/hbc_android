@@ -12,6 +12,8 @@ import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import com.example.awesomedialog.*
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
@@ -39,29 +41,30 @@ class RegisterActivity : BaseActivity() {
     private var mCameraUri: Uri? = null
     private var mGalleryUri: Uri? = null
     private var mProfileUri: Uri? = null
-    private var imgProfile: AppCompatImageView? = null
+//    private var imgProfile: AppCompatImageView? = null
+    private var featured: Featured? = null
 
 //    var editTextEmail: EditTextNormal? = null
-    var editTextPassword: EditTextNormal? = null
+    private var editTextPassword: EditTextNormal? = null
     var editTextRePassword: EditTextNormal? = null
 //    var editTextName: EditTextNormal? = null
 //    var editTextNickname: EditTextNormal? = null
 //    var editTextMobile: EditTextNormal? = null
-    var moreCity: SelectCity? = null
+    private var moreCity: SelectCity? = null
     var moreArea: SelectArea? = null
 //    var editTextRoad: EditTextNormal? = null
 //    var editTextLine: EditTextNormal? = null
-    var privacy: Privacy? = null
+    private var privacy: Privacy? = null
 
 //    val editTextNormals: ArrayList<EditTextNormal> = arrayListOf()
 //    val mores: ArrayList<More> = arrayListOf()
-    val formItems: ArrayList<HashMap<RegisterEnum, MyLayout>> = arrayListOf()
+    private val formItems: ArrayList<HashMap<RegisterEnum, MyLayout>> = arrayListOf()
 
     var moreDialog: MoreDialog? = null
 
 //    var filePath: String = ""
 
-    val initData: HashMap<String, String> = hashMapOf(
+    private val initData: HashMap<String, String> = hashMapOf(
         EMAIL_KEY to "john@housetube.tw",
         PASSWORD_KEY to "1234",
         REPASSWORD_KEY to "1234",
@@ -85,15 +88,18 @@ class RegisterActivity : BaseActivity() {
 
         init()
 
-        findViewById<AppCompatImageView>(R.id.imgProfile) ?. let {
-            imgProfile = it
-        }
-
-        findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
-            it.setOnClickListener {
-                pickProfileImage()
-            }
-        }
+//        findViewById<AppCompatImageView>(R.id.imgProfile) ?. let {
+//            imgProfile = it
+//            it.setOnClickListener {
+//                featuredSelectDialog()
+//            }
+//        }
+//
+//        findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
+//            it.setOnClickListener {
+//                featuredSelectDialog()
+//            }
+//        }
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
             it.setOnClickListener {
@@ -102,6 +108,7 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+    // set setting after city and area click.
     override fun cellClick(keyEnum: KeyEnum, id: Int) {
 //        println(key)
 //        println(id)
@@ -116,7 +123,28 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+//    private fun featuredSelectDialog() {
+//        AwesomeDialog.build(this)
+//            .title("選擇圖片", titleColor = ContextCompat.getColor(this, R.color.MY_BLACK))
+//            .body("請選擇圖片", color = ContextCompat.getColor(this, R.color.MY_BLACK))
+//            .icon(com.github.dhaval2404.imagepicker.R.drawable.ic_photo_black_48dp)
+//            .onPositive("從圖庫中選擇") {
+//                //println("gallery")
+//                pickProfileImage()
+//            }
+//            .onNegative("開啟相機拍攝") {
+//                //println("camera")
+//                pickCameraImage()
+//            }
+//    }
+
     override fun init() {
+
+        findViewById<Featured>(R.id.featured) ?. let {
+            featured = it
+            featured!!.setOnImagePickListener(pickProfileImage, pickCameraImage)
+        }
+
         val allEnum: Array<RegisterEnum> = RegisterEnum.getRegisterAllEnum()
         for (enum in allEnum) {
             val key: String = enum.englishName
@@ -371,7 +399,8 @@ class RegisterActivity : BaseActivity() {
                 mProfileUri = data.data!!
                 //mProfileUri = fileUri
                 //val a = mProfileUri.toString()
-                imgProfile?.setLocalImage(mProfileUri!!, true)
+                featured?.setFeatured(mProfileUri!!, true)
+                //imgProfile?.setLocalImage(mProfileUri!!, true)
             } else {
                 warning("選擇圖片後，回傳為空值")
             }
@@ -382,8 +411,50 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun pickProfileImage() {
+    /**
+     * Ref: https://gist.github.com/granoeste/5574148
+     */
+    //@Suppress("UNUSED_PARAMETER")
+    val pickCameraImage: ()-> Unit =  {
+        ImagePicker.with(this)
+            // User can only capture image from Camera
+            .cameraOnly()
+            // Image size will be less than 1024 KB
+            // .compress(1024)
+            //  Path: /storage/sdcard0/Android/data/package/files
+            .saveDir(getExternalFilesDir(null)!!)
+            //  Path: /storage/sdcard0/Android/data/package/files/DCIM
+            .saveDir(getExternalFilesDir(Environment.DIRECTORY_DCIM)!!)
+            //  Path: /storage/sdcard0/Android/data/package/files/Download
+            .saveDir(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!)
+            //  Path: /storage/sdcard0/Android/data/package/files/Pictures
+            .saveDir(getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+            //  Path: /storage/sdcard0/Android/data/package/files/Pictures/ImagePicker
+            .saveDir(File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!, "ImagePicker"))
+            //  Path: /storage/sdcard0/Android/data/package/files/ImagePicker
+            .saveDir(getExternalFilesDir("ImagePicker")!!)
+            //  Path: /storage/sdcard0/Android/data/package/cache/ImagePicker
+            .saveDir(File(getExternalCacheDir(), "ImagePicker"))
+            //  Path: /data/data/package/cache/ImagePicker
+            .saveDir(File(getCacheDir(), "ImagePicker"))
+            //  Path: /data/data/package/files/ImagePicker
+            .saveDir(File(getFilesDir(), "ImagePicker"))
+
+            // Below saveDir path will not work, So do not use it
+            //  Path: /storage/sdcard0/DCIM
+            //  .saveDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM))
+            //  Path: /storage/sdcard0/Pictures
+            //  .saveDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES))
+            //  Path: /storage/sdcard0/ImagePicker
+            //  .saveDir(File(Environment.getExternalStorageDirectory(), "ImagePicker"))
+            .createIntent { intent ->
+                startForProfileImageResult.launch(intent)
+            }
+            //.start(CAMERA_IMAGE_REQ_CODE)
+    }
+
+    //@Suppress("UNUSED_PARAMETER")
+    val pickProfileImage: () -> Unit = {
         ImagePicker.with(this)
             // Crop Square image
             .galleryOnly()

@@ -20,14 +20,14 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     protected var cancelIV: ImageView? = null
 
     init {
-        attrs?.let {
+        attrs?.let { it ->
             val typedArray = context.obtainStyledAttributes(it, R.styleable.More, 0, 0)
 
             key = typedArray.getString(R.styleable.More_moreKey) ?: ""
             keyEnum = KeyEnum.enumFromString(key)
 
-            view.findViewById<TextView>(R.id.titleTV) ?. let {
-                it.text = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
+            view.findViewById<TextView>(R.id.titleTV) ?. let { textView: TextView->
+                textView.text = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
             }
         }
 

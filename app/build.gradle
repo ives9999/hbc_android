@@ -51,6 +51,7 @@ dependencies {
 
     //dialog
     implementation 'com.github.oktavianto:ionalert:1.0.4'
+    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
 
     // network service
     // define a BOM and its version
