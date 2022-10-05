@@ -31,9 +31,9 @@ class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
                 it.setOnClickListener {
                     when (enum) {
                         TabEnum.need_blood -> delegate.toNeedBlood(delegate)
-                        TabEnum.member -> delegate.toMember(delegate)
+                        TabEnum.member -> delegate.toMemberHome(delegate)
 
-                        else -> delegate.toMember(delegate)
+                        else -> delegate.toMemberHome(delegate)
                     }
                 }
             }

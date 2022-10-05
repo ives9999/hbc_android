@@ -3,12 +3,18 @@ package tw.com.bluemobile.hbc.routes
 import android.content.Intent
 import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat
 import tw.com.bluemobile.hbc.controllers.BaseActivity
+import tw.com.bluemobile.hbc.controllers.LoginActivity
 import tw.com.bluemobile.hbc.controllers.MemberActivity
 import tw.com.bluemobile.hbc.controllers.RegisterActivity
 
 interface ToMember {
 
-    fun toMember(activity: BaseActivity) {
+    fun toLogin(activity: BaseActivity) {
+        val i = Intent(activity, LoginActivity::class.java)
+        activity.startActivity(i)
+    }
+
+    fun toMemberHome(activity: BaseActivity) {
         val i = Intent(activity, MemberActivity::class.java)
         activity.startActivity(i)
     }

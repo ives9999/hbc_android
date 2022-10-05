@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.awesomedialog.*
 import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.views.Bottom
@@ -27,6 +28,15 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     open fun cellClick(keyEnum: KeyEnum, id: Int) {
         //println(id)
+    }
+
+    open fun info(msg: String) {
+        AwesomeDialog.build(this)
+            .title("訊息")
+            .body(msg)
+            .icon(R.drawable.ic_info)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉")
     }
 
     open fun init() {
@@ -70,12 +80,33 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     }
 
+    fun success(msg: String) {
+        AwesomeDialog.build(this)
+            .title("成功")
+            .body(msg)
+            .icon(R.drawable.ic_success)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉")
+    }
+
+    fun success(msg: String, buttonAction: () -> Unit) {
+        AwesomeDialog.build(this)
+            .title("成功")
+            .body(msg)
+            .icon(R.drawable.ic_success)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉") {
+                buttonAction()
+            }
+    }
+
     fun warning(msg: String) {
-        val box = IonAlert(this, IonAlert.WARNING_TYPE)
-        box.titleText = "警吿"
-        box.contentText = msg
-        box.confirmText = "關閉"
-        box.show()
+        AwesomeDialog.build(this)
+            .title("警告")
+            .body(msg)
+            .icon(R.drawable.ic_warning)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉")
     }
 
     fun warning(msg: String, buttonAction: () -> Unit) {

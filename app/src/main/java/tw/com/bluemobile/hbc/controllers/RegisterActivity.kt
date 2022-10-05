@@ -561,10 +561,13 @@ class RegisterActivity : BaseActivity() {
                                 } else {
                                     if (registerResModel.model != null) {
                                         val memberModel: MemberModel = registerResModel.model!!
-                                        memberModel.filterRow()
-                                        memberModel.dump()
-                                        memberModel.zoneModel!!.dump()
+//                                        memberModel.filterRow()
+//                                        memberModel.dump()
+//                                        memberModel.zoneModel!!.dump()
                                         //memberModel.toSession(this, true)
+                                        success("成功註冊，請繼續完成email與手機認證") {
+                                            toMemberHome(this)
+                                        }
 //                                        info(msg, "", "關閉") {
 //                                            setResult(Activity.RESULT_OK, intent)
 //                                            finish()

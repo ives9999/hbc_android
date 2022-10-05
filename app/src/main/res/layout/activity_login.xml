@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
+    android:orientation="vertical"
+    tools:context=".controllers.LoginActivity">
+
+    <tw.com.bluemobile.hbc.views.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_marginTop="84px"
+        android:orientation="vertical">
+
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="email"
+            app:keyboard="email"
+            app:titleTV="Email" />
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="password"
+            app:keyboard="password"
+            app:titleTV="@string/password" />
+
+
+        <TextView
+            style="@style/button_submit"
+            android:layout_width="274dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_submit"
+            android:gravity="center_vertical"
+            android:text="@string/submit"
+            android:textAlignment="center"
+            android:textColor="@color/MY_BLACK" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/button_submit"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:background="@drawable/button_cancel"
+                android:gravity="center_vertical"
+                android:text="註冊"
+                android:textAlignment="center"
+                android:textColor="@color/MY_BLACK" />
+
+            <TextView
+                style="@style/button_submit"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:background="@drawable/button_cancel"
+                android:gravity="center_vertical"
+                android:text="忘記密碼"
+                android:textAlignment="center"
+                android:textColor="@color/MY_BLACK" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
