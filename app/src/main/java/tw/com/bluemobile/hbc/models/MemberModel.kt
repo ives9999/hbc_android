@@ -2,7 +2,9 @@ package tw.com.bluemobile.hbc.models
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.bumptech.glide.load.model.Model
 import com.google.gson.annotations.SerializedName
+import tw.com.bluemobile.hbc.extensions.dump
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.*
 import kotlin.reflect.full.createType
@@ -20,7 +22,6 @@ class MemberModel: BaseModel() {
     var area_id: Int = 0
     var zip: Int = 0
     var road: String = ""
-    var avatar: String = ""
     var privacy: Int = 0
 
     var type: Int = 0
@@ -28,11 +29,68 @@ class MemberModel: BaseModel() {
     var validate: Int = 0
     var player_id: String = ""
 
+    var isLoggedIn: Boolean = false
+
     @SerializedName("zone") var zoneModel: ZoneModel? = null
 
     override fun filterRow() {
         super.filterRow()
         zoneModel?.filterRow()
+    }
+
+    private fun toBankSession(session: SharedPreferences, memberBankTable: MemberBankModel) {
+
+        MemberBankModel::class.memberProperties.forEach {
+            val name: String = it.name
+            when (val value = it.getter.call(memberBankTable)) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+            }
+        }
+    }
+
+    fun toSession(context: Context, isLoggedIn: Boolean = false) {
+
+        filterRow()
+        this.isLoggedIn = isLoggedIn
+        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+        this::class.memberProperties.forEach {
+            val name: String = it.name
+            when (val value = it.getter.call(this)) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+                is ZoneModel -> {
+                    val zoneModel: ZoneModel = value as ZoneModel
+                    toZoneSession(session, zoneModel)
+                }
+                is MemberBankModel -> {
+                    val memberBankModel: MemberBankModel = value as MemberBankModel
+                    toBankSession(session, memberBankModel)
+                }
+            }
+        }
+    }
+
+    private fun toZoneSession(session: SharedPreferences, zoneModel: ZoneModel) {
+        zoneModel::class.memberProperties.forEach {
+            val name: String = it.name
+            when (val value = it.getter.call(zoneModel)) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+            }
+        }
     }
 }
 
@@ -149,9 +207,9 @@ class Member(val context: Context) {
             session.edit().putString(TOKEN_KEY, value).apply()
         }
     var isLoggedIn: Boolean
-        get() = session.getBoolean(ISLOGIN_KEY, false)
+        get() = session.getBoolean(ISLOGGEDIN_KEY, false)
         set(value) {
-            session.edit().putBoolean(ISLOGIN_KEY, value).apply()
+            session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
         }
     var bank: String?
         get() = session.getString(BANK_KEY, "")
@@ -175,6 +233,11 @@ class Member(val context: Context) {
         set(value) {
             session.edit().putString(BANK_ACCOUNT_KEY, value).apply()
         }
+
+    fun dump() {
+        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+        session.dump()
+    }
 
     fun reset() {
 
@@ -216,5 +279,18 @@ class Member(val context: Context) {
         }
 
         return isValidate
+    }
+}
+
+
+class MemberBankModel: BaseModel() {
+
+    var bank: String = ""
+    var branch: String = ""
+    var bank_code: Int = 0
+    var account: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
     }
 }

@@ -1,5 +1,6 @@
 package tw.com.bluemobile.hbc.extensions
 
+import android.content.SharedPreferences
 import android.text.Editable
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -136,3 +137,4 @@ fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
 
 // mEditText.text = myString.toEditable()
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+

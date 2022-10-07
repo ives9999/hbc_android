@@ -7,14 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.MemberHomeEnum
 import tw.com.bluemobile.hbc.utilities.TabEnum
+import tw.com.bluemobile.hbc.views.Featured
 
 class MemberActivity : BaseActivity() {
 
     lateinit var itemList: ArrayList<GridViewModal>
+    private var featured: Featured? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        if (!member.isLoggedIn) {
+            toLogin(this)
+        }
 
         able_enum = TabEnum.member
         super.onCreate(savedInstanceState)
@@ -22,6 +29,12 @@ class MemberActivity : BaseActivity() {
 
         setTop()
         setBottom()
+
+        findViewById<Featured>(R.id.featured) ?. let {
+            featured = it
+            it.setFeatured(member.featured!!, true)
+            //it.setOnImagePickListener(pickProfileImage, pickCameraImage)
+        }
 
         itemList = ArrayList<GridViewModal>()
         for (enum in MemberHomeEnum.getAllEnum()) {
@@ -35,6 +48,20 @@ class MemberActivity : BaseActivity() {
 //            it.numColumns = 2
             it.adapter = adapter
         }
+
+        findViewById<LinearLayout>(R.id.logout) ?. let {
+            it.setOnClickListener {
+                logout()
+            }
+        }
+    }
+
+    private fun logout() {
+        member.isLoggedIn = false
+        member.reset()
+        member.dump()
+
+        toMemberHome(this)
     }
 
     fun onClick(idx: Int) {

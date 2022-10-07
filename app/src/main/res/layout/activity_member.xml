@@ -13,16 +13,57 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
 
+    <tw.com.bluemobile.hbc.views.Featured
+        android:id="@+id/featured"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/top" />
+
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom"
-        android:layout_below="@id/top"
+        android:layout_above="@id/logout_container"
+        android:layout_below="@id/featured"
         android:columnWidth="@dimen/member_home_gridview_column_width"
         android:gravity="center"
         android:numColumns="2"
         android:stretchMode="columnWidth" />
+
+    <RelativeLayout
+        android:id="@+id/logout_container"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_above="@id/bottom"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/logout"
+            style="@style/button_cancel"
+            android:layout_width="224dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/button_cancel"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="20dp"
+                app:srcCompat="@drawable/ic_logout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/logout"
+                android:textColor="@color/MY_WHITE" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <tw.com.bluemobile.hbc.views.Bottom
         android:id="@id/bottom"

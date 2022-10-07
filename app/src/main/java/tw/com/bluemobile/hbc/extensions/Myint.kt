@@ -1,7 +1,6 @@
 package tw.com.bluemobile.hbc.extensions
 
-import android.content.Context
-import android.util.TypedValue
+import android.content.res.Resources.getSystem
 import java.text.NumberFormat
 
 fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
@@ -14,14 +13,10 @@ fun Int.formattedWithSeparator(): String {
     return NumberFormat.getNumberInstance().format(this)
 }
 
-//fun Int.dpToPx(context: Context): Int {
-//
-//    return (TypedValue.applyDimension(
-//        TypedValue.COMPLEX_UNIT_DIP,
-//        toFloat(),
-//        context.displayMetrics
-//    )).toInt()
-//}
+fun Int.dpToPx(): Int {
+
+    return (this * getSystem().displayMetrics.density).toInt()
+}
 
 fun Int.numberToChinese(): String {
     when (this) {

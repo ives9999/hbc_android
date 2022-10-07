@@ -2,12 +2,14 @@ package tw.com.bluemobile.hbc.controllers
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.awesomedialog.*
 import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.dump
 import tw.com.bluemobile.hbc.views.Bottom
 import tw.com.bluemobile.hbc.views.Top
 import tw.com.bluemobile.hbc.routes.*

@@ -16,7 +16,7 @@ val DOB_KEY: String = "dob"
 val EMAIL_KEY: String = "email"
 val FEATURED_KEY: String = "featured"
 val ID_KEY: String = "id"
-val ISLOGIN_KEY: String = "isLogin"
+val ISLOGGEDIN_KEY: String = "isLoggedIn"
 val LINE_KEY: String = "line"
 val LOCALE_KEY: String = "locale"
 val MOBILE_KEY: String = "mobile"
@@ -43,6 +43,11 @@ const val LOCALHOST_BASE_URL = "http://192.168.100.120"
 
 var BASE_URL = REMOTE_BASE_URL
 var URL_HOME: String = "$BASE_URL/"
+
+// Header
+var HEADER = "application/json; charset=utf-8"
+var MULTIPART = "multipart/form-data"
+
 
 
 

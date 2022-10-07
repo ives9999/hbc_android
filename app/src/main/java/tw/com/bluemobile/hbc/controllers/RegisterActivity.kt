@@ -2,6 +2,7 @@ package tw.com.bluemobile.hbc.controllers
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -19,8 +20,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.dump
 import tw.com.bluemobile.hbc.extensions.isInt
 import tw.com.bluemobile.hbc.extensions.setLocalImage
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
@@ -65,17 +68,17 @@ class RegisterActivity : BaseActivity() {
 //    var filePath: String = ""
 
     private val initData: HashMap<String, String> = hashMapOf(
-        EMAIL_KEY to "john@housetube.tw",
-        PASSWORD_KEY to "1234",
-        REPASSWORD_KEY to "1234",
-        NAME_KEY to "孫士君",
-        NICKNAME_KEY to "孫士君",
-        MOBILE_KEY to "0911299998",
-        CITY_KEY to "218",
-        AREA_KEY to "219",
-        ROAD_KEY to "南華街101號8樓",
-        LINE_KEY to "ives9999",
-        PRIVACY_KEY to "1"
+//        EMAIL_KEY to "john@housetube.tw",
+//        PASSWORD_KEY to "1234",
+//        REPASSWORD_KEY to "1234",
+//        NAME_KEY to "孫士君",
+//        NICKNAME_KEY to "孫士君",
+//        MOBILE_KEY to "0911299998",
+//        CITY_ID_KEY to "218",
+//        AREA_ID_KEY to "219",
+//        ROAD_KEY to "南華街101號8樓",
+//        LINE_KEY to "ives9999",
+//        PRIVACY_KEY to "1"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,19 +90,6 @@ class RegisterActivity : BaseActivity() {
         setTop(true, "註冊")
 
         init()
-
-//        findViewById<AppCompatImageView>(R.id.imgProfile) ?. let {
-//            imgProfile = it
-//            it.setOnClickListener {
-//                featuredSelectDialog()
-//            }
-//        }
-//
-//        findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
-//            it.setOnClickListener {
-//                featuredSelectDialog()
-//            }
-//        }
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
             it.setOnClickListener {
@@ -138,83 +128,129 @@ class RegisterActivity : BaseActivity() {
 //            }
 //    }
 
+    private fun isUpdateEnum(enum: RegisterEnum): Boolean {
+
+        var b: Boolean = false
+        val updateEnums: ArrayList<RegisterEnum> = RegisterEnum.getUpdateAllEnum()
+        for (updateEnum in updateEnums) {
+            if (updateEnum == enum) {
+                b = true
+                break
+            }
+        }
+
+        return b
+    }
+
     override fun init() {
+
+        if (member.isLoggedIn) {
+            sessionToInitData()
+        }
 
         findViewById<Featured>(R.id.featured) ?. let {
             featured = it
+
+            featured!!.setFeatured(member.featured!!, true)
+
             featured!!.setOnImagePickListener(pickProfileImage, pickCameraImage)
         }
 
-        val allEnum: Array<RegisterEnum> = RegisterEnum.getRegisterAllEnum()
-        for (enum in allEnum) {
+        val allEnums: ArrayList<RegisterEnum> = RegisterEnum.getRegisterAllEnum()
+
+        for (enum in allEnums) {
+
             val key: String = enum.englishName
             val r: Int = resources.getIdentifier(key, "id", packageName)
             findViewById<MyLayout>(r) ?. let {
 
-                if (key == PASSWORD_KEY) {
-                    editTextPassword = it as EditTextNormal
-                } else if (key == REPASSWORD_KEY) {
-                    editTextRePassword = it as EditTextNormal
-                } else if (key == CITY_KEY || key == AREA_KEY) {
-                    if (key == CITY_KEY) {
-                        moreCity = it as SelectCity
-                        it.setOnClickListener() {
-                            val screenWidth = Global.getScreenWidth(resources)
-                            moreDialog = moreCity?.toMoreDialog(screenWidth, it.getValue(), this)
-                            //println(moreCity?.value)
-                        }
-
-                        it.setOnCancelClickListener {
-                            it.clear()
-                            moreArea?.clear()
-                        }
-                    } else {
-                        moreArea = it as SelectArea
-                        it.setOnClickListener {
-                            if (moreCity == null || moreCity!!.getValue().isEmpty()) {
-                                warning("請先選擇縣市")
-                            } else {
+                if (member.isLoggedIn && enum.isUpdateHidden()) {
+                    it.visibility = View.GONE
+                } else {
+                    if (key == PASSWORD_KEY) {
+                        editTextPassword = it as EditTextNormal
+                    } else if (key == REPASSWORD_KEY) {
+                        editTextRePassword = it as EditTextNormal
+                    } else if (key == CITY_ID_KEY || key == AREA_ID_KEY) {
+                        if (key == CITY_ID_KEY) {
+                            moreCity = it as SelectCity
+                            it.setOnClickListener() {
                                 val screenWidth = Global.getScreenWidth(resources)
-                                val city_id: Int = moreCity?.getValue()?.toInt() ?: 0
-                                moreDialog = moreArea?.toMoreDialog(screenWidth, city_id, moreArea!!.getValue(), this)
+                                moreDialog =
+                                    moreCity?.toMoreDialog(screenWidth, it.getValue(), this)
+                                //println(moreCity?.value)
+                            }
+
+                            it.setOnCancelClickListener {
+                                it.clear()
+                                moreArea?.clear()
+                            }
+                        } else {
+                            moreArea = it as SelectArea
+                            it.setOnClickListener {
+                                if (moreCity == null || moreCity!!.getValue().isEmpty()) {
+                                    warning("請先選擇縣市")
+                                } else {
+                                    val screenWidth = Global.getScreenWidth(resources)
+                                    val city_id: Int = moreCity?.getValue()?.toInt() ?: 0
+                                    moreDialog = moreArea?.toMoreDialog(
+                                        screenWidth,
+                                        city_id,
+                                        moreArea!!.getValue(),
+                                        this
+                                    )
+                                }
+                            }
+
+                        }
+                    } else if (key == PRIVACY_KEY) {
+                        privacy = it as Privacy
+                        it.setValue("1")
+                        privacy!!.setOnCheckChangeListener { isCheck ->
+                            if (!isCheck) {
+                                warning("必須同意隱私權")
+                            }
+                        }
+                    }
+
+                    if (initData.containsKey(key)) {
+                        it.setValue(initData[key]!!)
+
+                        if (key == CITY_ID_KEY || key == AREA_ID_KEY) {
+                            val b = it.setZone()
+                            if (!b) {
+                                warning("縣市或區域不是整數值")
                             }
                         }
 
-                    }
-                } else if (key == PRIVACY_KEY) {
-                    privacy = it as Privacy
-                    it.setValue("1")
-                    privacy!!.setOnCheckChangeListener { isCheck ->
-                        if (!isCheck) {
-                            warning("必須同意隱私權")
+                        if (key == PRIVACY_KEY) {
+                            privacy = it as Privacy
+                            if (initData[PRIVACY_KEY]!!.isInt()) {
+                                val value: Int = initData[PRIVACY_KEY]!!.toInt()
+                                it.setValue(value.toString())
+                                it.setCheck(true)
+                            }
                         }
                     }
+
+                    val h: HashMap<RegisterEnum, MyLayout> = hashMapOf(enum to it)
+                    formItems.add(h)
                 }
-
-                if (initData.containsKey(key)) {
-                    it.setValue(initData[key]!!)
-
-                    if (key == CITY_KEY || key == AREA_KEY) {
-                        val b = it.setZone()
-                        if (!b) {
-                            warning("縣市或區域不是整數值")
-                        }
-                    }
-
-                    if (key == PRIVACY_KEY) {
-                        privacy = it as Privacy
-                        if (initData[PRIVACY_KEY]!!.isInt()) {
-                            val value: Int = initData[PRIVACY_KEY]!!.toInt()
-                            it.setValue(value.toString())
-                            it.setCheck(true)
-                        }
-                    }
-                }
-
-                val h: HashMap<RegisterEnum, MyLayout> = hashMapOf(enum to it)
-                formItems.add(h)
             }
         }
+
+//        val enums: ArrayList<MyLayout> = arrayListOf()
+//        val updateEnums: ArrayList<RegisterEnum> = RegisterEnum.getUpdateAllEnum()
+//        for (allEnum in allEnums) {
+//            var bFind: Boolean = false
+//            for (updateEnum in updateEnums) {
+//                if (updateEnum == allEnum) {
+//                    bFind = true
+//                    enums.add(allEnum)
+//                    break
+//                }
+//            }
+//        }
 
 //        var k: String = EMAIL_KEY
 //        var r: Int = resources.getIdentifier(k, "id", packageName)
@@ -474,6 +510,25 @@ class RegisterActivity : BaseActivity() {
             //.start(PROFILE_IMAGE_REQ_CODE)
     }
 
+    private fun sessionToInitData() {
+        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
+        val map: Map<String, *> = session.all
+        var value: String = ""
+        for (entry in map) {
+            val key = entry.key
+            if (entry.value!!::class == String::class) {
+                value = entry.value as String
+                initData[key] = value
+            } else if (entry.value!!::class == Int::class) {
+                value = entry.value.toString()
+                initData[key] = value
+            } else if (entry.value!!::class == Boolean::class) {
+                value = entry.value.toString()
+                initData[key] = value
+            }
+        }
+    }
+
     override fun submit() {
 
         val params: MutableMap<String, String> = hashMapOf()
@@ -483,8 +538,11 @@ class RegisterActivity : BaseActivity() {
                 if (layout.isEmpty()) {
                     msg += enum.errMsg()
                 } else {
-                    val temp: HashMap<String, String> = hashMapOf(enum.englishName to layout.getValue())
-                    params.putAll(temp)
+                    if (layout.visibility == View.VISIBLE) {
+                        val temp: HashMap<String, String> =
+                            hashMapOf(enum.englishName to layout.getValue())
+                        params.putAll(temp)
+                    }
                 }
             }
         }
@@ -494,7 +552,7 @@ class RegisterActivity : BaseActivity() {
                 msg += "密碼不符合\n"
             }
         }
-        //println(params)
+        println(params)
 
 //        var temp: HashMap<String, String> = inputToParams(editTextEmail, RegisterEnum.password.errMsg())
 //        params.putAll(temp)

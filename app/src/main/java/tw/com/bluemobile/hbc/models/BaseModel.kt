@@ -22,22 +22,19 @@ abstract class BaseModel {
     var title: String = ""
     var tel: String = ""
     var mobile: String = ""
-    var city_id: Int = -1
     var status: String = "online"
     var token: String = ""
     var content: String = ""
     var sort_order: Int = 0
     var pv: Int = 0
     var created_id: Int = 0
-    var featured_path: String = ""
+    var featured: String = ""
     var created_at: String = ""
     var updated_at: String = ""
 
     var created_at_show: String = ""
     var updated_at_show: String = ""
 
-    var address: String = ""
-    var city_show: String = ""
     var mobile_show: String = ""
     var tel_show: String = ""
     var status_show: String = "上線"
@@ -46,23 +43,19 @@ abstract class BaseModel {
     var selected: Boolean = false
 
     open fun filterRow() {
-        if (featured_path != null && featured_path.isNotEmpty()) {
-            if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
-                featured_path = BASE_URL + featured_path
+        if (featured != null && featured.isNotEmpty()) {
+            if (!featured.startsWith("http://") && !featured.startsWith("https://")) {
+                featured = BASE_URL + featured
                 //print(featured_path)
             }
         } else {
-            featured_path = BASE_URL + "/imgs/nophoto.png"
+            featured = "$BASE_URL/imgs/nophoto.png"
         }
 
         if (name == null) { name = "" }
         if (title == null) { title = "" }
         if (tel == null) { tel = "" }
         if (mobile == null) { mobile = "" }
-
-        if (city_id > 0) {
-            city_show = Zones.zoneIDToName(city_id)
-        }
 
         if (mobile != null && mobile.isNotEmpty()) {
             mobile_show = mobile.mobileShow()

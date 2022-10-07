@@ -9,6 +9,7 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.controllers.able_enum
 import tw.com.bluemobile.hbc.extensions.setImage
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.TabEnum
 
 class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
@@ -31,7 +32,13 @@ class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
                 it.setOnClickListener {
                     when (enum) {
                         TabEnum.need_blood -> delegate.toNeedBlood(delegate)
-                        TabEnum.member -> delegate.toMemberHome(delegate)
+                        TabEnum.member -> {
+                            if (member.isLoggedIn) {
+                                delegate.toMemberHome(delegate)
+                            } else {
+                                delegate.toLogin(delegate)
+                            }
+                        }
 
                         else -> delegate.toMemberHome(delegate)
                     }

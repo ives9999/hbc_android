@@ -5,7 +5,10 @@ import android.content.Context
 import android.os.Build
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import tw.com.bluemobile.hbc.utilities.*
 import java.io.BufferedReader
 import java.io.File
@@ -51,11 +54,49 @@ open class BaseService {
         return result
     }
 
+    fun _simpleService(context: Context, url: String, params: Map<String, String>, complete: CompletionHandler) {
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     protected fun getBaseUrl() {
         isEmulator = _isEmulator()
         isEmulator = true
         BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
         URL_HOME = "$BASE_URL/"
+    }
+
+    fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
+
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+
+        return okhttp3.Request.Builder()
+            .url(url)
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .post(body)
+            .build()
     }
 
     open fun getUpdateURL(): String {

@@ -7,8 +7,11 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.example.awesomedialog.*
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
+import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.extensions.setLocalImage
 
 class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
@@ -28,8 +31,18 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
     }
 
+    fun setFeatured(url: String, applyCircle: Boolean) {
+        val a: Uri = Uri.parse(url)
+        setFeatured(a, applyCircle)
+//        Picasso.with(context)
+//            .load(url)
+//            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//            .into(featured)
+        //featured?.setImage()
+    }
+
     fun setFeatured(uri: Uri, applyCircle: Boolean) {
-        featured?.setLocalImage(uri!!, true)
+        featured?.setLocalImage(uri, true)
     }
 
     fun setOnImagePickListener(pickProfileImage: () -> Unit, pickCameraImage: () -> Unit) {

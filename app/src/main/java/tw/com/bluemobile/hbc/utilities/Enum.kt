@@ -9,14 +9,14 @@ import tw.com.bluemobile.hbc.views.MyLayout
 import kotlin.reflect.KClass
 
 enum class KeyEnum(val englishName: String, val chineseName: String) {
-    city_id(CITY_KEY, "縣市"),
-    area_id(AREA_KEY, "區域");
+    city_id(CITY_ID_KEY, "縣市"),
+    area_id(AREA_ID_KEY, "區域");
 
     companion object {
         fun enumFromString(value: String): KeyEnum {
             when (value) {
-                CITY_KEY -> return city_id
-                AREA_KEY -> return area_id
+                CITY_ID_KEY -> return city_id
+                AREA_ID_KEY -> return area_id
             }
             return city_id
         }
@@ -67,8 +67,8 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
     repassword(REPASSWORD_KEY, "確認密碼"),
     realname(NAME_KEY, "姓名"),
     nickname(NICKNAME_KEY, "暱稱"),
-    city_id(CITY_KEY, "縣市"),
-    area_id(AREA_KEY, "區域"),
+    city_id(CITY_ID_KEY, "縣市"),
+    area_id(AREA_ID_KEY, "區域"),
     road(ROAD_KEY, "路、街，巷"),
     mobile(MOBILE_KEY, "行動電話"),
     line(LINE_KEY, "line"),
@@ -82,8 +82,8 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
                 REPASSWORD_KEY -> return repassword
                 NAME_KEY -> return realname
                 NICKNAME_KEY -> return nickname
-                CITY_KEY -> return city_id
-                AREA_KEY -> return area_id
+                CITY_ID_KEY -> return city_id
+                AREA_ID_KEY -> return area_id
                 ROAD_KEY -> return road
                 MOBILE_KEY -> return mobile
                 LINE_KEY -> return line
@@ -92,12 +92,12 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
             }
         }
 
-        fun getRegisterAllEnum(): Array<RegisterEnum> {
-            return arrayOf(email, password, repassword, realname, realname, nickname, city_id, area_id, road, mobile, line, privacy)
+        fun getRegisterAllEnum(): ArrayList<RegisterEnum> {
+            return arrayListOf(email, password, repassword, realname, realname, nickname, city_id, area_id, road, mobile, line, privacy)
         }
 
-        fun getUpdateAllEnum(): Array<RegisterEnum> {
-            return arrayOf(email, realname, nickname, city_id, area_id, road, mobile, line)
+        fun getUpdateAllEnum(): ArrayList<RegisterEnum> {
+            return arrayListOf(email, realname, nickname, city_id, area_id, road, mobile, line)
         }
     }
 
@@ -117,6 +117,11 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
 
             else -> return ""
         }
+    }
+
+    fun isUpdateHidden(): Boolean {
+        val updateEnums: ArrayList<RegisterEnum> = getUpdateAllEnum()
+        return !updateEnums.contains(this)
     }
 
     fun getLayout(resources: Resources, packageName: String) {

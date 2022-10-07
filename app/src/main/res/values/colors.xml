@@ -11,5 +11,5 @@
 
     <color name="MEMBER_HOME_ICON_BG">#A8D5E2</color>
 
-    <color name="colorPrimary">@color/teal_500</color>
+    <color name="colorPrimary">@color/TOP</color>
 </resources>
