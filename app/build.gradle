@@ -74,4 +74,7 @@ dependencies {
     //show image from url
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    //loading
+    implementation 'com.pnikosis:materialish-progress:1.7'
+
 }

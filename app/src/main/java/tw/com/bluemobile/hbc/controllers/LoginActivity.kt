@@ -32,6 +32,27 @@ class LoginActivity : BaseActivity() {
         setBottomButtonPadding()
 
         init()
+    }
+
+    override fun init() {
+        super.init()
+        loading = Loading(this)
+
+        findViewById<EditTextNormal>(R.id.email) ?. let {
+            editTextEmail = it
+
+            if (initData.containsKey(EMAIL_KEY)) {
+                it.setValue(initData[EMAIL_KEY]!!)
+            }
+        }
+
+        findViewById<EditTextNormal>(R.id.password) ?. let {
+            editTextPassword = it
+
+            if (initData.containsKey(PASSWORD_KEY)) {
+                it.setValue(initData[PASSWORD_KEY]!!)
+            }
+        }
 
         findViewById<TextView>(R.id.submitTV) ?. let {
             it.setOnClickListener {
@@ -48,25 +69,6 @@ class LoginActivity : BaseActivity() {
         findViewById<TextView>(R.id.forget_passwordTV) ?. let {
             it.setOnClickListener {
 
-            }
-        }
-    }
-
-    override fun init() {
-
-        findViewById<EditTextNormal>(R.id.email) ?. let {
-            editTextEmail = it
-
-            if (initData.containsKey(EMAIL_KEY)) {
-                it.setValue(initData[EMAIL_KEY]!!)
-            }
-        }
-
-        findViewById<EditTextNormal>(R.id.password) ?. let {
-            editTextPassword = it
-
-            if (initData.containsKey(PASSWORD_KEY)) {
-                it.setValue(initData[PASSWORD_KEY]!!)
             }
         }
     }
@@ -115,12 +117,15 @@ class LoginActivity : BaseActivity() {
             return
         }
 
+        loading.show()
+
         val params: MutableMap<String, String> = hashMapOf()
 
         params.putAll(hashMapOf(EMAIL_KEY to editTextEmail!!.getValue()))
         params.putAll(hashMapOf(PASSWORD_KEY to editTextPassword!!.getValue()))
 
         MemberService.login(this, params) { success ->
+            loading.hide()
             if (success) {
                 if (MemberService.success) {
                     runOnUiThread {

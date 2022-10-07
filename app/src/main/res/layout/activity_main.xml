@@ -25,4 +25,6 @@
         android:layout_height="@dimen/bottom_height"
         android:layout_alignParentBottom="true" />
 
+    <include layout="@layout/loading" />
+
 </RelativeLayout>

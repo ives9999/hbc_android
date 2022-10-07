@@ -87,8 +87,6 @@ class RegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        setTop(true, "註冊")
-
         init()
 
         findViewById<LinearLayout>(R.id.submit) ?. let {
@@ -113,21 +111,6 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-//    private fun featuredSelectDialog() {
-//        AwesomeDialog.build(this)
-//            .title("選擇圖片", titleColor = ContextCompat.getColor(this, R.color.MY_BLACK))
-//            .body("請選擇圖片", color = ContextCompat.getColor(this, R.color.MY_BLACK))
-//            .icon(com.github.dhaval2404.imagepicker.R.drawable.ic_photo_black_48dp)
-//            .onPositive("從圖庫中選擇") {
-//                //println("gallery")
-//                pickProfileImage()
-//            }
-//            .onNegative("開啟相機拍攝") {
-//                //println("camera")
-//                pickCameraImage()
-//            }
-//    }
-
     private fun isUpdateEnum(enum: RegisterEnum): Boolean {
 
         var b: Boolean = false
@@ -143,6 +126,9 @@ class RegisterActivity : BaseActivity() {
     }
 
     override fun init() {
+        super.init()
+        setTop(true, "註冊")
+        loading = Loading(this)
 
         if (member.isLoggedIn) {
             sessionToInitData()
@@ -151,7 +137,9 @@ class RegisterActivity : BaseActivity() {
         findViewById<Featured>(R.id.featured) ?. let {
             featured = it
 
-            featured!!.setFeatured(member.featured!!, true)
+            if (member.isLoggedIn && member.featured!!.isNotEmpty()) {
+                featured!!.setFeatured(member.featured!!, true)
+            }
 
             featured!!.setOnImagePickListener(pickProfileImage, pickCameraImage)
         }

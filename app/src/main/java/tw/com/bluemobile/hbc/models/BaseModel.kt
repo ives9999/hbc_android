@@ -49,7 +49,7 @@ abstract class BaseModel {
                 //print(featured_path)
             }
         } else {
-            featured = "$BASE_URL/imgs/nophoto.png"
+            featured = "$BASE_URL/images/nophoto.png"
         }
 
         if (name == null) { name = "" }

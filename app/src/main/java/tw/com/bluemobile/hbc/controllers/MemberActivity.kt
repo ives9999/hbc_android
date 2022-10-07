@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.member
+import tw.com.bluemobile.hbc.utilities.Loading
 import tw.com.bluemobile.hbc.utilities.MemberHomeEnum
 import tw.com.bluemobile.hbc.utilities.TabEnum
 import tw.com.bluemobile.hbc.views.Featured
@@ -28,7 +29,7 @@ class MemberActivity : BaseActivity() {
         setContentView(R.layout.activity_member)
 
         setTop()
-        setBottom()
+        setBottom(able_enum)
 
         findViewById<Featured>(R.id.featured) ?. let {
             featured = it
@@ -54,6 +55,11 @@ class MemberActivity : BaseActivity() {
                 logout()
             }
         }
+    }
+
+    override fun init() {
+        super.init()
+        loading = Loading(this)
     }
 
     private fun logout() {

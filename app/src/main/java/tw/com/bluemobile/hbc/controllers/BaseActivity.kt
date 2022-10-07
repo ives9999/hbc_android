@@ -15,10 +15,12 @@ import tw.com.bluemobile.hbc.views.Top
 import tw.com.bluemobile.hbc.routes.*
 import tw.com.bluemobile.hbc.utilities.*
 
-var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
-var msg: String = "" //目前使用在傳送錯誤訊息
 
 open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
+
+    var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
+    var msg: String = "" //目前使用在傳送錯誤訊息
+    lateinit var loading: Loading
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,6 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     }
 
     open fun init() {
-        //top.showPrev(isPrevIconShow)
     }
 
     open fun prev() {
@@ -52,10 +53,10 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
         finish()
     }
 
-    protected fun setBottom() {
+    protected fun setBottom(able_enum: TabEnum) {
 
         findViewById<Bottom>(R.id.bottom) ?. let {
-            it.setFocus(packageName)
+            it.setFocus(packageName, able_enum)
         }
     }
 

@@ -22,7 +22,12 @@ class NeedBloodActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setTop()
-        setBottom()
+        setBottom(able_enum)
+        init()
+    }
+
+    override fun init() {
+        super.init()
+        setTop(false, "我需要血")
     }
 }

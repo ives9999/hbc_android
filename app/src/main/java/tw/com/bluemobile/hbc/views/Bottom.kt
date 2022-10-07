@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
-import tw.com.bluemobile.hbc.controllers.able_enum
 import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.TabEnum
@@ -48,9 +47,8 @@ class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
 
     }
 
-    fun setFocus(packageName: String) {
+    fun setFocus(packageName: String, able_enum: TabEnum) {
 
-        able_enum = TabEnum.enumFromString(able_enum.englishName)
         val tabIconID: Int = able_enum.getIconID(resources, packageName)
         val icon: ImageView = view.findViewById<ImageView>(tabIconID)
         icon.setImage(able_enum.englishName + "_in")
