@@ -14,6 +14,10 @@ import java.lang.Exception
 
 object MemberService: BaseService() {
 
+    override fun getOneURL(): String {
+        return URL_HOME + "member/postOne"
+    }
+
     override fun getUpdateURL(): String {
 
         return URL_HOME + "member/register"

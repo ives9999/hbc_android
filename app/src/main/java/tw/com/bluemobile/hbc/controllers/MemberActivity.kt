@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.awesomedialog.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.member
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.MemberHomeEnum
-import tw.com.bluemobile.hbc.utilities.TabEnum
+import tw.com.bluemobile.hbc.models.MemberModel
+import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.services.MemberService
+import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.Featured
 
 class MemberActivity : BaseActivity() {
@@ -30,6 +34,13 @@ class MemberActivity : BaseActivity() {
 
         setTop()
         setBottom(able_enum)
+
+        init()
+    }
+
+    override fun init() {
+        super.init()
+        loading = Loading(this)
 
         findViewById<Featured>(R.id.featured) ?. let {
             featured = it
@@ -52,14 +63,16 @@ class MemberActivity : BaseActivity() {
 
         findViewById<LinearLayout>(R.id.logout) ?. let {
             it.setOnClickListener {
-                logout()
+                AwesomeDialog.build(this)
+                    .title(member.nickname!!)
+                    .body("確定要登出嗎？")
+                    .icon(R.drawable.ic_person)
+                    .onPositive("登出") {
+                        logout()
+                    }
+                    .onNegative("取消")
             }
         }
-    }
-
-    override fun init() {
-        super.init()
-        loading = Loading(this)
     }
 
     private fun logout() {
@@ -72,8 +85,26 @@ class MemberActivity : BaseActivity() {
 
     fun onClick(idx: Int) {
         //println(idx)
-        if (idx == 0) {
-            toRegister(this)
+        when (MemberHomeEnum.enumFromIdx(idx)) {
+            MemberHomeEnum.account -> toRegister(this)
+            MemberHomeEnum.refresh -> refresh()
+            else -> {}
+        }
+    }
+
+    private fun refresh() {
+        loading.show()
+        MemberService.getOne(this, hashMapOf()) { success ->
+            if (success) {
+                //println(MemberService.jsonString)
+//                val modelType = genericType<SuccessModel<MemberModel>>()
+//                val successModel = Gson().fromJson<SuccessModel<MemberModel>>(MemberService.jsonString, modelType)
+                val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
+                if (successModel != null) {
+                    successModel.model?.toSession(this, true)
+                }
+            }
+            loading.hide()
         }
     }
 }

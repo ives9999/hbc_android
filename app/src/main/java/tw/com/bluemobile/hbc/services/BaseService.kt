@@ -9,6 +9,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import tw.com.bluemobile.hbc.extensions.toJSON
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.*
 import java.io.BufferedReader
 import java.io.File
@@ -86,6 +88,40 @@ open class BaseService {
         URL_HOME = "$BASE_URL/"
     }
 
+    fun getOne(context: Context, params: MutableMap<String, String>, complete: CompletionHandler) {
+
+        getBaseUrl()
+        val url: String = getOneURL()
+
+        val _params: Map<String, String> = composeParams(params)
+        println(url)
+        println(_params.toJSON())
+
+        val request: okhttp3.Request = getRequest(url, _params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
+    open fun getOneURL(): String { return "" }
+
     fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
 
         val j: JSONObject = JSONObject(params as Map<*, *>)
@@ -99,8 +135,17 @@ open class BaseService {
             .build()
     }
 
-    open fun getUpdateURL(): String {
-        return ""
+    open fun getUpdateURL(): String { return "" }
+
+    private fun composeParams(sourceParams: MutableMap<String, String>, isMemberToken: Boolean = true): Map<String, String> {
+        var _params: Map<String, String> = hashMapOf()
+        _params = _params.mergeWith(PARAMS)
+        _params = _params.mergeWith(sourceParams)
+        if (isMemberToken && member.token!!.isNotEmpty()) {
+            _params = _params.mergeWith(hashMapOf(TOKEN_KEY to member.token!!))
+        }
+
+        return _params
     }
 
     open fun update(
@@ -112,9 +157,10 @@ open class BaseService {
         getBaseUrl()
         val url: String = getUpdateURL()
 
-        var _params: Map<String, String> = hashMapOf()
-        _params = _params.mergeWith(PARAMS)
-        _params = _params.mergeWith(params)
+        val _params: Map<String, String> = composeParams(params)
+
+//        println(url)
+//        println(_params.toJSON())
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 

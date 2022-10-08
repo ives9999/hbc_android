@@ -88,3 +88,15 @@ abstract class BaseModel {
         }
     }
 }
+
+//open class SuccessModel {
+//    val success: Boolean = false
+//    val msg: String = ""
+//    val model: MemberModel? = null
+//}
+
+open class SuccessModel<T> {
+    val success: Boolean = false
+    val msg: String = ""
+    val model: T? = null
+}

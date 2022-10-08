@@ -540,7 +540,7 @@ class RegisterActivity : BaseActivity() {
                 msg += "密碼不符合\n"
             }
         }
-        println(params)
+        //println(params)
 
 //        var temp: HashMap<String, String> = inputToParams(editTextEmail, RegisterEnum.password.errMsg())
 //        params.putAll(temp)
@@ -586,6 +586,7 @@ class RegisterActivity : BaseActivity() {
         //println(params)
 
         val featured: String? = mProfileUri?.path
+        loading.show()
 
         MemberService.update(this, params, featured) { success ->
             if (success) {
@@ -610,10 +611,14 @@ class RegisterActivity : BaseActivity() {
 //                                        memberModel.filterRow()
 //                                        memberModel.dump()
 //                                        memberModel.zoneModel!!.dump()
-                                        //memberModel.toSession(this, true)
-                                        success("成功註冊，請繼續完成email與手機認證") {
-                                            toMemberHome(this)
+                                        if (member.token!!.isEmpty()) {
+                                            success("成功註冊，請繼續完成email與手機認證") {
+                                                toMemberHome(this)
+                                            }
+                                        } else {
+                                            success("已經完成修改")
                                         }
+                                        memberModel.toSession(this, true)
 //                                        info(msg, "", "關閉") {
 //                                            setResult(Activity.RESULT_OK, intent)
 //                                            finish()
@@ -637,6 +642,10 @@ class RegisterActivity : BaseActivity() {
                 runOnUiThread {
                     warning("伺服器錯誤，請稍後再試，或洽管理人員")
                 }
+            }
+
+            runOnUiThread {
+                loading.hide()
             }
         }
 

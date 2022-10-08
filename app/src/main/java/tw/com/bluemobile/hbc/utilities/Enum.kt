@@ -51,6 +51,21 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
             return account
         }
 
+        fun enumFromIdx(idx: Int): MemberHomeEnum {
+            when (idx) {
+                0 -> return account
+                1 -> return change_password
+                2 -> return need_blood
+                3 -> return donate_blood
+                4 -> return bank
+                5 -> return credit_card
+                6 -> return validate_email
+                7 -> return validate_mobile
+                8 -> return  refresh
+            }
+            return account
+        }
+
         fun getAllEnum(): Array<MemberHomeEnum> {
             return arrayOf(account, change_password, donate_blood, need_blood, bank, credit_card, validate_email, validate_mobile, refresh)
         }
