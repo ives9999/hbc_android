@@ -113,16 +113,15 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     }
 
     fun warning(msg: String, buttonAction: () -> Unit) {
-        val box = IonAlert(this, IonAlert.WARNING_TYPE)
-        box.titleText = "警吿"
-        box.contentText = msg
-        box.confirmText = "關閉"
 
-        box.setConfirmClickListener {
-            buttonAction()
-            it.cancel()
-        }
-        box.show()
+        AwesomeDialog.build(this)
+            .title("警告")
+            .body(msg)
+            .icon(R.drawable.ic_warning)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉") {
+                buttonAction()
+            }
     }
 
     fun warning(msg: String, cancelButtonTitle: String, buttonAction: () -> Unit) {

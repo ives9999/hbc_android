@@ -26,7 +26,7 @@ enum class KeyEnum(val englishName: String, val chineseName: String) {
 enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
     account("account", "帳戶資料"),
-    change_password("change_password", "更改密碼"),
+    reset_password("reset_password", "更改密碼"),
     donate_blood("donate_blood", "我的捐血"),
     need_blood("need_blood", "我需要血"),
     bank("bank", "銀行帳號"),
@@ -39,7 +39,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromString(value: String): MemberHomeEnum {
             when (value) {
                 "account" -> return account
-                "change_password" -> return change_password
+                "reset_password" -> return reset_password
                 "need_blood" -> return need_blood
                 "donate_blood" -> return donate_blood
                 "bank" -> return bank
@@ -54,7 +54,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromIdx(idx: Int): MemberHomeEnum {
             when (idx) {
                 0 -> return account
-                1 -> return change_password
+                1 -> return reset_password
                 2 -> return need_blood
                 3 -> return donate_blood
                 4 -> return bank
@@ -67,12 +67,28 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, change_password, donate_blood, need_blood, bank, credit_card, validate_email, validate_mobile, refresh)
+            return arrayOf(account, reset_password, donate_blood, need_blood, bank, credit_card, validate_email, validate_mobile, refresh)
         }
     }
 
     fun getIconID(resources: Resources, packageName: String): Int {
         return resources.getIdentifier("member_" + this.englishName, "drawable", packageName)
+    }
+}
+
+enum class PasswordEnum(val englishName: String, val chineseName: String) {
+    forget("forget", "忘記密碼"),
+    reset("reset", "重設密碼"),
+    none("none", "錯誤");
+
+    companion object {
+        fun enumFromString(value: String): PasswordEnum {
+            return when (value) {
+                "forget" -> forget
+                "reset" -> reset
+                else -> none
+            }
+        }
     }
 }
 

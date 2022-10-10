@@ -87,6 +87,7 @@ class MemberActivity : BaseActivity() {
         //println(idx)
         when (MemberHomeEnum.enumFromIdx(idx)) {
             MemberHomeEnum.account -> toRegister(this)
+            MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
             MemberHomeEnum.refresh -> refresh()
             else -> {}
         }

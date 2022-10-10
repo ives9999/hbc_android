@@ -22,6 +22,7 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
             val typedArray = context.obtainStyledAttributes(it, R.styleable.EditTextNormal, 0, 0)
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
+                titleTV = it
                 it.text = typedArray.getString(R.styleable.EditTextNormal_titleTV) ?: ""
             }
 
@@ -78,6 +79,10 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         }
 
         return res
+    }
+
+    fun setInputType(inputType: Int) {
+        editET?.inputType = inputType
     }
 
     override fun setValue(value: String) {

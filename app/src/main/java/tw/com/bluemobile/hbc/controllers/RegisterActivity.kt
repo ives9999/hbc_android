@@ -25,6 +25,7 @@ import tw.com.bluemobile.hbc.extensions.isInt
 import tw.com.bluemobile.hbc.extensions.setLocalImage
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
+import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
@@ -68,17 +69,17 @@ class RegisterActivity : BaseActivity() {
 //    var filePath: String = ""
 
     private val initData: HashMap<String, String> = hashMapOf(
-//        EMAIL_KEY to "john@housetube.tw",
-//        PASSWORD_KEY to "1234",
-//        REPASSWORD_KEY to "1234",
-//        NAME_KEY to "孫士君",
-//        NICKNAME_KEY to "孫士君",
-//        MOBILE_KEY to "0911299998",
-//        CITY_ID_KEY to "218",
-//        AREA_ID_KEY to "219",
-//        ROAD_KEY to "南華街101號8樓",
-//        LINE_KEY to "ives9999",
-//        PRIVACY_KEY to "1"
+        EMAIL_KEY to "john@housetube.tw",
+        PASSWORD_KEY to "1234",
+        REPASSWORD_KEY to "1234",
+        NAME_KEY to "孫士君",
+        NICKNAME_KEY to "孫士君",
+        MOBILE_KEY to "0911299998",
+        CITY_ID_KEY to "218",
+        AREA_ID_KEY to "219",
+        ROAD_KEY to "南華街101號8樓",
+        LINE_KEY to "ives9999",
+        PRIVACY_KEY to "1"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -594,41 +595,55 @@ class RegisterActivity : BaseActivity() {
                     runOnUiThread {
                         try {
                             //println(MemberService.jsonString)
-                            val registerResModel = Gson().fromJson<RegisterResModel>(
-                                MemberService.jsonString,
-                                RegisterResModel::class.java
-                            )
-                            if (registerResModel != null) {
-                                if (!registerResModel.success) {
-                                    msg = ""
-                                    for (error in registerResModel.errors) {
-                                        msg += error + "\n"
+                            val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
+                            if (successModel != null) {
+                                if (!successModel.success) {
+                                    val msgs: ArrayList<String> = successModel.msgs
+                                    var str: String = ""
+                                    for (msg in msgs) {
+                                        str += msg + "\n"
                                     }
-                                    warning(msg)
+                                    warning(str)
                                 } else {
-                                    if (registerResModel.model != null) {
-                                        val memberModel: MemberModel = registerResModel.model!!
-//                                        memberModel.filterRow()
-//                                        memberModel.dump()
-//                                        memberModel.zoneModel!!.dump()
-                                        if (member.token!!.isEmpty()) {
-                                            success("成功註冊，請繼續完成email與手機認證") {
-                                                toMemberHome(this)
-                                            }
-                                        } else {
-                                            success("已經完成修改")
+                                    if (member.token!!.isEmpty()) {
+                                        success("成功註冊，請繼續完成email與手機認證") {
+                                            toMemberHome(this)
                                         }
-                                        memberModel.toSession(this, true)
-//                                        info(msg, "", "關閉") {
-//                                            setResult(Activity.RESULT_OK, intent)
-//                                            finish()
-//                                            //prev()
-//                                        }
+                                    } else {
+                                        success("已經完成修改")
                                     }
+                                    val memberModel = successModel.model
+                                    memberModel?.toSession(this, true)
                                 }
-                            } else {
-                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
                             }
+
+//                            val registerResModel = Gson().fromJson<RegisterResModel>(
+//                                MemberService.jsonString,
+//                                RegisterResModel::class.java
+//                            )
+//                            if (registerResModel != null) {
+//                                if (!registerResModel.success) {
+//                                    msg = ""
+//                                    for (error in registerResModel.errors) {
+//                                        msg += error + "\n"
+//                                    }
+//                                    warning(msg)
+//                                } else {
+//                                    if (registerResModel.model != null) {
+//                                        val memberModel: MemberModel = registerResModel.model!!
+//                                        if (member.token!!.isEmpty()) {
+//                                            success("成功註冊，請繼續完成email與手機認證") {
+//                                                toMemberHome(this)
+//                                            }
+//                                        } else {
+//                                            success("已經完成修改")
+//                                        }
+//                                        memberModel.toSession(this, true)
+//                                    }
+//                                }
+//                            } else {
+//                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
+//                            }
                         } catch (e: JsonParseException) {
                             warning(e.localizedMessage!!)
                         }

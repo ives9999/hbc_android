@@ -10,6 +10,7 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
+import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.EditTextNormal
@@ -68,7 +69,7 @@ class LoginActivity : BaseActivity() {
 
         findViewById<TextView>(R.id.forget_passwordTV) ?. let {
             it.setOnClickListener {
-
+                toPassword(this, PasswordEnum.forget)
             }
         }
     }
@@ -127,40 +128,26 @@ class LoginActivity : BaseActivity() {
         MemberService.login(this, params) { success ->
             loading.hide()
             if (success) {
-                if (MemberService.success) {
-                    runOnUiThread {
-                        try {
-                            //println(MemberService.jsonString)
-                            val registerResModel = Gson().fromJson<RegisterResModel>(
-                                MemberService.jsonString,
-                                RegisterResModel::class.java
-                            )
-                            if (registerResModel != null) {
-                                if (!registerResModel.success) {
-                                    msg = ""
-                                    for (error in registerResModel.errors) {
-                                        msg += error + "\n"
-                                    }
-                                    warning(msg)
-                                } else {
-                                    if (registerResModel.model != null) {
-                                        val memberModel: MemberModel = registerResModel.model!!
-                                        memberModel.filterRow()
-                                        memberModel.toSession(this, true)
-                                        member.dump()
-                                        toMemberHome(this)
-                                    }
+                runOnUiThread {
+                    try {
+                        //println(MemberService.jsonString)
+                        val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
+                        if (successModel != null) {
+                            if (!successModel.success) {
+                                val msgs: ArrayList<String> = successModel.msgs
+                                var str: String = ""
+                                for (msg in msgs) {
+                                    str += msg + "\n"
                                 }
+                                warning(str)
                             } else {
-                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
+                                val memberModel = successModel.model
+                                memberModel?.toSession(this, true)
+                                toMemberHome(this)
                             }
-                        } catch (e: JsonParseException) {
-                            warning(e.localizedMessage!!)
                         }
-                    }
-                } else {
-                    runOnUiThread {
-                        warning(MemberService.msg)
+                    } catch (e: JsonParseException) {
+                        warning(e.localizedMessage!!)
                     }
                 }
             } else {

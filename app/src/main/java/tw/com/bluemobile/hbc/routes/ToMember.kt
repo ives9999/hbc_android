@@ -1,11 +1,8 @@
 package tw.com.bluemobile.hbc.routes
 
 import android.content.Intent
-import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat
-import tw.com.bluemobile.hbc.controllers.BaseActivity
-import tw.com.bluemobile.hbc.controllers.LoginActivity
-import tw.com.bluemobile.hbc.controllers.MemberActivity
-import tw.com.bluemobile.hbc.controllers.RegisterActivity
+import tw.com.bluemobile.hbc.controllers.*
+import tw.com.bluemobile.hbc.utilities.PasswordEnum
 
 interface ToMember {
 
@@ -16,6 +13,12 @@ interface ToMember {
 
     fun toMemberHome(activity: BaseActivity) {
         val i = Intent(activity, MemberActivity::class.java)
+        activity.startActivity(i)
+    }
+
+    fun toPassword(activity: BaseActivity, type: PasswordEnum) {
+        val i = Intent(activity, PasswordActivity::class.java)
+        i.putExtra("type", type.englishName)
         activity.startActivity(i)
     }
 

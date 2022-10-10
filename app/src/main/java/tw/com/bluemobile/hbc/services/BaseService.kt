@@ -94,8 +94,8 @@ open class BaseService {
         val url: String = getOneURL()
 
         val _params: Map<String, String> = composeParams(params)
-        println(url)
-        println(_params.toJSON())
+//        println(url)
+//        println(_params.toJSON())
 
         val request: okhttp3.Request = getRequest(url, _params)
         okHttpClient.newCall(request).enqueue(object : Callback {
@@ -137,7 +137,7 @@ open class BaseService {
 
     open fun getUpdateURL(): String { return "" }
 
-    private fun composeParams(sourceParams: MutableMap<String, String>, isMemberToken: Boolean = true): Map<String, String> {
+    fun composeParams(sourceParams: MutableMap<String, String>, isMemberToken: Boolean = true): Map<String, String> {
         var _params: Map<String, String> = hashMapOf()
         _params = _params.mergeWith(PARAMS)
         _params = _params.mergeWith(sourceParams)
@@ -172,7 +172,7 @@ open class BaseService {
             val file: File = File(filePath)
             if (file.exists()) {
                 val filePart = file.asRequestBody("image/png".toMediaType())
-                bodyBuilder.addFormDataPart("avatar", file.name, filePart)
+                bodyBuilder.addFormDataPart("featured", file.name, filePart)
             }
         }
 
