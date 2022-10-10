@@ -192,3 +192,21 @@ enum class TabEnum(val englishName: String, val chineseName: String) {
     }
 }
 
+
+enum class ValidateEnum(val englishName: String, val chineseName: String) {
+    email("email", "信箱認證"),
+    mobile("mobile", "手機認證"),
+    none("none", "錯誤");
+
+    companion object {
+        fun enumFromString(value: String): ValidateEnum {
+            return when (value) {
+                "email" -> email
+                "mobile" -> mobile
+                else -> none
+            }
+        }
+    }
+}
+
+

@@ -49,7 +49,7 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     open fun prev() {
         //hideKeyboard()
         val intent = Intent()
-        setResult(Activity.RESULT_CANCELED, intent)
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 

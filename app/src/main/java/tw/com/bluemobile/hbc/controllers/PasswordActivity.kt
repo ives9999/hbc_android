@@ -1,16 +1,13 @@
 package tw.com.bluemobile.hbc.controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.widget.TextView
-import com.example.awesomedialog.*
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
-import tw.com.bluemobile.hbc.utilities.EMAIL_KEY
 import tw.com.bluemobile.hbc.utilities.Loading
 import tw.com.bluemobile.hbc.utilities.PasswordEnum
 import tw.com.bluemobile.hbc.utilities.jsonToModel

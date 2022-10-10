@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.ValidateActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.PasswordActivity"
             android:exported="false" />
         <activity

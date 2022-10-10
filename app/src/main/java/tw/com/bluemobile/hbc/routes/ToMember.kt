@@ -3,6 +3,7 @@ package tw.com.bluemobile.hbc.routes
 import android.content.Intent
 import tw.com.bluemobile.hbc.controllers.*
 import tw.com.bluemobile.hbc.utilities.PasswordEnum
+import tw.com.bluemobile.hbc.utilities.ValidateEnum
 
 interface ToMember {
 
@@ -26,4 +27,25 @@ interface ToMember {
         val i = Intent(activity, RegisterActivity::class.java)
         activity.startActivity(i)
     }
+
+    fun toValidate(activity: MemberActivity, type: ValidateEnum) {
+        val i = Intent(activity, ValidateActivity::class.java)
+        i.putExtra("type", type.englishName)
+        activity.validateAR.launch(i)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -678,12 +678,3 @@ class RegisterActivity : BaseActivity() {
 //        return b
 //    }
 }
-
-
-class RegisterResModel {
-    var success: Boolean = false
-    var errors: ArrayList<String> = arrayListOf()
-    var id: Int = 0
-    var update: String = ""
-    var model: MemberModel? = null
-}

@@ -1,11 +1,17 @@
 package tw.com.bluemobile.hbc.controllers
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import com.example.awesomedialog.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -48,14 +54,24 @@ class MemberActivity : BaseActivity() {
             //it.setOnImagePickListener(pickProfileImage, pickCameraImage)
         }
 
+        val validateEmail: Boolean = member.checkEMailValidate()
+        val validateMobile: Boolean = member.checkMobileValidate()
+
         itemList = ArrayList<GridViewModal>()
         for (enum in MemberHomeEnum.getAllEnum()) {
+            if (enum == MemberHomeEnum.validate_email && validateEmail) {
+                continue
+            }
+            if (enum == MemberHomeEnum.validate_mobile && validateMobile) {
+                continue
+            }
+
             val text: String = enum.chineseName
             val icon: Int = enum.getIconID(resources, packageName)
-            itemList.add(GridViewModal(icon, text))
+            itemList.add(GridViewModal(icon, text, enum))
         }
 
-        val adapter: GridAdapter = GridAdapter(this, this, itemList)
+        val adapter: MemberGridAdapter = MemberGridAdapter(this, this, itemList)
         findViewById<GridView>(R.id.grid) ?. let {
 //            it.numColumns = 2
             it.adapter = adapter
@@ -83,11 +99,13 @@ class MemberActivity : BaseActivity() {
         toMemberHome(this)
     }
 
-    fun onClick(idx: Int) {
+    fun onClick(memberHomeEnum: MemberHomeEnum) {
         //println(idx)
-        when (MemberHomeEnum.enumFromIdx(idx)) {
+        when (memberHomeEnum) {
             MemberHomeEnum.account -> toRegister(this)
             MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
+            MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)
+            MemberHomeEnum.validate_mobile -> toValidate(this, ValidateEnum.mobile)
             MemberHomeEnum.refresh -> refresh()
             else -> {}
         }
@@ -98,25 +116,36 @@ class MemberActivity : BaseActivity() {
         MemberService.getOne(this, hashMapOf()) { success ->
             if (success) {
                 //println(MemberService.jsonString)
-//                val modelType = genericType<SuccessModel<MemberModel>>()
-//                val successModel = Gson().fromJson<SuccessModel<MemberModel>>(MemberService.jsonString, modelType)
                 val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
                 if (successModel != null) {
                     successModel.model?.toSession(this, true)
+                    runOnUiThread {
+                        init()
+                    }
                 }
             }
             loading.hide()
+        }
+    }
+
+    val validateAR: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            val i: Intent? = res.data
+            if (i != null) {
+                refresh()
+            }
         }
     }
 }
 
 data class GridViewModal (
     val itemImg: Int,
-    val itemName: String
+    val itemName: String,
+    val memberHomeEnum: MemberHomeEnum
 )
 
 // on below line we are createing an adapter class for our grid view.
-internal class GridAdapter (
+internal class MemberGridAdapter (
     private val context: Context,
     private val memberActivity: MemberActivity,
     private val itemList: List<GridViewModal>): BaseAdapter() {
@@ -165,7 +194,8 @@ internal class GridAdapter (
         textTV.setText(itemList[position].itemName)
 
         holderView.setOnClickListener {
-            memberActivity.onClick(position)
+            val gridViewModal: GridViewModal = itemList[position]
+            memberActivity.onClick(gridViewModal.memberHomeEnum)
         }
 
         return holderView
