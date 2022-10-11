@@ -87,9 +87,16 @@ class BankAccountActivity : BaseActivity() {
             return
         }
 
+        val params: MutableMap<String, String> = mutableMapOf(
+            "bank" to editTextBank!!.getValue(),
+            "branch" to editTextBranch!!.getValue(),
+            "bank_code" to editTextBankCode!!.getValue(),
+            "bank_account" to editTextBankAccount!!.getValue()
+        )
+
         loading.show()
 
-        MemberService.bank(this, validateEnum!!, editTextCode!!.getValue()) { success ->
+        MemberService.bank(this, params) { success ->
 
             if (success) {
                 runOnUiThread {

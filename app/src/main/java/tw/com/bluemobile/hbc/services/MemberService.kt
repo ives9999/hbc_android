@@ -23,8 +23,37 @@ object MemberService: BaseService() {
         return URL_HOME + "member/register"
     }
 
-    fun bank(context: Context, params: MutableMap<String, String>) { success ->
+    fun bank(context: Context, params: MutableMap<String, String>, complete: CompletionHandler) {
+        getBaseUrl()
+        val url = URL_HOME + "member/postBank"
 
+        val _params: Map<String, String> = composeParams(params, true)
+
+//        println(url)
+//        println(_params.toJSON())
+
+        val request: Request = getRequest(url, _params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
     }
 
     fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {

@@ -32,6 +32,7 @@ class MemberModel: BaseModel() {
     var isLoggedIn: Boolean = false
 
     @SerializedName("zone") var zoneModel: ZoneModel? = null
+    @SerializedName("bank") var bankModel: MemberBankModel? = null
 
     override fun filterRow() {
         super.filterRow()
@@ -288,7 +289,7 @@ class MemberBankModel: BaseModel() {
     var bank: String = ""
     var branch: String = ""
     var bank_code: Int = 0
-    var account: String = ""
+    var bank_account: String = ""
 
     override fun filterRow() {
         super.filterRow()
