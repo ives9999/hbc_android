@@ -45,7 +45,9 @@ class BankAccountActivity : BaseActivity() {
 
         findViewById<EditTextNormal>(R.id.bank_code) ?. let {
             editTextBankCode = it
-            it.setValue(member.bank_code!!.toString())
+            var code: String = member.bank_code!!.toString()
+            code = ((code == "0") then { "" }) ?: code
+            it.setValue(code)
         }
 
         findViewById<EditTextNormal>(R.id.bank_account) ?. let {
@@ -62,6 +64,7 @@ class BankAccountActivity : BaseActivity() {
 
     fun checkEmpty(): Boolean {
 
+        msg = ""
         if (editTextBank!!.getValue().isEmpty()) {
             msg += "請填寫銀行名稱\n"
         }
@@ -82,7 +85,7 @@ class BankAccountActivity : BaseActivity() {
     }
 
     override fun submit() {
-        if (!checkEmpty()) {
+        if (checkEmpty()) {
             warning(msg)
             return
         }
@@ -106,7 +109,9 @@ class BankAccountActivity : BaseActivity() {
                             jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
                         if (successModel != null) {
                             if (successModel.success) {
-                                success("認證成功") {
+                                val memberModel = successModel.model
+                                memberModel?.toSession(this, true)
+                                success("新增/修改 銀行帳號成功") {
                                     prev()
                                 }
                             } else {
