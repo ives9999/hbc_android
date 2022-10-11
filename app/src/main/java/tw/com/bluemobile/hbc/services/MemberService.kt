@@ -23,6 +23,10 @@ object MemberService: BaseService() {
         return URL_HOME + "member/register"
     }
 
+    fun bank(context: Context, params: MutableMap<String, String>) { success ->
+
+    }
+
     fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.lowercase(Locale.ROOT)
         getBaseUrl()

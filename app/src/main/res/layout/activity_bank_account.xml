@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
+    android:orientation="vertical"
+    tools:context=".controllers.BankAccountActivity">
+
+    <tw.com.bluemobile.hbc.views.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_marginTop="84px"
+        android:orientation="vertical">
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/bank"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="bank_name"
+            app:titleTV="銀行名稱" />
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/branch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="branch_name"
+            app:titleTV="分行名稱" />
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/bank_code"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:keyboard="number"
+            app:titleTV="銀行代碼" />
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/bank_account"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="account"
+            app:titleTV="帳號" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:background="@color/ACTION_BACKGROUND"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/button_submit"
+            android:layout_width="224dp"
+            android:layout_height="35dp"
+            android:background="@drawable/button_submit"
+            android:gravity="center_vertical"
+            android:text="@string/submit"
+            android:textAlignment="center"
+            android:textColor="@color/MY_BLACK" />
+
+    </LinearLayout>
+
+    <include layout="@layout/loading" />
+
+</RelativeLayout>

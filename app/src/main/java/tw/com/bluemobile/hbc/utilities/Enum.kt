@@ -29,7 +29,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
     reset_password("reset_password", "更改密碼"),
     donate_blood("donate_blood", "我的捐血"),
     need_blood("need_blood", "我需要血"),
-    bank("bank", "銀行帳號"),
+    bank_account("bank", "銀行帳號"),
     credit_card("credit_card", "信用卡資料"),
     validate_email("validate_email", "信箱認證"),
     validate_mobile("validate_mobile", "手機認證"),
@@ -42,7 +42,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
                 "reset_password" -> return reset_password
                 "need_blood" -> return need_blood
                 "donate_blood" -> return donate_blood
-                "bank" -> return bank
+                "bank_account" -> return bank_account
                 "credit_card" -> return credit_card
                 "validate_email" -> return validate_email
                 "validate_mobile" -> return validate_mobile
@@ -57,7 +57,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
                 1 -> return reset_password
                 2 -> return need_blood
                 3 -> return donate_blood
-                4 -> return bank
+                4 -> return bank_account
                 5 -> return credit_card
                 6 -> return validate_email
                 7 -> return validate_mobile
@@ -67,7 +67,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, reset_password, donate_blood, need_blood, bank, credit_card, validate_email, validate_mobile, refresh)
+            return arrayOf(account, reset_password, donate_blood, need_blood, bank_account, credit_card, validate_email, validate_mobile, refresh)
         }
     }
 

@@ -7,6 +7,11 @@ import tw.com.bluemobile.hbc.utilities.ValidateEnum
 
 interface ToMember {
 
+    fun toBankAccount(activity: BaseActivity) {
+        val i = Intent(activity, BankAccountActivity::class.java)
+        activity.startActivity(i)
+    }
+
     fun toLogin(activity: BaseActivity) {
         val i = Intent(activity, LoginActivity::class.java)
         activity.startActivity(i)
