@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity() {
             editTextEmail = it
 
             if (initData.containsKey(EMAIL_KEY)) {
-                it.setValue(initData[EMAIL_KEY]!!)
+                it.value = initData[EMAIL_KEY]!!
             }
         }
 
@@ -51,7 +51,7 @@ class LoginActivity : BaseActivity() {
             editTextPassword = it
 
             if (initData.containsKey(PASSWORD_KEY)) {
-                it.setValue(initData[PASSWORD_KEY]!!)
+                it.value = initData[PASSWORD_KEY]!!
             }
         }
 
@@ -105,11 +105,11 @@ class LoginActivity : BaseActivity() {
             return
         }
 
-        if (editTextEmail!!.getValue().isEmpty()) {
+        if (editTextEmail!!.value.isEmpty()) {
             msg += "請填Email\n"
         }
 
-        if (editTextPassword!!.getValue().isEmpty()) {
+        if (editTextPassword!!.value.isEmpty()) {
             msg += "請填密碼\n"
         }
 
@@ -122,8 +122,8 @@ class LoginActivity : BaseActivity() {
 
         val params: MutableMap<String, String> = hashMapOf()
 
-        params.putAll(hashMapOf(EMAIL_KEY to editTextEmail!!.getValue()))
-        params.putAll(hashMapOf(PASSWORD_KEY to editTextPassword!!.getValue()))
+        params.putAll(hashMapOf(EMAIL_KEY to editTextEmail!!.value))
+        params.putAll(hashMapOf(PASSWORD_KEY to editTextPassword!!.value))
 
         MemberService.login(this, params) { success ->
             loading.hide()

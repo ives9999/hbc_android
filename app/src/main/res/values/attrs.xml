@@ -27,4 +27,13 @@
     <declare-styleable name="Featured">
     </declare-styleable>
 
+    <declare-styleable name="TwoRadio">
+        <attr name="twoKey" format="string" />
+        <attr name="twoRadioTitleTV" format="string" />
+        <attr name="yesRadioTitle" format="string" />
+        <attr name="noRadioTitle" format="string" />
+        <attr name="star" format="boolean" />
+        <attr name="twoRadioTitleWidth" format="string" />
+    </declare-styleable>
+
 </resources>

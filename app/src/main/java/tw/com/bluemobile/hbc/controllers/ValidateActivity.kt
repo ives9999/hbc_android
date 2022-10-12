@@ -56,7 +56,7 @@ class ValidateActivity : BaseActivity() {
     }
 
     fun checkEmpty(): Boolean {
-        if (editTextCode!!.getValue().isEmpty()) {
+        if (editTextCode!!.value.isEmpty()) {
             warning("請填寫認證碼")
             return false
         }
@@ -71,7 +71,7 @@ class ValidateActivity : BaseActivity() {
 
         loading.show()
 
-        MemberService.validate(this, validateEnum!!, editTextCode!!.getValue()) { success ->
+        MemberService.validate(this, validateEnum!!, editTextCode!!.value) { success ->
 
             if (success) {
                 runOnUiThread {

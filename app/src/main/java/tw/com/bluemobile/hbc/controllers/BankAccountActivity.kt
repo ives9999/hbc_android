@@ -35,24 +35,24 @@ class BankAccountActivity : BaseActivity() {
 
         findViewById<EditTextNormal>(R.id.bank) ?. let {
             editTextBank = it
-            it.setValue(member.bank!!)
+            it.value = member.bank!!
         }
 
         findViewById<EditTextNormal>(R.id.branch) ?. let {
             editTextBranch = it
-            it.setValue(member.branch!!)
+            it.value = member.branch!!
         }
 
         findViewById<EditTextNormal>(R.id.bank_code) ?. let {
             editTextBankCode = it
             var code: String = member.bank_code!!.toString()
             code = ((code == "0") then { "" }) ?: code
-            it.setValue(code)
+            it.value = code
         }
 
         findViewById<EditTextNormal>(R.id.bank_account) ?. let {
             editTextBankAccount = it
-            it.setValue(member.bank_account!!)
+            it.value = member.bank_account!!
         }
 
         findViewById<TextView>(R.id.submitTV) ?. let {
@@ -65,19 +65,19 @@ class BankAccountActivity : BaseActivity() {
     fun checkEmpty(): Boolean {
 
         msg = ""
-        if (editTextBank!!.getValue().isEmpty()) {
+        if (editTextBank!!.value.isEmpty()) {
             msg += "請填寫銀行名稱\n"
         }
 
-        if (editTextBranch!!.getValue().isEmpty()) {
+        if (editTextBranch!!.value.isEmpty()) {
             msg += "請填寫分行名稱\n"
         }
 
-        if (editTextBankCode!!.getValue().isEmpty()) {
+        if (editTextBankCode!!.value.isEmpty()) {
             msg += "請填寫銀行代碼\n"
         }
 
-        if (editTextBankAccount!!.getValue().isEmpty()) {
+        if (editTextBankAccount!!.value.isEmpty()) {
             msg += "請填寫帳號\n"
         }
 
@@ -91,10 +91,10 @@ class BankAccountActivity : BaseActivity() {
         }
 
         val params: MutableMap<String, String> = mutableMapOf(
-            "bank" to editTextBank!!.getValue(),
-            "branch" to editTextBranch!!.getValue(),
-            "bank_code" to editTextBankCode!!.getValue(),
-            "bank_account" to editTextBankAccount!!.getValue()
+            "bank" to editTextBank!!.value,
+            "branch" to editTextBranch!!.value,
+            "bank_code" to editTextBankCode!!.value,
+            "bank_account" to editTextBankAccount!!.value
         )
 
         loading.show()

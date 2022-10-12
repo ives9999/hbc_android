@@ -72,21 +72,21 @@ class PasswordActivity : BaseActivity() {
 
     fun checkEmpty(): Boolean {
         if (passwordEnum == PasswordEnum.forget) {
-            if (editTextPassword!!.getValue().isEmpty()) {
+            if (editTextPassword!!.value.isEmpty()) {
                 warning("請填寫Email")
                 return false
             }
         } else {
             msg = ""
-            if (editTextPassword!!.getValue().isEmpty()) {
+            if (editTextPassword!!.value.isEmpty()) {
                 msg += "密碼不能為空白\n"
             }
 
-            if (editTextRePassword!!.getValue().isEmpty()) {
+            if (editTextRePassword!!.value.isEmpty()) {
                 msg += "確認密碼不能為空白\n"
             }
 
-            if (editTextPassword!!.getValue() != editTextRePassword!!.getValue()) {
+            if (editTextPassword!!.value != editTextRePassword!!.value) {
                 msg += "密碼不符合\n"
             }
 
@@ -107,7 +107,7 @@ class PasswordActivity : BaseActivity() {
         loading.show()
 
         if (passwordEnum == PasswordEnum.forget) {
-            MemberService.forgetPassword(this, editTextPassword!!.getValue()) { success ->
+            MemberService.forgetPassword(this, editTextPassword!!.value) { success ->
 
                 if (success) {
                     runOnUiThread {
@@ -136,7 +136,7 @@ class PasswordActivity : BaseActivity() {
                 loading.hide()
             }
         } else {
-            MemberService.resetPassword(this, editTextPassword!!.getValue()) { success ->
+            MemberService.resetPassword(this, editTextPassword!!.value) { success ->
 
                 if (success) {
                     runOnUiThread {

@@ -17,6 +17,16 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
     private val view: View = View.inflate(context, R.layout.edit_text_normal, this)
     private var editET: EditText? = null
 
+    override var value: String = ""
+        get() {
+            editET?.text ?. let {
+                field = it.toString()
+            }
+
+            return field
+        }
+        set(value) { editET?.text = value.toEditable() }
+
     init {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.EditTextNormal, 0, 0)
@@ -57,13 +67,13 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         editET?.text = "".toEditable()
     }
 
-    override fun getValue(): String {
-        editET?.text ?. let {
-            value = it.toString()
-        }
-
-        return value
-    }
+//    override fun getValue(): String {
+//        editET?.text ?. let {
+//            value = it.toString()
+//        }
+//
+//        return value
+//    }
 
     override fun isEmpty(): Boolean {
 
@@ -85,9 +95,9 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         editET?.inputType = inputType
     }
 
-    override fun setValue(value: String) {
-        editET?.text = value.toEditable()
-    }
+//    override fun setValue(value: String) {
+//        editET?.text = value.toEditable()
+//    }
 }
 
 

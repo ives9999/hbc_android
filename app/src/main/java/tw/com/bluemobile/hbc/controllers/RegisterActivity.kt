@@ -103,11 +103,11 @@ class RegisterActivity : BaseActivity() {
 //        println(id)
         if (keyEnum == KeyEnum.city_id) {
             moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.setValue(id.toString())
+            moreCity?.value = id.toString()
             moreDialog?.hide()
         } else if (keyEnum == KeyEnum.area_id) {
             moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.setValue(id.toString())
+            moreArea?.value = id.toString()
             moreDialog?.hide()
         }
     }
@@ -166,7 +166,7 @@ class RegisterActivity : BaseActivity() {
                             it.setOnClickListener() {
                                 val screenWidth = Global.getScreenWidth(resources)
                                 moreDialog =
-                                    moreCity?.toMoreDialog(screenWidth, it.getValue(), this)
+                                    moreCity?.toMoreDialog(screenWidth, it.value, this)
                                 //println(moreCity?.value)
                             }
 
@@ -177,15 +177,15 @@ class RegisterActivity : BaseActivity() {
                         } else {
                             moreArea = it as SelectArea
                             it.setOnClickListener {
-                                if (moreCity == null || moreCity!!.getValue().isEmpty()) {
+                                if (moreCity == null || moreCity!!.value.isEmpty()) {
                                     warning("請先選擇縣市")
                                 } else {
                                     val screenWidth = Global.getScreenWidth(resources)
-                                    val city_id: Int = moreCity?.getValue()?.toInt() ?: 0
+                                    val city_id: Int = moreCity?.value?.toInt() ?: 0
                                     moreDialog = moreArea?.toMoreDialog(
                                         screenWidth,
                                         city_id,
-                                        moreArea!!.getValue(),
+                                        moreArea!!.value,
                                         this
                                     )
                                 }
@@ -194,7 +194,7 @@ class RegisterActivity : BaseActivity() {
                         }
                     } else if (key == PRIVACY_KEY) {
                         privacy = it as Privacy
-                        it.setValue("1")
+                        it.value = "1"
                         privacy!!.setOnCheckChangeListener { isCheck ->
                             if (!isCheck) {
                                 warning("必須同意隱私權")
@@ -203,7 +203,7 @@ class RegisterActivity : BaseActivity() {
                     }
 
                     if (initData.containsKey(key)) {
-                        it.setValue(initData[key]!!)
+                        it.value = initData[key]!!
 
                         if (key == CITY_ID_KEY || key == AREA_ID_KEY) {
                             val b = it.setZone()
@@ -216,7 +216,7 @@ class RegisterActivity : BaseActivity() {
                             privacy = it as Privacy
                             if (initData[PRIVACY_KEY]!!.isInt()) {
                                 val value: Int = initData[PRIVACY_KEY]!!.toInt()
-                                it.setValue(value.toString())
+                                it.value = value.toString()
                                 it.setCheck(true)
                             }
                         }
@@ -529,7 +529,7 @@ class RegisterActivity : BaseActivity() {
                 } else {
                     if (layout.visibility == View.VISIBLE) {
                         val temp: HashMap<String, String> =
-                            hashMapOf(enum.englishName to layout.getValue())
+                            hashMapOf(enum.englishName to layout.value)
                         params.putAll(temp)
                     }
                 }
@@ -537,7 +537,7 @@ class RegisterActivity : BaseActivity() {
         }
 
         if (editTextPassword != null && editTextRePassword != null) {
-            if (editTextPassword!!.getValue() != editTextRePassword!!.getValue()) {
+            if (editTextPassword!!.value != editTextRePassword!!.value) {
                 msg += "密碼不符合\n"
             }
         }
