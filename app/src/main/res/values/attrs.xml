@@ -7,6 +7,14 @@
         <attr name="key" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="EditTextUnit">
+        <attr name="unitTitleTV" format="string" />
+        <attr name="unitValueET" format="string" />
+        <attr name="unitKeyboard" format="string" />
+        <attr name="unitKey" format="string" />
+        <attr name="unit" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="More">
         <attr name="moreTitleTV" format="string" />
         <attr name="moreKey" format="string" />

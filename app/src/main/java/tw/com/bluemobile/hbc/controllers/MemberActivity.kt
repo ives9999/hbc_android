@@ -103,10 +103,11 @@ class MemberActivity : BaseActivity() {
         //println(idx)
         when (memberHomeEnum) {
             MemberHomeEnum.account -> toRegister(this)
+            MemberHomeEnum.pet -> toMyPet(this)
             MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
             MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)
             MemberHomeEnum.validate_mobile -> toValidate(this, ValidateEnum.mobile)
-            MemberHomeEnum.bank_account->toBankAccount(this)
+            MemberHomeEnum.bank_account -> toBankAccount(this)
             MemberHomeEnum.refresh -> refresh()
             else -> {}
         }

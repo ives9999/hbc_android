@@ -1,0 +1,365 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
+    android:orientation="vertical"
+    tools:context=".controllers.MyPetActivity">
+
+    <tw.com.bluemobile.hbc.views.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_marginTop="84px"
+        android:orientation="vertical">
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="name"
+            app:titleTV="名稱" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    android:id="@+id/titleTV"
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="品種"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:layout_width="@dimen/star"
+                    android:layout_height="@dimen/star"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    app:srcCompat="@drawable/start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/cat"
+                        style="@style/edit_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="貓" />
+
+                    <RadioButton
+                        android:id="@+id/dog"
+                        style="@style/edit_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1"
+                        android:text="狗" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <tw.com.bluemobile.hbc.views.EditTextUnit
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:unit="歲"
+            app:unitKeyboard="number"
+            app:unitTitleTV="年齡" />
+
+        <tw.com.bluemobile.hbc.views.EditTextUnit
+            android:id="@+id/weight"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:unit="公斤"
+            app:unitKeyboard="number"
+            app:unitTitleTV="體重" />
+
+        <tw.com.bluemobile.hbc.views.EditTextNormal
+            android:id="@+id/blood"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/formitem_container_height"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            app:key="blood"
+            app:titleTV="血型" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="是否願意配對成為輸血英雄"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:layout_width="@dimen/star"
+                    android:layout_height="@dimen/star"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    app:srcCompat="@drawable/start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/yes"
+                        style="@style/edit_title"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="願意" />
+
+                    <RadioButton
+                        android:id="@+id/no"
+                        style="@style/edit_title"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="不願意" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_below="@id/top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    android:id="@+id/titleTV"
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="車馬費設定(每500公尺)"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:layout_width="@dimen/star"
+                    android:layout_height="@dimen/star"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    app:srcCompat="@drawable/start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/edit_text_border"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp">
+
+                <EditText
+                    android:id="@+id/valueET"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    android:id="@+id/unitTV"
+                    style="@style/edit_title"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:id="@+id/clear"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/clear" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    android:id="@+id/titleTV"
+                    style="@style/edit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="營養費設定(50CC)"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:layout_width="@dimen/star"
+                    android:layout_height="@dimen/star"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    app:srcCompat="@drawable/start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/edit_text_border"
+                android:orientation="horizontal"
+                android:paddingEnd="12dp">
+
+                <EditText
+                    android:id="@+id/valueET"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/MY_BLACK" />
+
+                <TextView
+                    android:id="@+id/unitTV"
+                    style="@style/edit_title"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/MY_BLACK" />
+
+                <ImageView
+                    android:id="@+id/clear"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/clear" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/submitTV"
+            style="@style/button_submit"
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_submit"
+            android:gravity="center_vertical"
+            android:text="@string/submit"
+            android:textAlignment="center"
+            android:textColor="@color/MY_BLACK" />
+
+
+    </LinearLayout>
+
+
+
+    <include layout="@layout/loading" />
+
+</RelativeLayout>

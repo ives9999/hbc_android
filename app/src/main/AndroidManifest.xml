@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.MyPetActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.BankAccountActivity"
             android:exported="false" />
         <activity

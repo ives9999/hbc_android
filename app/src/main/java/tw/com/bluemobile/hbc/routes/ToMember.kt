@@ -22,6 +22,11 @@ interface ToMember {
         activity.startActivity(i)
     }
 
+    fun toMyPet(activity: BaseActivity) {
+        val i = Intent(activity, MyPetActivity::class.java)
+        activity.startActivity(i)
+    }
+
     fun toPassword(activity: BaseActivity, type: PasswordEnum) {
         val i = Intent(activity, PasswordActivity::class.java)
         i.putExtra("type", type.englishName)

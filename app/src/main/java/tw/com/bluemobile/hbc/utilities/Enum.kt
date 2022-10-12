@@ -26,11 +26,12 @@ enum class KeyEnum(val englishName: String, val chineseName: String) {
 enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
     account("account", "帳戶資料"),
-    reset_password("reset_password", "更改密碼"),
+    pet("pet", "我的寶貝"),
     donate_blood("donate_blood", "我的捐血"),
     need_blood("need_blood", "我需要血"),
+    reset_password("reset_password", "更改密碼"),
     bank_account("bank", "銀行帳號"),
-    credit_card("credit_card", "信用卡資料"),
+    //credit_card("credit_card", "信用卡資料"),
     validate_email("validate_email", "信箱認證"),
     validate_mobile("validate_mobile", "手機認證"),
     refresh("refresh", "重新整理");
@@ -39,11 +40,12 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromString(value: String): MemberHomeEnum {
             when (value) {
                 "account" -> return account
-                "reset_password" -> return reset_password
+                "pet" ->return pet
                 "need_blood" -> return need_blood
                 "donate_blood" -> return donate_blood
                 "bank_account" -> return bank_account
-                "credit_card" -> return credit_card
+                "reset_password" -> return reset_password
+                //"credit_card" -> return credit_card
                 "validate_email" -> return validate_email
                 "validate_mobile" -> return validate_mobile
                 "refresh" -> return  refresh
@@ -54,11 +56,12 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromIdx(idx: Int): MemberHomeEnum {
             when (idx) {
                 0 -> return account
-                1 -> return reset_password
+                1 -> return pet
                 2 -> return need_blood
                 3 -> return donate_blood
                 4 -> return bank_account
-                5 -> return credit_card
+                5 -> return reset_password
+                //5 -> return credit_card
                 6 -> return validate_email
                 7 -> return validate_mobile
                 8 -> return  refresh
@@ -67,7 +70,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, reset_password, donate_blood, need_blood, bank_account, credit_card, validate_email, validate_mobile, refresh)
+            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, refresh)
         }
     }
 
