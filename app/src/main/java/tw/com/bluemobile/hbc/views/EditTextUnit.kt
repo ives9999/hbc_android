@@ -4,10 +4,13 @@ import android.content.Context
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.extensions.toEditable
 
 class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
@@ -18,8 +21,8 @@ class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeS
     private var editET: EditText? = null
 
     init {
-        attrs?.let {
-            val typedArray = context.obtainStyledAttributes(it, R.styleable.EditTextUnit, 0, 0)
+        attrs?.let { attributeSet ->
+            val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.EditTextUnit, 0, 0)
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
                 titleTV = it
@@ -49,6 +52,30 @@ class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeS
             }
 
             key = typedArray.getString(R.styleable.EditTextUnit_unitKey) ?: ""
+
+            view.findViewById<LinearLayout>(R.id.titleLL) ?. let {
+                val widthStr: String = typedArray.getString(R.styleable.EditTextUnit_unitTitleLLWidth) ?: "130"
+                val width: Int = widthStr.toInt().dpToPx()
+                val params: ViewGroup.LayoutParams = it.layoutParams
+                params.width = width
+                it.layoutParams = params
+            }
+
+            view.findViewById<LinearLayout>(R.id.valueLL) ?. let {
+                val widthStr: String = typedArray.getString(R.styleable.EditTextUnit_unitValueLLWidth) ?: "238"
+                val width: Int = widthStr.toInt().dpToPx()
+                val params: ViewGroup.LayoutParams = it.layoutParams
+                params.width = width
+                it.layoutParams = params
+            }
+
+            view.findViewById<EditText>(R.id.valueET) ?. let {
+                val widthStr: String = typedArray.getString(R.styleable.EditTextUnit_unitValueETWidth) ?: "160"
+                val width: Int = widthStr.toInt().dpToPx()
+                val params: ViewGroup.LayoutParams = it.layoutParams
+                params.width = width
+                it.layoutParams = params
+            }
         }
 
         view.findViewById<ImageView>(R.id.clear) ?. let {

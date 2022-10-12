@@ -11,6 +11,7 @@
     android:paddingBottom="8dp">
 
     <LinearLayout
+        android:id="@+id/titleLL"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layoutDirection="rtl"
@@ -41,6 +42,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/valueLL"
         android:layout_width="238dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
@@ -59,7 +61,7 @@
         <TextView
             android:id="@+id/unitTV"
             style="@style/edit_title"
-            android:layout_width="36dp"
+            android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:text="公斤"
             android:textColor="@color/MY_BLACK" />
@@ -69,7 +71,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="2dp"
             app:srcCompat="@drawable/clear" />
     </LinearLayout>
 

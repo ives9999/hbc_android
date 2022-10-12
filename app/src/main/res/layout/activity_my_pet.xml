@@ -42,6 +42,7 @@
                 app:yesRadioTitle="@string/cat"
                 app:noRadioTitle="@string/dog"
                 app:star="true"
+                app:twoRadioTitleWidth="130"
                 />
 
             <tw.com.bluemobile.hbc.views.EditTextUnit
@@ -79,7 +80,20 @@
                 app:yesRadioTitle="願意"
                 app:noRadioTitle="不願意"
                 app:star="true"
-                app:twoRadioTitleWidth="440"
+                app:twoRadioTitleWidth="230"
+                />
+
+            <tw.com.bluemobile.hbc.views.EditTextUnit
+                android:id="@+id/traffic_fee"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:unit="元"
+                app:unitKeyboard="number"
+                app:unitTitleTV="車馬費設定(每500公尺)"
+                app:unitTitleLLWidth="230"
+                app:unitValueLLWidth="150"
+                app:unitValueETWidth="80"
                 />
 
         </LinearLayout>

@@ -13,6 +13,9 @@
         <attr name="unitKeyboard" format="string" />
         <attr name="unitKey" format="string" />
         <attr name="unit" format="string" />
+        <attr name="unitTitleLLWidth" format="string" />
+        <attr name="unitValueLLWidth" format="string" />
+        <attr name="unitValueETWidth" format="string" />
     </declare-styleable>
 
     <declare-styleable name="More">

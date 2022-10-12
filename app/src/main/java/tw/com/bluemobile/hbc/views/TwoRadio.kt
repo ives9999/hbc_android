@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.dpToPx
 
 class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     MyLayout(context, attrs, defStyleAttr) {
@@ -49,9 +50,10 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             }
 
             view.findViewById<LinearLayout>(R.id.titleLL) ?. let {
-                val width: String = typedArray.getString(R.styleable.TwoRadio_twoRadioTitleWidth) ?: "150"
+                val widthStr: String = typedArray.getString(R.styleable.TwoRadio_twoRadioTitleWidth) ?: "130"
+                val width: Int = widthStr.toInt().dpToPx()
                 val params: ViewGroup.LayoutParams = it.layoutParams
-                params.width = width.toInt()
+                params.width = width
                 it.layoutParams = params
             }
         }
