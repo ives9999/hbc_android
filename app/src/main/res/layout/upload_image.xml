@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/titleLL"
-        android:layout_width="130dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layoutDirection="rtl"
         android:orientation="horizontal">
 
         <TextView
+            style="@style/edit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/edit_title"
             android:text="@string/common"
             android:textColor="@color/MY_BLACK" />
 
@@ -28,7 +24,7 @@
             style="@style/edit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="是否"
+            android:text="上傳血檢資料"
             android:textColor="@color/MY_BLACK" />
 
         <ImageView
@@ -40,36 +36,24 @@
             app:srcCompat="@drawable/start" />
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/yes_no_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/yes"
-                style="@style/edit_title"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="願意"
-                android:textColor="@color/MY_BLACK" />
-
-            <RadioButton
-                android:id="@+id/no"
-                style="@style/edit_title"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:text="不願意"
-                android:textColor="@color/MY_BLACK" />
-
-        </RadioGroup>
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageIV"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/upload_image_border"
+            android:padding="3dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_upload_image" />
     </LinearLayout>
 
 </LinearLayout>

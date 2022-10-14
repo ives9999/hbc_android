@@ -16,11 +16,13 @@
         <attr name="unitTitleLLWidth" format="string" />
         <attr name="unitValueLLWidth" format="string" />
         <attr name="unitValueETWidth" format="string" />
+        <attr name="unitStarIV" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="More">
         <attr name="moreTitleTV" format="string" />
         <attr name="moreKey" format="string" />
+        <attr name="moreStarTV" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="Privacy">
@@ -35,8 +37,17 @@
         <attr name="twoRadioTitleTV" format="string" />
         <attr name="yesRadioTitle" format="string" />
         <attr name="noRadioTitle" format="string" />
-        <attr name="star" format="boolean" />
+        <attr name="twoRadioStarIV" format="boolean" />
         <attr name="twoRadioTitleWidth" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="UploadImage">
+        <attr name="uploadImageKey" format="string" />
+        <attr name="uploadImageTitleTV" format="string" />
+        <attr name="uploadImageStar" format="boolean" />
+        <attr name="uploadImageIV" format="string" />
+    </declare-styleable>
+
+
 
 </resources>

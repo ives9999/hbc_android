@@ -69,17 +69,17 @@ class RegisterActivity : BaseActivity() {
 //    var filePath: String = ""
 
     private val initData: HashMap<String, String> = hashMapOf(
-        EMAIL_KEY to "john@housetube.tw",
-        PASSWORD_KEY to "1234",
-        REPASSWORD_KEY to "1234",
-        NAME_KEY to "孫士君",
-        NICKNAME_KEY to "孫士君",
-        MOBILE_KEY to "0911299998",
-        CITY_ID_KEY to "218",
-        AREA_ID_KEY to "219",
-        ROAD_KEY to "南華街101號8樓",
-        LINE_KEY to "ives9999",
-        PRIVACY_KEY to "1"
+//        EMAIL_KEY to "john@housetube.tw",
+//        PASSWORD_KEY to "1234",
+//        REPASSWORD_KEY to "1234",
+//        NAME_KEY to "孫士君",
+//        NICKNAME_KEY to "孫士君",
+//        MOBILE_KEY to "0911299998",
+//        CITY_ID_KEY to "218",
+//        AREA_ID_KEY to "219",
+//        ROAD_KEY to "南華街101號8樓",
+//        LINE_KEY to "ives9999",
+//        PRIVACY_KEY to "1"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,8 +7,6 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.example.awesomedialog.*
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.extensions.setImage
@@ -26,7 +24,7 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             val typedArray = context.obtainStyledAttributes(it, R.styleable.Featured, 0, 0)
         }
 
-        view.findViewById<AppCompatImageView>(R.id.featuredIV) ?. let {
+        view.findViewById<AppCompatImageView>(R.id.checkIV) ?. let {
             featured = it
         }
     }

@@ -29,7 +29,7 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
             view.findViewById<ImageView>(R.id.starIV) ?. let {
                 starIV = it
-                val b: Boolean = typedArray.getBoolean(R.styleable.TwoRadio_star, true)
+                val b: Boolean = typedArray.getBoolean(R.styleable.TwoRadio_twoRadioStarIV, true)
                 if (!b) {
                     starIV!!.visibility = View.GONE
                 }
@@ -37,6 +37,7 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
             view.findViewById<RadioGroup>(R.id.yes_no_group) ?. let {
                 yesNoGroup = it
+                setOnGroupCheckedChangeListener()
             }
 
             view.findViewById<RadioButton>(R.id.yes) ?. let {
@@ -56,6 +57,29 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 params.width = width
                 it.layoutParams = params
             }
+        }
+    }
+
+    private fun setOnGroupCheckedChangeListener() {
+        yesNoGroup?.setOnCheckedChangeListener { radioGroup, i ->
+            val radioButton: RadioButton = view.findViewById(i)
+            value = radioButton.text.toString()
+        }
+    }
+
+    fun setOnGroupCheckedChangeListener(lambda: (String) -> Unit) {
+        yesNoGroup?.setOnCheckedChangeListener { radioGroup, i ->
+            val radioButton: RadioButton = view.findViewById(i)
+            lambda(radioButton.text.toString())
+        }
+    }
+
+    fun setCheck(text: String) {
+        if (yesRB?.text == text) {
+            yesRB?.isChecked = true
+            value = text
+        } else {
+            noRB?.isChecked = true
         }
     }
 

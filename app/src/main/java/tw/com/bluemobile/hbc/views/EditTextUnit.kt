@@ -20,6 +20,16 @@ class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val view: View = View.inflate(context, R.layout.edit_text_unit, this)
     private var editET: EditText? = null
 
+    override var value: String = ""
+        get() {
+            editET?.text ?. let {
+                field = it.toString()
+            }
+
+            return field
+        }
+        set(value) { editET?.text = value.toEditable() }
+
     init {
         attrs?.let { attributeSet ->
             val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.EditTextUnit, 0, 0)
@@ -75,6 +85,14 @@ class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeS
                 val params: ViewGroup.LayoutParams = it.layoutParams
                 params.width = width
                 it.layoutParams = params
+            }
+
+            view.findViewById<ImageView>(R.id.starIV) ?. let {
+                starIV = it
+                val b: Boolean = typedArray.getBoolean(R.styleable.EditTextUnit_unitStarIV, true)
+                if (!b) {
+                    starIV!!.visibility = View.GONE
+                }
             }
         }
 
