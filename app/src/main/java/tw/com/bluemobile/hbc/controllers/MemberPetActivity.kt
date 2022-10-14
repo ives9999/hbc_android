@@ -21,7 +21,7 @@ import tw.com.bluemobile.hbc.views.TwoRadio
 import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
 
-class MyPetActivity : BaseActivity() {
+class MemberPetActivity : BaseActivity() {
 
     var bloodImage: UploadImage? = null
     var bodyImge: UploadImage? = null
@@ -47,7 +47,7 @@ class MyPetActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_pet)
+        setContentView(R.layout.activity_member_pet)
 
         setTop(true, "我的寶貝")
 
