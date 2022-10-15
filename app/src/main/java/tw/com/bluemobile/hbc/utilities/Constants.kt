@@ -41,8 +41,11 @@ val ZIP_KEY: String = "zip"
 
 val PARAMS: HashMap<String, String> = hashMapOf()
 
-const val REMOTE_BASE_URL = "https://sandbox.hbc.com"
+const val REMOTE_BASE_URL = "https://hbc.bluemobile.com.tw"
+//const val LOCALHOST_BASE_URL = "https://hbc.bluemobile.com.tw"
 const val LOCALHOST_BASE_URL = "http://192.168.100.120"
+
+const val PERPAGE = 20
 
 var BASE_URL = REMOTE_BASE_URL
 var URL_HOME: String = "$BASE_URL/"

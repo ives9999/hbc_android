@@ -104,6 +104,67 @@ object MemberService: BaseService() {
         _simpleService(context, url, _params, complete)
     }
 
+    fun pet(context: Context, params: MutableMap<String, String>, blood_image: String?, body_image: String?, complete: CompletionHandler) {
+        getBaseUrl()
+        val url = URL_HOME + "member/postPet"
+
+        val _params: Map<String, String> = composeParams(params, true)
+
+        val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+        for ((key, value) in _params) {
+            bodyBuilder.addFormDataPart(key, value)
+        }
+
+        if (blood_image != null) {
+            val file: File = File(blood_image)
+            if (file.exists()) {
+                val filePart = file.asRequestBody("image/png".toMediaType())
+                bodyBuilder.addFormDataPart(MemberPetEnum.blood_image.englishName, file.name, filePart)
+            }
+        }
+
+        if (body_image != null) {
+            val file: File = File(body_image)
+            if (file.exists()) {
+                val filePart = file.asRequestBody("image/png".toMediaType())
+                bodyBuilder.addFormDataPart(MemberPetEnum.body_image.englishName, file.name, filePart)
+            }
+        }
+
+//        println(url)
+//        println(_params.toJSON())
+
+        val body: RequestBody = bodyBuilder.build()
+
+        val request = okhttp3.Request.Builder()
+            .addHeader("Content-Type", "multipart/form-data")
+            .url(url)
+            .post(body)
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     fun resetPassword(context: Context, password: String, complete: CompletionHandler) {
         getBaseUrl()
         val url = URL_HOME + "member/postResetPassword"

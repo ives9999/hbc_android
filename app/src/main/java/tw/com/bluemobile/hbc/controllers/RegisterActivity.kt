@@ -44,7 +44,7 @@ class RegisterActivity : BaseActivity() {
 
     private var mCameraUri: Uri? = null
     private var mGalleryUri: Uri? = null
-    private var mProfileUri: Uri? = null
+    private var featruedUri: Uri? = null
 //    private var imgProfile: AppCompatImageView? = null
     private var featured: Featured? = null
 
@@ -421,10 +421,10 @@ class RegisterActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (data != null && data.data != null) {
                 //val fileUri: Uri = data.data!!
-                mProfileUri = data.data!!
+                featruedUri = data.data!!
                 //mProfileUri = fileUri
                 //val a = mProfileUri.toString()
-                featured?.setFeatured(mProfileUri!!, true)
+                featured?.setFeatured(featruedUri!!, true)
                 //imgProfile?.setLocalImage(mProfileUri!!, true)
             } else {
                 warning("選擇圖片後，回傳為空值")
@@ -524,7 +524,7 @@ class RegisterActivity : BaseActivity() {
 
         for (formItem in formItems) {
             for ((enum, layout) in formItem) {
-                if (layout.isEmpty()) {
+                if (layout.isEmpty() || layout.value == "0") {
                     msg += enum.errMsg()
                 } else {
                     if (layout.visibility == View.VISIBLE) {
@@ -583,13 +583,11 @@ class RegisterActivity : BaseActivity() {
             warning(msg)
             return
         }
-
         //println(params)
 
-        val featured: String? = mProfileUri?.path
         loading.show()
 
-        MemberService.update(this, params, featured) { success ->
+        MemberService.update(this, params, featruedUri?.path) { success ->
             if (success) {
                 if (MemberService.success) {
                     runOnUiThread {

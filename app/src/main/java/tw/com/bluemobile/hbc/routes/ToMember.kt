@@ -22,8 +22,8 @@ interface ToMember {
         activity.startActivity(i)
     }
 
-    fun toMyPet(activity: BaseActivity) {
-        val i = Intent(activity, MemberPetActivity::class.java)
+    fun toMemberPetList(activity: BaseActivity) {
+        val i = Intent(activity, MemberPetListActivity::class.java)
         activity.startActivity(i)
     }
 

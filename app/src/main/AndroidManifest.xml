@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.MemberPetListActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.MemberPetActivity"
             android:exported="false" />
         <activity

@@ -77,4 +77,6 @@ dependencies {
     //loading
     implementation 'com.pnikosis:materialish-progress:1.7'
 
+    //refresh
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }

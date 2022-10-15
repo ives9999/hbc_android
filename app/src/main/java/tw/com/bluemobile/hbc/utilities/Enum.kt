@@ -79,28 +79,28 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
     }
 }
 
-enum class MyPetEnum(val englishName: String, val chineseName: String) {
+enum class MemberPetEnum(val englishName: String, val chineseName: String) {
 
     petName("name", "名稱"),
     type("type", "品種"),
     age("age", "年齡"),
     weight("weight", "體重"),
-    blood_type("bloodType", "血型"),
-    iDo("IDo", "願意捐血"),
-    traffic_fee("trafficFee", "車馬費"),
-    nutrient_fee("nutrientFee", "營養費"),
-    blood_image("bloodImage", "血檢資料"),
-    body_image("bodyImage", "體檢資料");
+    blood_type("blood_type", "血型"),
+    IDo("IDo", "願意捐血"),
+    traffic_fee("traffic_fee", "車馬費"),
+    nutrient_fee("nutrient_fee", "營養費"),
+    blood_image("blood_image", "血檢資料"),
+    body_image("body_image", "體檢資料");
 
     companion object {
-        fun enumFromString(value: String): MyPetEnum {
+        fun enumFromString(value: String): MemberPetEnum {
             return when (value) {
                 "name" -> petName
                 "type" -> type
                 "age" -> age
                 "weight" -> weight
                 "bloodType" -> blood_type
-                "IDo" -> iDo
+                "IDo" -> IDo
                 "trafficFee" -> traffic_fee
                 "nutrientFee" -> nutrient_fee
                 "bloodImage" -> blood_image
@@ -109,27 +109,38 @@ enum class MyPetEnum(val englishName: String, val chineseName: String) {
             }
         }
 
-        fun getMustEnum(): ArrayList<MyPetEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, iDo)
+        fun getMustEnum(): ArrayList<MemberPetEnum> {
+            return arrayListOf(petName, type, age, weight, blood_type, IDo)
         }
 
-        fun getNonImageEnum(): ArrayList<MyPetEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, iDo, traffic_fee, nutrient_fee)
+        fun getNonImageEnum(): ArrayList<MemberPetEnum> {
+            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee)
         }
 
-        fun getAllEnum(): ArrayList<MyPetEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, iDo, traffic_fee, nutrient_fee, blood_image, body_image)
+        fun getAllEnum(): ArrayList<MemberPetEnum> {
+            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
+        }
+    }
+
+    fun radioTextToDBName(text: String): String {
+        return when (text) {
+            "貓" -> "cat"
+            "狗" -> "dog"
+            "願意" -> "1"
+            "不願意" -> "0"
+
+            else -> ""
         }
     }
 
     fun errMsg(): String {
         return when (this) {
-            petName -> "請填郵件\n"
-            type -> "請填密碼\n"
-            age -> "請填確認密碼\n"
-            weight -> "請填真實姓名\n"
-            blood_type -> "請填暱稱\n"
-            iDo -> "請選擇縣市\n"
+            petName -> "請填名稱\n"
+            type -> "請選擇品種\n"
+            age -> "請填寫年齡\n"
+            weight -> "請填重量\n"
+            blood_type -> "請填寫血型\n"
+            IDo -> "請選擇是否願意捐血\n"
 
             else -> ""
         }

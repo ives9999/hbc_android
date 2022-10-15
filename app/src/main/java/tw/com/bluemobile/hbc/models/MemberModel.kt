@@ -242,7 +242,7 @@ class Member(val context: Context) {
 
     fun reset() {
 
-        MemberModel::class.memberProperties.forEach {
+        Member::class.memberProperties.forEach {
 
             val name = it.name
             val t = it.returnType
@@ -256,6 +256,7 @@ class Member(val context: Context) {
             session.edit().putString("dob", "").apply()
             session.edit().putInt("cartItemCount", 0).apply()
         }
+        //member.dump()
     }
 
 
@@ -283,15 +284,3 @@ class Member(val context: Context) {
     }
 }
 
-
-class MemberBankModel: BaseModel() {
-
-    var bank: String = ""
-    var branch: String = ""
-    var bank_code: Int = 0
-    var bank_account: String = ""
-
-    override fun filterRow() {
-        super.filterRow()
-    }
-}

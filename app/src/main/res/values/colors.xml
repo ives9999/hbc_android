@@ -12,4 +12,7 @@
     <color name="MEMBER_HOME_ICON_BG">#A8D5E2</color>
 
     <color name="colorPrimary">@color/TOP</color>
+
+    <color name="CELL_SELECTED">#444444</color>
+
 </resources>

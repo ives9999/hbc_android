@@ -103,7 +103,7 @@ class MemberActivity : BaseActivity() {
         //println(idx)
         when (memberHomeEnum) {
             MemberHomeEnum.account -> toRegister(this)
-            MemberHomeEnum.pet -> toMyPet(this)
+            MemberHomeEnum.pet -> toMemberPetList(this)
             MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
             MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)
             MemberHomeEnum.validate_mobile -> toValidate(this, ValidateEnum.mobile)
@@ -120,7 +120,9 @@ class MemberActivity : BaseActivity() {
                 //println(MemberService.jsonString)
                 val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
                 if (successModel != null) {
+                    member.reset()
                     successModel.model?.toSession(this, true)
+                    //member.dump()
                     runOnUiThread {
                         init()
                     }

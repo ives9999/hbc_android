@@ -83,7 +83,7 @@ open class BaseService {
 
     protected fun getBaseUrl() {
         isEmulator = _isEmulator()
-        isEmulator = true
+        //isEmulator = true
         BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
         URL_HOME = "$BASE_URL/"
     }
@@ -94,8 +94,8 @@ open class BaseService {
         val url: String = getOneURL()
 
         val _params: Map<String, String> = composeParams(params)
-//        println(url)
-//        println(_params.toJSON())
+        println(url)
+        println(_params.toJSON())
 
         val request: okhttp3.Request = getRequest(url, _params)
         okHttpClient.newCall(request).enqueue(object : Callback {
