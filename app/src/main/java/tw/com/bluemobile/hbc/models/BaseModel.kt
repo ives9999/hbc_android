@@ -6,8 +6,7 @@ import tw.com.bluemobile.hbc.extensions.telShow
 import tw.com.bluemobile.hbc.utilities.BASE_URL
 import kotlin.reflect.full.memberProperties
 import tw.com.bluemobile.hbc.utilities.Zones
-
-abstract class BaseModels<T: BaseModel> {
+class BaseModels<T: BaseModel> {
     var success: Boolean = true
     var msg: String = ""
     var page: Int = 0

@@ -56,9 +56,9 @@ open class BaseService {
         return result
     }
 
-    fun _simpleService(context: Context, url: String, params: Map<String, String>, complete: CompletionHandler) {
+    fun _simpleService(context: Context, url: String, params: Map<String, String>, complete: CompletionHandler, get: Boolean = false) {
 
-        val request: okhttp3.Request = getRequest(url, params)
+        val request: okhttp3.Request = getRequest(url, params, get)
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
@@ -94,8 +94,8 @@ open class BaseService {
         val url: String = getOneURL()
 
         val _params: Map<String, String> = composeParams(params)
-        println(url)
-        println(_params.toJSON())
+//        println(url)
+//        println(_params.toJSON())
 
         val request: okhttp3.Request = getRequest(url, _params)
         okHttpClient.newCall(request).enqueue(object : Callback {
@@ -122,17 +122,31 @@ open class BaseService {
 
     open fun getOneURL(): String { return "" }
 
-    fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
+    fun getRequest(url: String, params: Map<String, String>, get: Boolean = false): okhttp3.Request {
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+        if (!get) {
+            val j: JSONObject = JSONObject(params as Map<*, *>)
+            val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+            return okhttp3.Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .post(body)
+                .build()
+        } else {
+            var queryString: String = "?"
+            for ((key, value) in params) {
+                queryString += "$key=$value&"
+            }
 
-        return okhttp3.Request.Builder()
-            .url(url)
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json; charset=utf-8")
-            .post(body)
-            .build()
+            val _url: String = url + queryString
+            return okhttp3.Request.Builder()
+                .url(_url)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .get()
+                .build()
+        }
     }
 
     open fun getUpdateURL(): String { return "" }

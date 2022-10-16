@@ -89,6 +89,18 @@ object MemberService: BaseService() {
         })
     }
 
+    fun getPetList(context: Context, page: Int, perPage: Int, complete: CompletionHandler) {
+
+        getBaseUrl()
+        val url = URL_HOME + "member/getPetList"
+        val params: MutableMap<String, String> = mutableMapOf(
+            "page" to page.toString(),
+            "perPage" to perPage.toString()
+        )
+        val _params: Map<String, String> = composeParams(params, true)
+        _simpleService(context, url, _params, complete, true)
+    }
+
     fun login(
         context: Context,
         params: MutableMap<String, String>,

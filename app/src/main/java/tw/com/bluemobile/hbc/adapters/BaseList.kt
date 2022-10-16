@@ -18,24 +18,23 @@ class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
     recyclerView: RecyclerView,
     cellResource: Int,
     viewHolderConstructor: viewHolder<T, U>,
-    private val tableType: Type,
     didSelect: didSelectClosure<U>,
     private val selected: selectedClosure<U>
 ) {
-    val adapter: BaseAdapter<T, U>
+    //val adapter: BaseAdapter<T, U>
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
-        recyclerView.adapter = adapter
+        //adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
+        //recyclerView.adapter = adapter
     }
 }
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T,
-    private val didSelect: didSelectClosure<U>,
-    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
+    private val viewHolderConstructor: (Context, View)-> T
+//    private val didSelect: didSelectClosure<U>,
+//    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
 ) : RecyclerView.Adapter<T>() {
 
     var items: ArrayList<U> = arrayListOf()
@@ -54,28 +53,28 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val viewHolder: View = inflater.inflate(resource, parent, false)
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, viewHolder, didSelect, selected)
+        return viewHolderConstructor(parent.context, viewHolder)
     }
 }
 
 open class BaseViewHolder<U: BaseModel>(
     val context: Context,
-    val viewHolder: View,
-    val didSelect: didSelectClosure<U>,
-    val selected: selectedClosure<U>
+    val viewHolder: View
+//    val didSelect: didSelectClosure<U>,
+//    val selected: selectedClosure<U>
 ) : RecyclerView.ViewHolder(viewHolder) {
 
     open fun bind(row: U, idx: Int) {
 
         viewHolder.setOnClickListener {
-            didSelect?.let { it1 -> it1(row, idx) }
+            //didSelect?.let { it1 -> it1(row, idx) }
             //list2CellDelegate?.cellClick(row)
         }
 
-        val isSelected = selected?.let { it(row) } == true
-        if (isSelected) {
-            val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
-            //viewHolder.backgroundColor = color
-        }
+//        val isSelected = selected?.let { it(row) } == true
+//        if (isSelected) {
+//            val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
+//            //viewHolder.backgroundColor = color
+//        }
     }
 }

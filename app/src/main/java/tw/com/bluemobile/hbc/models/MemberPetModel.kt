@@ -6,7 +6,7 @@ class MemberPetModel: BaseModel() {
     var age: Int = 0
     var weight: Int = 0
     var blood_type: String = ""
-    var IDo: Boolean = false
+    var IDo: Int = 0
     var traffic_fee: Int = 0
     var nutrient_fee: Int = 0
     var blood_image: String = ""
