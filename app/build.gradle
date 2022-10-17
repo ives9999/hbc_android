@@ -79,4 +79,9 @@ dependencies {
 
     //refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    //recyclerview
+    //seems don't include
+    //implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
 }

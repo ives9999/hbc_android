@@ -1,12 +1,16 @@
 package tw.com.bluemobile.hbc.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.BaseModel
 import java.lang.reflect.Type
 
@@ -21,30 +25,37 @@ class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
     didSelect: didSelectClosure<U>,
     private val selected: selectedClosure<U>
 ) {
-    //val adapter: BaseAdapter<T, U>
+    val adapter: BaseAdapter<T, U>
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        //adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
-        //recyclerView.adapter = adapter
+        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
+        recyclerView.adapter = adapter
+    }
+
+    fun setRows(rows: ArrayList<U>, isRefresh: Boolean = true) {
+        adapter.rows = rows
+        if (isRefresh) {
+            adapter.notifyDataSetChanged()
+        }
     }
 }
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View)-> T
-//    private val didSelect: didSelectClosure<U>,
-//    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
+    private val viewHolderConstructor: (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T,
+    private val didSelect: didSelectClosure<U>,
+    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
 ) : RecyclerView.Adapter<T>() {
 
-    var items: ArrayList<U> = arrayListOf()
+    var rows: ArrayList<U> = arrayListOf()
 
     override fun getItemCount(): Int {
-        return items.size
+        return rows.size
     }
 
     override fun onBindViewHolder(holder: T, position: Int) {
-        val row: U = items[position]
+        val row: U = rows[position]
 
         holder.bind(row, position)
     }
@@ -53,21 +64,21 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val viewHolder: View = inflater.inflate(resource, parent, false)
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, viewHolder)
+        return viewHolderConstructor(parent.context, viewHolder, didSelect, selected)
     }
 }
 
 open class BaseViewHolder<U: BaseModel>(
     val context: Context,
-    val viewHolder: View
-//    val didSelect: didSelectClosure<U>,
-//    val selected: selectedClosure<U>
+    val viewHolder: View,
+    val didSelect: didSelectClosure<U>,
+    val selected: selectedClosure<U>
 ) : RecyclerView.ViewHolder(viewHolder) {
 
     open fun bind(row: U, idx: Int) {
 
         viewHolder.setOnClickListener {
-            //didSelect?.let { it1 -> it1(row, idx) }
+            didSelect?.let { it1 -> it1(row, idx) }
             //list2CellDelegate?.cellClick(row)
         }
 
@@ -76,5 +87,17 @@ open class BaseViewHolder<U: BaseModel>(
 //            val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
 //            //viewHolder.backgroundColor = color
 //        }
+    }
+
+    fun setIV(res: Int, name: String) {
+        viewHolder.findViewById<ImageView>(res) ?. let {
+            it.setImage(name)
+        }
+    }
+
+    fun setTV(res: Int, value: String) {
+        viewHolder.findViewById<TextView>(res) ?. let {
+            it.setText(value)
+        }
     }
 }
