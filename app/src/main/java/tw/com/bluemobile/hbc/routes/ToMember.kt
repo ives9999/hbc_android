@@ -22,6 +22,13 @@ interface ToMember {
         activity.startActivity(i)
     }
 
+    fun toMemberPetEdit(activity: BaseActivity, token: String? = null) {
+        val i = Intent(activity, MemberPetEditActivity::class.java)
+        i.putExtra("memberPetToken", token)
+        val memberPetListActivity: MemberPetListActivity = activity as MemberPetListActivity
+        memberPetListActivity.memberPetEditAR.launch(i)
+    }
+
     fun toMemberPetList(activity: BaseActivity) {
         val i = Intent(activity, MemberPetListActivity::class.java)
         activity.startActivity(i)

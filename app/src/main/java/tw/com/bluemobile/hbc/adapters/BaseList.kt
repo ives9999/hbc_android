@@ -50,6 +50,8 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
 
     var rows: ArrayList<U> = arrayListOf()
 
+    var onEditClick: ((Int) -> Unit)? = null
+
     override fun getItemCount(): Int {
         return rows.size
     }
@@ -62,22 +64,26 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val viewHolder: View = inflater.inflate(resource, parent, false)
+        val view: View = inflater.inflate(resource, parent, false)
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, viewHolder, didSelect, selected)
+        val viewHolder = viewHolderConstructor(parent.context, view, didSelect, selected)
+        viewHolder.onEditClick = onEditClick
+        return viewHolder
     }
 }
 
 open class BaseViewHolder<U: BaseModel>(
     val context: Context,
-    val viewHolder: View,
+    val view: View,
     val didSelect: didSelectClosure<U>,
     val selected: selectedClosure<U>
-) : RecyclerView.ViewHolder(viewHolder) {
+) : RecyclerView.ViewHolder(view) {
+
+    var onEditClick: ((Int) -> Unit)? = null
 
     open fun bind(row: U, idx: Int) {
 
-        viewHolder.setOnClickListener {
+        view.setOnClickListener {
             didSelect?.let { it1 -> it1(row, idx) }
             //list2CellDelegate?.cellClick(row)
         }
@@ -90,13 +96,13 @@ open class BaseViewHolder<U: BaseModel>(
     }
 
     fun setIV(res: Int, name: String) {
-        viewHolder.findViewById<ImageView>(res) ?. let {
+        view.findViewById<ImageView>(res) ?. let {
             it.setImage(name)
         }
     }
 
     fun setTV(res: Int, value: String) {
-        viewHolder.findViewById<TextView>(res) ?. let {
+        view.findViewById<TextView>(res) ?. let {
             it.setText(value)
         }
     }

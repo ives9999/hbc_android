@@ -14,20 +14,28 @@ class Top @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nul
     RelativeLayout(context, attrs, defStyleAttr) {
 
     val view = View.inflate(context, R.layout.top, this)
-    private var prevIV: ImageButton = view.findViewById(R.id.prev)
+    private var prevIB: ImageButton = view.findViewById(R.id.prevIB)
+    private var addIB: ImageButton = view.findViewById(R.id.addIB)
     private var titleTV: TextView = view.findViewById(R.id.title)
 
     init {
         (context as? BaseActivity) ?. let { delegate->
-            prevIV.setOnClickListener {
+            prevIB.setOnClickListener {
                 delegate.prev()
+            }
+
+            addIB.setOnClickListener {
+                delegate.add()
             }
         }
     }
 
+    fun showAdd(isShow: Boolean = false) {
+        addIB.visibility = (isShow then { VISIBLE }) ?: GONE
+    }
 
     fun showPrev(isShow: Boolean = true) {
-        prevIV.visibility = (isShow then { VISIBLE }) ?: INVISIBLE
+        prevIB.visibility = (isShow then { VISIBLE }) ?: GONE
     }
 
     fun setTitle(title: String) {

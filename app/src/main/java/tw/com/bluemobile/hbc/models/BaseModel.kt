@@ -1,6 +1,7 @@
 package tw.com.bluemobile.hbc.models
 
 import tw.com.bluemobile.hbc.extensions.mobileShow
+import tw.com.bluemobile.hbc.extensions.noSec
 import tw.com.bluemobile.hbc.extensions.noTime
 import tw.com.bluemobile.hbc.extensions.telShow
 import tw.com.bluemobile.hbc.utilities.BASE_URL
@@ -65,11 +66,11 @@ abstract class BaseModel {
         }
 
         if (created_at.isNotEmpty()) {
-            created_at_show = created_at.noTime()
+            created_at_show = created_at.noSec()
         }
 
         if (updated_at.isNotEmpty()) {
-            updated_at_show = updated_at.noTime()
+            updated_at_show = updated_at.noSec()
         }
         if (content == null) {
             content = ""

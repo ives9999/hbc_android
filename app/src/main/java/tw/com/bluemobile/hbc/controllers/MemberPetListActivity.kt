@@ -1,13 +1,18 @@
 package tw.com.bluemobile.hbc.controllers
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -15,6 +20,7 @@ import com.google.gson.reflect.TypeToken
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.*
 import tw.com.bluemobile.hbc.extensions.setImage
+import tw.com.bluemobile.hbc.extensions.setInfo
 import tw.com.bluemobile.hbc.models.BaseModel
 import tw.com.bluemobile.hbc.models.BaseModels
 import tw.com.bluemobile.hbc.models.MemberPetModel
@@ -35,6 +41,7 @@ class MemberPetListActivity : ListActivity() {
         setContentView(R.layout.activity_member_pet_list)
 
         setTop(true, "我的寶貝")
+        top?.showAdd(true)
 
         init()
     }
@@ -49,11 +56,8 @@ class MemberPetListActivity : ListActivity() {
 //            adapter = MyAdapter()
 
             baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder, this::didSelect, this::listSetSelected)
-//            adapter = BaseAdapter(R.layout.list_member_pet, ::MemberPetListViewHolder)
-//            it.adapter = adapter
+            baseList.adapter.onEditClick = onEditClick
         }
-
-
 
         refresh()
     }
@@ -73,17 +77,11 @@ class MemberPetListActivity : ListActivity() {
 
                 val baseModels = jsonToModel<BaseModels<MemberPetModel>>(MemberService.jsonString)
                 val rows: ArrayList<MemberPetModel> = baseModels?.rows .let { baseModels!!.rows } ?: arrayListOf<MemberPetModel>()
-                baseList.setRows(rows)
-                //baseList.adapter.items = rows
-                //baseList.adapter.notifyDataSetChanged()
-                //MyTable2IF
-//                val b: Boolean = showTableView(tableView, MemberService.jsonString)
-//                if (b) {
-//                    tableView.notifyDataSetChanged()
-//                } else {
-//                    val rootView: ViewGroup = getRootView()
-//                    rootView.setInfo(this, "目前暫無資料")
-//                }
+                if (rows.size > 0) {
+                    baseList.setRows(rows)
+                } else {
+                    showNoRows()
+                }
                 loading.hide()
             }
         }
@@ -98,6 +96,53 @@ class MemberPetListActivity : ListActivity() {
         return false
     }
 
+    override fun add() {
+        super.add()
+        toMemberPetEdit(this)
+    }
+
+    val onEditClick: ((Int) -> Unit) = { idx ->
+        println(idx)
+    }
+
+    val memberPetEditAR: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            val i: Intent? = res.data
+            if (i != null) {
+                refresh()
+            }
+        }
+    }
+
+}
+
+class MemberPetListViewHolder(
+    context: Context,
+    view: View,
+    didSelect: didSelectClosure<MemberPetModel>,
+    selected: selectedClosure<MemberPetModel>
+): BaseViewHolder<MemberPetModel>(context, view, didSelect, selected) {
+
+    //val nameTV: TextView? = null
+
+    override fun bind(row: MemberPetModel, idx: Int) {
+        super.bind(row, idx)
+
+        row.filterRow()
+        setTV(R.id.nameTV, row.name)
+        setTV(R.id.blood_typeTV, row.blood_type)
+        setTV(R.id.weightTV, row.weight.toString())
+        setTV(R.id.ageTV, row.age.toString())
+        setTV(R.id.created_at, row.created_at_show)
+        setIV(R.id.typeIV, "ic_${row.type}")
+
+        view.findViewById<ImageView>(R.id.editIV) ?. let {
+            it.setOnClickListener {
+                onEditClick?.invoke(idx)
+            }
+        }
+    }
 }
 
 //class MyAdapter: RecyclerView.Adapter<MyViewHolder>() {
@@ -126,24 +171,3 @@ class MemberPetListActivity : ListActivity() {
 //
 //    }
 //}
-
-class MemberPetListViewHolder(
-    context: Context,
-    viewHolder: View,
-    didSelect: didSelectClosure<MemberPetModel>,
-    selected: selectedClosure<MemberPetModel>
-): BaseViewHolder<MemberPetModel>(context, viewHolder, didSelect, selected) {
-
-    //val nameTV: TextView? = null
-
-    override fun bind(row: MemberPetModel, idx: Int) {
-        super.bind(row, idx)
-
-        setTV(R.id.nameTV, row.name)
-        setTV(R.id.blood_typeTV, row.blood_type)
-        setTV(R.id.weightTV, row.weight.toString())
-        setTV(R.id.ageTV, row.age.toString())
-
-        setIV(R.id.typeIV, "ic_${row.type}")
-    }
-}

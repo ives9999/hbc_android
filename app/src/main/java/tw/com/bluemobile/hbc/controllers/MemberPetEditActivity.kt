@@ -27,8 +27,9 @@ import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
 import java.lang.Exception
 
-class MemberPetActivity : BaseActivity() {
+class MemberPetEditActivity : BaseActivity() {
 
+    var memberPetToken: String? = null
     var bloodImage: UploadImage? = null
     var bodyImge: UploadImage? = null
     var bloodImageUri: Uri? = null
@@ -41,19 +42,23 @@ class MemberPetActivity : BaseActivity() {
     var iDoRadio: TwoRadio? = null
 
     private val initData: HashMap<String, String> = hashMapOf(
-        MemberPetEnum.petName.englishName to "幸運貓",
-        MemberPetEnum.type.englishName to "狗",
-        MemberPetEnum.age.englishName to "5",
-        MemberPetEnum.weight.englishName to "10",
-        MemberPetEnum.blood_type.englishName to "A",
-        MemberPetEnum.IDo.englishName to "願意",
-        MemberPetEnum.traffic_fee.englishName to "100",
-        MemberPetEnum.nutrient_fee.englishName to "200"
+//        MemberPetEnum.petName.englishName to "幸運貓",
+//        MemberPetEnum.type.englishName to "狗",
+//        MemberPetEnum.age.englishName to "5",
+//        MemberPetEnum.weight.englishName to "10",
+//        MemberPetEnum.blood_type.englishName to "A",
+//        MemberPetEnum.IDo.englishName to "願意",
+//        MemberPetEnum.traffic_fee.englishName to "100",
+//        MemberPetEnum.nutrient_fee.englishName to "200"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_pet)
+        setContentView(R.layout.activity_member_pet_edit)
+
+        if (intent.hasExtra("token")) {
+            memberPetToken = intent.getStringExtra("token")
+        }
 
         setTop(true, "我的寶貝")
 

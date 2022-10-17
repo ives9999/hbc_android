@@ -153,7 +153,7 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
 
 enum class PasswordEnum(val englishName: String, val chineseName: String) {
     forget("forget", "忘記密碼"),
-    reset("reset", "重設密碼"),
+    reset("reset", "更改密碼"),
     none("none", "錯誤");
 
     companion object {

@@ -7,6 +7,7 @@
         <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
         <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
         <item name="colorPrimaryDark">@color/TOP</item>
+        <item name="colorPrimaryVariant">@color/TOP</item>
     </style>
 
     <style name="MyActionBarButtonStyle" parent="Widget.AppCompat.ActionButton">
@@ -24,6 +25,8 @@
     <style name="Theme.Hbc.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/TOP</item>
+        <item name="colorPrimaryVariant">@color/TOP</item>
     </style>
 
     <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">

@@ -33,7 +33,7 @@
             android:name=".controllers.MemberPetListActivity"
             android:exported="false" />
         <activity
-            android:name=".controllers.MemberPetActivity"
+            android:name=".controllers.MemberPetEditActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.BankAccountActivity"

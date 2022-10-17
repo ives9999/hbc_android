@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import com.example.awesomedialog.*
 import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
@@ -21,9 +22,13 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
     var msg: String = "" //目前使用在傳送錯誤訊息
     lateinit var loading: Loading
+    var top: Top? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    open fun add() {
     }
 
     open fun cancel() {
@@ -74,6 +79,7 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
         findViewById<Top>(R.id.top) ?. let { itTop->
             itTop.showPrev(isPrevShow)
+            top = itTop
         }
 
         setTitle(title)
