@@ -46,30 +46,18 @@ class MemberPetListActivity : ListActivity() {
 
     override fun init() {
         super.init()
-        loading = Loading(this)
 
-        findViewById<RecyclerView>(R.id.list) ?. let {
+        baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder)
 
-            recyclerView = it
-            it.layoutManager = LinearLayoutManager(this)
-
-            baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder)
-
-            baseList.adapter.onRowClick = onRowClick
-            baseList.adapter.onEditClick = onEditClick
-            baseList.adapter.onDeleteClick = onDeleteClick
-            baseList.adapter.onRefreshClick = onRefreshClick
-        }
+        baseList.adapter.onRowClick = onRowClick
+        baseList.adapter.onEditClick = onEditClick
+        baseList.adapter.onDeleteClick = onDeleteClick
+        baseList.adapter.onRefreshClick = onRefreshClick
 
         refresh()
     }
 
-    private fun refresh() {
-        page = 1
-        getList()
-    }
-
-    private fun getList() {
+    override fun getList() {
 
         loading.show()
         MemberService.getPetList(this, page, perPage) { success ->
@@ -81,6 +69,7 @@ class MemberPetListActivity : ListActivity() {
                 rows = baseModels?.rows .let { baseModels!!.rows } ?: arrayListOf<MemberPetModel>()
                 if (rows.size > 0) {
                     baseList.setRows(rows)
+                    println(lastVisibleItemPosition)
                 } else {
                     showNoRows()
                 }
@@ -110,10 +99,6 @@ class MemberPetListActivity : ListActivity() {
 
     val onDeleteClick: ((Int) -> Unit) = { idx ->
         val row: MemberPetModel = rows[idx]
-    }
-
-    val onRefreshClick: (() -> Unit) = {
-        refresh()
     }
 
     val memberPetEditAR: ActivityResultLauncher<Intent> = registerForActivityResult(
