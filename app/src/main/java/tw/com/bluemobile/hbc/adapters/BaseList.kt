@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,22 +15,17 @@ import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.BaseModel
 import java.lang.reflect.Type
 
-typealias viewHolder<T, U> = (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T
-typealias didSelectClosure<U> = ((U, idx: Int) -> Unit)?
-typealias selectedClosure<U> = ((U) -> Boolean)?
+typealias viewHolder<T> = (Context, View)-> T
 
 class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
     recyclerView: RecyclerView,
     cellResource: Int,
-    viewHolderConstructor: viewHolder<T, U>,
-    didSelect: didSelectClosure<U>,
-    private val selected: selectedClosure<U>
+    viewHolderConstructor: viewHolder<T>
 ) {
     val adapter: BaseAdapter<T, U>
 
     init {
-        //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
+        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor)
         recyclerView.adapter = adapter
     }
 
@@ -43,14 +39,16 @@ class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T,
-    private val didSelect: didSelectClosure<U>,
-    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
+    private val viewHolderConstructor: (Context, View)-> T
 ) : RecyclerView.Adapter<T>() {
 
     var rows: ArrayList<U> = arrayListOf()
 
+    var onRowClick: ((Int) -> Unit)? = null
+
     var onEditClick: ((Int) -> Unit)? = null
+    var onDeleteClick: ((Int) -> Unit)? = null
+    var onRefreshClick: (() -> Unit)? = null
 
     override fun getItemCount(): Int {
         return rows.size
@@ -60,14 +58,18 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
         val row: U = rows[position]
 
         holder.bind(row, position)
+
+        holder.setOnRowClickListener(position, onRowClick)
+
+        holder.setOnEditClickListener(position, onEditClick)
+        holder.setOnDeleteClickListener(position, onDeleteClick)
+        holder.setOnRefreshClickListener(onRefreshClick)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(resource, parent, false)
-        //return T(parent.context, viewHolder, list1CellDelegate)
-        val viewHolder = viewHolderConstructor(parent.context, view, didSelect, selected)
-        viewHolder.onEditClick = onEditClick
+        val viewHolder = viewHolderConstructor(parent.context, view)
         return viewHolder
     }
 }
@@ -75,24 +77,9 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
 open class BaseViewHolder<U: BaseModel>(
     val context: Context,
     val view: View,
-    val didSelect: didSelectClosure<U>,
-    val selected: selectedClosure<U>
 ) : RecyclerView.ViewHolder(view) {
 
-    var onEditClick: ((Int) -> Unit)? = null
-
     open fun bind(row: U, idx: Int) {
-
-        view.setOnClickListener {
-            didSelect?.let { it1 -> it1(row, idx) }
-            //list2CellDelegate?.cellClick(row)
-        }
-
-//        val isSelected = selected?.let { it(row) } == true
-//        if (isSelected) {
-//            val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
-//            //viewHolder.backgroundColor = color
-//        }
     }
 
     fun setIV(res: Int, name: String) {
@@ -104,6 +91,36 @@ open class BaseViewHolder<U: BaseModel>(
     fun setTV(res: Int, value: String) {
         view.findViewById<TextView>(res) ?. let {
             it.setText(value)
+        }
+    }
+
+    fun setOnRowClickListener(idx: Int, onRowClickListener: ((Int) -> Unit)?) {
+        view.setOnClickListener {
+            onRowClickListener?.invoke(idx)
+        }
+    }
+
+    fun setOnEditClickListener(idx: Int, onEditClick: ((Int) -> Unit)?) {
+        view.findViewById<ImageView>(R.id.editIV) ?. let {
+            it.setOnClickListener {
+                onEditClick?.invoke(idx)
+            }
+        }
+    }
+
+    fun setOnDeleteClickListener(idx: Int, onDeleteClick: ((Int) -> Unit)?) {
+        view.findViewById<ImageView>(R.id.deleteIV) ?. let {
+            it.setOnClickListener {
+                onDeleteClick?.invoke(idx)
+            }
+        }
+    }
+
+    fun setOnRefreshClickListener(onRefreshClick: (() -> Unit)?) {
+        view.findViewById<ImageView>(R.id.refreshIV) ?. let {
+            it.setOnClickListener {
+                onRefreshClick?.invoke()
+            }
         }
     }
 }

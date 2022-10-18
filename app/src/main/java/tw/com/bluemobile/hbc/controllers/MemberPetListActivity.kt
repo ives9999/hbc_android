@@ -31,10 +31,8 @@ import java.lang.reflect.Type
 
 class MemberPetListActivity : ListActivity() {
 
-    //private val modelType: Type = object : TypeToken<BaseModels<MemberPetModel>>() {}.type
     lateinit var baseList: BaseList<MemberPetListViewHolder, MemberPetModel>
-//    lateinit var adapter: BaseAdapter<MemberPetListViewHolder, MemberPetModel>
-//    lateinit var adapter: MyAdapter
+    var rows: ArrayList<MemberPetModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +49,16 @@ class MemberPetListActivity : ListActivity() {
         loading = Loading(this)
 
         findViewById<RecyclerView>(R.id.list) ?. let {
+
             recyclerView = it
             it.layoutManager = LinearLayoutManager(this)
-//            adapter = MyAdapter()
 
-            baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder, this::didSelect, this::listSetSelected)
+            baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder)
+
+            baseList.adapter.onRowClick = onRowClick
             baseList.adapter.onEditClick = onEditClick
+            baseList.adapter.onDeleteClick = onDeleteClick
+            baseList.adapter.onRefreshClick = onRefreshClick
         }
 
         refresh()
@@ -76,7 +78,7 @@ class MemberPetListActivity : ListActivity() {
                 //println(MemberService.jsonString)
 
                 val baseModels = jsonToModel<BaseModels<MemberPetModel>>(MemberService.jsonString)
-                val rows: ArrayList<MemberPetModel> = baseModels?.rows .let { baseModels!!.rows } ?: arrayListOf<MemberPetModel>()
+                rows = baseModels?.rows .let { baseModels!!.rows } ?: arrayListOf<MemberPetModel>()
                 if (rows.size > 0) {
                     baseList.setRows(rows)
                 } else {
@@ -87,8 +89,13 @@ class MemberPetListActivity : ListActivity() {
         }
     }
 
-    fun didSelect(row: MemberPetModel, idx: Int) {
-        println(row)
+    override fun add() {
+        super.add()
+        toMemberPetEdit(this)
+    }
+
+    val onRowClick: ((Int) -> Unit) = { idx ->
+        println(idx)
     }
 
     fun listSetSelected(row: MemberPetModel): Boolean {
@@ -96,13 +103,17 @@ class MemberPetListActivity : ListActivity() {
         return false
     }
 
-    override fun add() {
-        super.add()
-        toMemberPetEdit(this)
+    val onEditClick: ((Int) -> Unit) = { idx ->
+        val row: MemberPetModel = rows[idx]
+        toMemberPetEdit(this, row.token)
     }
 
-    val onEditClick: ((Int) -> Unit) = { idx ->
-        println(idx)
+    val onDeleteClick: ((Int) -> Unit) = { idx ->
+        val row: MemberPetModel = rows[idx]
+    }
+
+    val onRefreshClick: (() -> Unit) = {
+        refresh()
     }
 
     val memberPetEditAR: ActivityResultLauncher<Intent> = registerForActivityResult(
@@ -114,17 +125,12 @@ class MemberPetListActivity : ListActivity() {
             }
         }
     }
-
 }
 
 class MemberPetListViewHolder(
     context: Context,
-    view: View,
-    didSelect: didSelectClosure<MemberPetModel>,
-    selected: selectedClosure<MemberPetModel>
-): BaseViewHolder<MemberPetModel>(context, view, didSelect, selected) {
-
-    //val nameTV: TextView? = null
+    view: View
+): BaseViewHolder<MemberPetModel>(context, view) {
 
     override fun bind(row: MemberPetModel, idx: Int) {
         super.bind(row, idx)
@@ -136,12 +142,6 @@ class MemberPetListViewHolder(
         setTV(R.id.ageTV, row.age.toString())
         setTV(R.id.created_at, row.created_at_show)
         setIV(R.id.typeIV, "ic_${row.type}")
-
-        view.findViewById<ImageView>(R.id.editIV) ?. let {
-            it.setOnClickListener {
-                onEditClick?.invoke(idx)
-            }
-        }
     }
 }
 

@@ -56,8 +56,9 @@ class MemberPetEditActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_pet_edit)
 
-        if (intent.hasExtra("token")) {
-            memberPetToken = intent.getStringExtra("token")
+        if (intent.hasExtra("memberPetToken")) {
+            memberPetToken = intent.getStringExtra("memberPetToken")
+            //println(memberPetToken)
         }
 
         setTop(true, "我的寶貝")
