@@ -11,32 +11,43 @@ import java.lang.reflect.Type
 
 infix fun <T: Any?> Boolean?.then(block: () -> T): T? = if (this == true) block() else null
 
-inline fun <reified T> genericType(): Type = object : TypeToken<T>() {}.type
+inline fun <reified U> genericType(): Type = object : TypeToken<U>() {}.type
 
-inline fun <reified T> jsonToModel(jsonString: String): T? {
+inline fun <reified U> jsonToModel(jsonString: String): U? {
+    var u: U? = null
+    try {
+        val modelType: Type = genericType<U>()
+        u = Gson().fromJson<U>(jsonString, modelType)
+    } catch (e: Exception) {
+        println(e.localizedMessage)
+    }
+
+    return u
+}
+
+inline fun <reified U> jsonToModelForList(jsonString: String, modelType: Type): U? {
+    var u: U? = null
+    try {
+        u = Gson().fromJson<U>(jsonString, modelType)
+    } catch (e: Exception) {
+        println(e.localizedMessage)
+    }
+
+    return u
+}
+
+inline fun <reified T> jsonToModelForOne(jsonString: String): T? {
+
     var t: T? = null
     try {
-        val modelType: Type = genericType<T>()
-        t = Gson().fromJson<T>(jsonString, modelType)
-    } catch (e: Exception) {
+        t = Gson().fromJson<T>(jsonString, T::class.java)
+    } catch (e: java.lang.Exception) {
+        //Global.message = e.localizedMessage
         println(e.localizedMessage)
     }
 
     return t
 }
-
-//inline fun <reified T> jsonToModel(jsonString: String): T? {
-//
-//    var t: T? = null
-//    try {
-//        t = Gson().fromJson<T>(jsonString, T::class.java)
-//    } catch (e: java.lang.Exception) {
-//        //Global.message = e.localizedMessage
-//        println(e.localizedMessage)
-//    }
-//
-//    return t
-//}
 
 infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<String, String> {
     val result = this.toMutableMap()

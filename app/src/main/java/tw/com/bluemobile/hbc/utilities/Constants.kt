@@ -39,7 +39,7 @@ val VALIDATE_KEY: String = "validate"
 val ZIP_KEY: String = "zip"
 
 
-val PARAMS: HashMap<String, String> = hashMapOf()
+val PARAMS: HashMap<String, String> = hashMapOf("device" to "app")
 
 const val REMOTE_BASE_URL = "https://hbc.bluemobile.com.tw"
 //const val LOCALHOST_BASE_URL = "https://hbc.bluemobile.com.tw"

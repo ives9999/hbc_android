@@ -15,34 +15,35 @@ import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.BaseModel
 import java.lang.reflect.Type
 
+
+//class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
+//    recyclerView: RecyclerView,
+//    cellResource: Int,
+//    viewHolderConstructor: viewHolder<T>
+//) {
+//    val adapter: BaseAdapter<T, U>
+//
+//    init {
+//        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor)
+//        recyclerView.adapter = adapter
+//    }
+//
+//    fun setRows(rows: ArrayList<U>, isRefresh: Boolean = true) {
+//        adapter.setRows(rows)
+//        if (isRefresh) {
+//            adapter.notifyDataSetChanged()
+//        }
+//    }
+//}
+
 typealias viewHolder<T> = (Context, View)-> T
-
-class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
-    recyclerView: RecyclerView,
-    cellResource: Int,
-    viewHolderConstructor: viewHolder<T>
-) {
-    val adapter: BaseAdapter<T, U>
-
-    init {
-        adapter = BaseAdapter<T, U>(cellResource, viewHolderConstructor)
-        recyclerView.adapter = adapter
-    }
-
-    fun setRows(rows: ArrayList<U>, isRefresh: Boolean = true) {
-        adapter.rows = rows
-        if (isRefresh) {
-            adapter.notifyDataSetChanged()
-        }
-    }
-}
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View)-> T
+    private val viewHolderConstructor: viewHolder<T>
 ) : RecyclerView.Adapter<T>() {
 
-    var rows: ArrayList<U> = arrayListOf()
+    private var rows: ArrayList<U> = arrayListOf()
 
     var onRowClick: ((Int) -> Unit)? = null
 
@@ -71,6 +72,10 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
         val view: View = inflater.inflate(resource, parent, false)
         val viewHolder = viewHolderConstructor(parent.context, view)
         return viewHolder
+    }
+
+    fun setRows(rows: ArrayList<U>) {
+        this.rows += rows
     }
 }
 

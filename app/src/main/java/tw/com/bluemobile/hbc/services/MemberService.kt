@@ -101,6 +101,16 @@ object MemberService: BaseService() {
         _simpleService(context, url, _params, complete, true)
     }
 
+    fun postPetOne(context: Context, params: MutableMap<String, String>, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
+        getBaseUrl()
+        val url: String = URL_HOME + "member/postPetOne"
+
+        val _params: Map<String, String> = composeParams(params)
+//        println(url)
+//        println(_params.toJSON())
+        _simpleService(context, url, _params, complete)
+    }
+
     fun login(
         context: Context,
         params: MutableMap<String, String>,

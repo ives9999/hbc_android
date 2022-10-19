@@ -1,7 +1,6 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,31 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.adapters.BaseList
+import tw.com.bluemobile.hbc.adapters.BaseAdapter
+import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.extensions.setInfo
 import tw.com.bluemobile.hbc.models.BaseModel
-import tw.com.bluemobile.hbc.models.MemberPetModel
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.PERPAGE
+import tw.com.bluemobile.hbc.models.BaseModels
+import tw.com.bluemobile.hbc.utilities.*
+import java.lang.reflect.Type
 
-
-open class ListActivity<U: BaseModel>: BaseActivity() {
+open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
 
     open var rows: ArrayList<U> = arrayListOf()
 
-    var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: BaseAdapter<T, U>
 
     //RecycleView scroll
-    //private lateinit var scrollListener: RecyclerView.OnScrollListener
-    lateinit var recyelerViewLinearLayoutManager: LinearLayoutManager
-//    val lastVisibleItemPosition: Int
-//        get() = recyelerViewLinearLayoutManager.findLastVisibleItemPosition()
+    protected lateinit var scrollListener: BaseEndlessRecyclerViewScrollListener
+    private lateinit var recyelerViewLinearLayoutManager: LinearLayoutManager
 
-
-//    var scrollListener: BaseEndlessRecyclerViewScrollListener? = null
-    //var refreshLayout: SwipeRefreshLayout? = null
-
-    protected var page: Int = 1
+    private var page: Int = 1
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
@@ -57,33 +51,69 @@ open class ListActivity<U: BaseModel>: BaseActivity() {
         findViewById<RecyclerView>(R.id.list) ?. let {
 
             recyclerView = it
+            recyclerView.adapter = adapter
             recyelerViewLinearLayoutManager = LinearLayoutManager(this)
-            recyclerView?.layoutManager = recyelerViewLinearLayoutManager
+            recyclerView.layoutManager = recyelerViewLinearLayoutManager
+
             //setRecyclerViewScrollListener()
-            val scrollListener = BaseEndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager)
-            recyclerView?.addOnScrollListener(scrollListener)
+            scrollListener = BaseEndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager)
+            recyclerView.addOnScrollListener(scrollListener)
         }
 
+        adapter.onRowClick = onRowClick
+        adapter.onEditClick = onEditClick
+        adapter.onDeleteClick = onDeleteClick
+        adapter.onRefreshClick = onRefreshClick
+    }
+
+    protected fun countTotalPage() {
+        val _totalPage: Int = totalCount / perPage
+        totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
     }
 
     open fun getList(page: Int, perPage: Int) {}
 
     protected fun refresh() {
         page = 1
+        rows.clear()
+        adapter.setRows(rows)
+        adapter.notifyDataSetChanged()
+        scrollListener.resetState()
         getList(page, PERPAGE)
     }
 
-//    open fun setRows(rows: ArrayList<U>, isRefresh: Boolean = true) {
-//
-//        recyclerView!!.adapter!!.rows = rows
-//        if (isRefresh) {
-//            recyclerView!!.adapter!!.notifyDataSetChanged()
-//        }
-//    }
+    open fun parseJSON(jsonString: String, modelType: Type) {
+        val baseModels = jsonToModelForList<BaseModels<U>>(jsonString, modelType)
+        if (baseModels != null && page == 1) {
+            totalCount = baseModels.totalCount
+            countTotalPage()
+        }
 
+        if (page == totalPage) {
+            recyclerView.removeOnScrollListener(scrollListener)
+        }
+
+        rows = baseModels?.rows .let { baseModels!!.rows  }
+        if (rows.size > 0) {
+            adapter.setRows(rows)
+            adapter.notifyDataSetChanged()
+        } else {
+            showNoRows()
+        }
+    }
 
     fun showNoRows() {
         findViewById<RelativeLayout>(R.id.root)?.setInfo(this, "目前暫無資料！！")
+    }
+
+    open val onRowClick: ((Int) -> Unit) = { idx ->
+        println(idx)
+    }
+
+    open val onEditClick: ((Int) -> Unit) = { idx ->
+    }
+
+    open val onDeleteClick: ((Int) -> Unit) = { idx ->
     }
 
     val onRefreshClick: (() -> Unit) = {
@@ -100,54 +130,6 @@ open class ListActivity<U: BaseModel>: BaseActivity() {
         }
 
     }
-
-//    fun setRecyclerViewScrollListener() {
-//        scrollListener = object : RecyclerView.OnScrollListener() {
-//
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                val totalItemCount = recyelerViewLinearLayoutManager.itemCount
-//                println(lastVisibleItemPosition)
-//                if (totalItemCount == lastVisibleItemPosition + 1) {
-//                    //Log.d("MyTAG", "Load new list")
-//                    println("Load new list")
-//                    recyclerView.removeOnScrollListener(scrollListener)
-//                }
-//            }
-//        }
-//
-//        recyclerView?.addOnScrollListener(scrollListener)
-//    }
-
-//    protected open fun setRecyclerViewScrollListener() {
-//
-//        if (recyclerView != null) {
-//            var pos: Int = 0
-//
-//            val scrollerListenr = object : RecyclerView.OnScrollListener() {
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    super.onScrolled(recyclerView, dx, dy)
-//                    //println("dy:${dy}")
-//                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-//                    if (currentRowsSize < totalCount) {
-//                        //pos = layoutManager.findLastCompletelyVisibleItemPosition()
-//                        pos = layoutManager.findLastVisibleItemPosition()
-//                        //println("pos:${pos}")
-//                    }
-//                }
-//
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    super.onScrollStateChanged(recyclerView, newState)
-//
-//                    //println("tableLists.size:${tableLists.size}")
-//                    if (currentRowsSize == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && currentRowsSize < totalCount && !loading) {
-//                        getDataStart(page, perPage)
-//                    }
-//                }
-//            }
-//            recyclerView?.addOnScrollListener(scrollerListenr)
-//        }
-//    }
 }
 
 abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener {
@@ -159,7 +141,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
 
     // The current offset index of data you have loaded
     //目前在第幾頁
-    private var currentPage = 0
+    private var currentPage = 1
 
     // The total number of items in the dataset after the last load
     // 已經下載下來的數量
@@ -169,7 +151,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
     private var loading = true
 
     // Sets the starting page index
-    private val startingPageIndex = 0
+    private val startingPageIndex = 1
     var mLayoutManager: RecyclerView.LayoutManager
 
     constructor(layoutManager: LinearLayoutManager) {
@@ -219,10 +201,10 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
                 (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
         }
 
-        println("lastVisibleItemPosition:${lastVisibleItemPosition}")
-        println("totalItemCount:${totalItemCount}")
-        println("previousTotalItemCount:${previousTotalItemCount}")
-        println("=================================================")
+//        println("lastVisibleItemPosition:${lastVisibleItemPosition}")
+//        println("totalItemCount:${totalItemCount}")
+//        println("previousTotalItemCount:${previousTotalItemCount}")
+//        println("=================================================")
 
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state

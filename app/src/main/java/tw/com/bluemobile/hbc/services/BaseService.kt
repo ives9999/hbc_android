@@ -96,28 +96,29 @@ open class BaseService {
         val _params: Map<String, String> = composeParams(params)
 //        println(url)
 //        println(_params.toJSON())
+        _simpleService(context, url, _params, complete, true)
 
-        val request: okhttp3.Request = getRequest(url, _params)
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
+//        val request: okhttp3.Request = getRequest(url, _params)
+//        okHttpClient.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//
+//            override fun onResponse(call: Call, response: okhttp3.Response) {
+//
+//                try {
+//                    jsonString = response.body!!.string()
+////                    println(jsonString)
+//                    success = true
+//                } catch (e: Exception) {
+//                    success = false
+//                    msg = "parse json failed，請洽管理員"
+//                    println(e.localizedMessage)
+//                }
+//                complete(success)
+//            }
+//        })
     }
 
     open fun getOneURL(): String { return "" }

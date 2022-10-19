@@ -4,35 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.*
-import tw.com.bluemobile.hbc.extensions.setImage
-import tw.com.bluemobile.hbc.extensions.setInfo
-import tw.com.bluemobile.hbc.models.BaseModel
 import tw.com.bluemobile.hbc.models.BaseModels
 import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.services.MemberService
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.jsonToModel
+import tw.com.bluemobile.hbc.utilities.genericType
 import java.lang.reflect.Type
 
-class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
+class MemberPetListActivity : ListActivity<MemberPetListViewHolder, MemberPetModel>() {
 
-    lateinit var baseList: BaseList<MemberPetListViewHolder, MemberPetModel>
-    override var rows: ArrayList<U> = arrayListOf()
+    override var rows: ArrayList<MemberPetModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +30,9 @@ class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
     }
 
     override fun init() {
+
+        adapter = BaseAdapter(R.layout.list_member_pet, ::MemberPetListViewHolder)
         super.init()
-
-        baseList = BaseList(recyclerView!!, R.layout.list_member_pet, ::MemberPetListViewHolder)
-
-        baseList.adapter.onRowClick = onRowClick
-        baseList.adapter.onEditClick = onEditClick
-        baseList.adapter.onDeleteClick = onDeleteClick
-        baseList.adapter.onRefreshClick = onRefreshClick
 
         refresh()
     }
@@ -62,18 +42,10 @@ class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
         loading.show()
         MemberService.getPetList(this, page, perPage) { success ->
             runOnUiThread {
-
                 //println(MemberService.jsonString)
 
-                val baseModels = jsonToModel<BaseModels<U>>(MemberService.jsonString)
-                rows = baseModels?.rows .let { baseModels!!.rows  }
-                val rows1 = rows as ArrayList<MemberPetModel>
-
-                if (rows.size > 0) {
-                    baseList.setRows(rows1)
-                } else {
-                    showNoRows()
-                }
+                val modelType: Type = genericType<BaseModels<MemberPetModel>>()
+                parseJSON(MemberService.jsonString, modelType)
                 loading.hide()
             }
         }
@@ -84,8 +56,9 @@ class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
         toMemberPetEdit(this)
     }
 
-    val onRowClick: ((Int) -> Unit) = { idx ->
-        println(idx)
+    override val onRowClick: ((Int) -> Unit) = { idx ->
+        val row: MemberPetModel = rows[idx]
+        toMemberPetShhow(this, row.token)
     }
 
     fun listSetSelected(row: MemberPetModel): Boolean {
@@ -93,12 +66,12 @@ class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
         return false
     }
 
-    val onEditClick: ((Int) -> Unit) = { idx ->
+    override val onEditClick: ((Int) -> Unit) = { idx ->
         val row: MemberPetModel = rows[idx]
         toMemberPetEdit(this, row.token)
     }
 
-    val onDeleteClick: ((Int) -> Unit) = { idx ->
+    override val onDeleteClick: ((Int) -> Unit) = { idx ->
         val row: MemberPetModel = rows[idx]
     }
 
