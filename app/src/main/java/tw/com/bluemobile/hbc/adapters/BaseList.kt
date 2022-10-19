@@ -80,6 +80,10 @@ open class BaseViewHolder<U: BaseModel>(
 ) : RecyclerView.ViewHolder(view) {
 
     open fun bind(row: U, idx: Int) {
+
+        setTV(R.id.noTV, (idx + 1).toString())
+        setTV(R.id.nameTV, row.name)
+
     }
 
     fun setIV(res: Int, name: String) {

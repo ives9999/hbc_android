@@ -2,6 +2,7 @@ package tw.com.bluemobile.hbc.routes
 
 import android.content.Intent
 import tw.com.bluemobile.hbc.controllers.*
+import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.utilities.PasswordEnum
 import tw.com.bluemobile.hbc.utilities.ValidateEnum
 
@@ -25,7 +26,7 @@ interface ToMember {
     fun toMemberPetEdit(activity: BaseActivity, token: String? = null) {
         val i = Intent(activity, MemberPetEditActivity::class.java)
         i.putExtra("memberPetToken", token)
-        val memberPetListActivity: MemberPetListActivity = activity as MemberPetListActivity
+        val memberPetListActivity: MemberPetListActivity<MemberPetModel> = activity as MemberPetListActivity<MemberPetModel>
         memberPetListActivity.memberPetEditAR.launch(i)
     }
 

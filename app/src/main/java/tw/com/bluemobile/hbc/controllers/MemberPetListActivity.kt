@@ -29,10 +29,10 @@ import tw.com.bluemobile.hbc.utilities.Loading
 import tw.com.bluemobile.hbc.utilities.jsonToModel
 import java.lang.reflect.Type
 
-class MemberPetListActivity : ListActivity() {
+class MemberPetListActivity<U: MemberPetModel> : ListActivity<U>() {
 
     lateinit var baseList: BaseList<MemberPetListViewHolder, MemberPetModel>
-    var rows: ArrayList<MemberPetModel> = arrayListOf()
+    override var rows: ArrayList<U> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +57,7 @@ class MemberPetListActivity : ListActivity() {
         refresh()
     }
 
-    override fun getList() {
+    override fun getList(page: Int, perPage: Int) {
 
         loading.show()
         MemberService.getPetList(this, page, perPage) { success ->
@@ -65,11 +65,12 @@ class MemberPetListActivity : ListActivity() {
 
                 //println(MemberService.jsonString)
 
-                val baseModels = jsonToModel<BaseModels<MemberPetModel>>(MemberService.jsonString)
-                rows = baseModels?.rows .let { baseModels!!.rows } ?: arrayListOf<MemberPetModel>()
+                val baseModels = jsonToModel<BaseModels<U>>(MemberService.jsonString)
+                rows = baseModels?.rows .let { baseModels!!.rows  }
+                val rows1 = rows as ArrayList<MemberPetModel>
+
                 if (rows.size > 0) {
-                    baseList.setRows(rows)
-                    println(lastVisibleItemPosition)
+                    baseList.setRows(rows1)
                 } else {
                     showNoRows()
                 }
@@ -118,10 +119,10 @@ class MemberPetListViewHolder(
 ): BaseViewHolder<MemberPetModel>(context, view) {
 
     override fun bind(row: MemberPetModel, idx: Int) {
-        super.bind(row, idx)
 
         row.filterRow()
-        setTV(R.id.nameTV, row.name)
+        super.bind(row, idx)
+
         setTV(R.id.blood_typeTV, row.blood_type)
         setTV(R.id.weightTV, row.weight.toString())
         setTV(R.id.ageTV, row.age.toString())
