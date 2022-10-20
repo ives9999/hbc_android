@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_centerVertical="false"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    >
+
+    <ImageView
+        android:id="@+id/iconIV"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_name"
+        app:srcCompat="@drawable/ic_blood_type" />
+
+    <TextView
+        android:id="@+id/titleTV"
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:text="血型："
+        android:textColor="@color/MY_BLACK" />
+
+    <TextView
+        android:id="@+id/valueTV"
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="6dp"
+        android:text="A"
+        android:textColor="@color/MY_BLACK" />
+
+    <TextView
+        android:id="@+id/unitTV"
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/MY_BLACK"
+        android:text="歲" />
+
+</LinearLayout>

@@ -48,6 +48,11 @@
         <attr name="uploadImageIV" format="string" />
     </declare-styleable>
 
-
+    <declare-styleable name="IconText">
+        <attr name="IconTextIconIV" format="string" />
+        <attr name="IconTextTitleTV" format="string" />
+        <attr name="IconTextValueTV" format="string" />
+        <attr name="IconTextUnitTV" format="string" />
+    </declare-styleable>
 
 </resources>

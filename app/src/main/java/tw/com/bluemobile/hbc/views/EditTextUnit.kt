@@ -36,7 +36,7 @@ class EditTextUnit @JvmOverloads constructor(context: Context, attrs: AttributeS
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
                 titleTV = it
-                val a = typedArray.getString(R.styleable.EditTextUnit_unitTitleTV)
+                //val a = typedArray.getString(R.styleable.EditTextUnit_unitTitleTV)
                 it.text = typedArray.getString(R.styleable.EditTextUnit_unitTitleTV) ?: ""
             }
 

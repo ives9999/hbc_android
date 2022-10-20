@@ -1,10 +1,16 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
+import android.widget.ImageView
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.services.MemberService
-import tw.com.bluemobile.hbc.utilities.jsonToModelForOne
+import tw.com.bluemobile.hbc.utilities.*
+import tw.com.bluemobile.hbc.views.IconText
+import tw.com.bluemobile.hbc.views.MyLayout
+import kotlin.comparisons.then
+import kotlin.reflect.full.memberProperties
 
 class MemberPetShowActivity : ShowActivity() {
 
@@ -32,6 +38,34 @@ class MemberPetShowActivity : ShowActivity() {
         super.init()
 
         top!!.setTitle(memberPetModel!!.name)
+
+        val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
+        for (enum in allEnums) {
+
+            val value: String = getProperty(memberPetModel!!, enum.englishName)
+
+            if (enum == MemberPetEnum.type) {
+                findViewById<ImageView>(R.id.type)?.let {
+                    it.setImage("ic_${value}")
+                }
+            } else if (enum == MemberPetEnum.IDo) {
+                val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
+                findViewById<IconText>(r) ?. let {
+                    it.setIconIV(enum.getIcon())
+                    it.setTitleTV("${enum.chineseName}：")
+                    it.setValueTV((value == "1") then { "願意" } ?: "不願意")
+                    it.setUnitTV(enum.getUnit())
+                }
+            } else {
+                val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
+                findViewById<IconText>(r) ?. let {
+                    it.setIconIV(enum.getIcon())
+                    it.setTitleTV("${enum.chineseName}：")
+                    it.setValueTV(value)
+                    it.setUnitTV(enum.getUnit())
+                }
+            }
+        }
     }
 
     override fun refresh() {
@@ -40,13 +74,12 @@ class MemberPetShowActivity : ShowActivity() {
         val params: HashMap<String, String> = hashMapOf("member_pet_token" to memberPetToken!!)
         MemberService.postPetOne(this, params) { success ->
             if (success) {
-                //println(MemberService.jsonString)
-                memberPetModel = jsonToModelForOne<MemberPetModel>(MemberService.jsonString)
-                runOnUiThread {
-                    init()
-                }
+                memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
+//                runOnUiThread {
+//                    init()
+//                    loading.hide()
+//                }
             }
-            loading.hide()
         }
     }
 }

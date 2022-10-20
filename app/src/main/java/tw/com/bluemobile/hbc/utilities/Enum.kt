@@ -86,9 +86,9 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
     age("age", "年齡"),
     weight("weight", "體重"),
     blood_type("blood_type", "血型"),
-    IDo("IDo", "願意捐血"),
-    traffic_fee("traffic_fee", "車馬費"),
-    nutrient_fee("nutrient_fee", "營養費"),
+    IDo("IDo", "是否願意捐血"),
+    traffic_fee("traffic_fee", "車馬費(每500公尺)"),
+    nutrient_fee("nutrient_fee", "營養費(50CC共)"),
     blood_image("blood_image", "血檢資料"),
     body_image("body_image", "體檢資料");
 
@@ -146,8 +146,25 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
         }
     }
 
-    fun getLayout(resources: Resources, packageName: String) {
-        var r: Int = resources.getIdentifier(this.englishName, "id", packageName)
+    fun getIcon(): String {
+        return when (this) {
+            traffic_fee -> "ic_fee"
+            nutrient_fee -> "ic_fee"
+            IDo -> "ic_blood_type"
+            else -> "ic_${this.englishName}"
+        }
+    }
+
+    fun getUnit(): String {
+        return when (this) {
+            petName -> ""
+            age -> "歲"
+            weight -> "公斤"
+            blood_type -> "型"
+            traffic_fee -> "元"
+            nutrient_fee -> "元"
+            else -> ""
+        }
     }
 }
 
