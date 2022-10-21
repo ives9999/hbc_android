@@ -79,7 +79,7 @@ fun <R> readInstanceProperty(instance: Any, propertyName: String): R {
     return property.get(instance) as R
 }
 
-fun getProperty(instance: Any, propertyName: String): String {
+fun getPropertyValue(instance: Any, propertyName: String): String {
     instance::class.memberProperties
         .forEach {
             val name = it.name

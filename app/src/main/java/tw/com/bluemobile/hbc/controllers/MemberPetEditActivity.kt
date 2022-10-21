@@ -12,14 +12,12 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.MemberPetEnum
-import tw.com.bluemobile.hbc.utilities.RegisterEnum
-import tw.com.bluemobile.hbc.utilities.jsonToModel
+import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.EditTextNormal
 import tw.com.bluemobile.hbc.views.MyLayout
 import tw.com.bluemobile.hbc.views.TwoRadio
@@ -27,9 +25,11 @@ import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
 import java.lang.Exception
 
-class MemberPetEditActivity : BaseActivity() {
+class MemberPetEditActivity : EditActivity() {
 
     var memberPetToken: String? = null
+    var memberPetModel: MemberPetModel? = null
+
     var bloodImage: UploadImage? = null
     var bodyImge: UploadImage? = null
     var bloodImageUri: Uri? = null
@@ -41,7 +41,7 @@ class MemberPetEditActivity : BaseActivity() {
     var typeRadio: TwoRadio? = null
     var iDoRadio: TwoRadio? = null
 
-    private val initData: HashMap<String, String> = hashMapOf(
+    private val initData: MutableMap<String, String> = mutableMapOf(
 //        MemberPetEnum.petName.englishName to "幸運貓",
 //        MemberPetEnum.type.englishName to "狗",
 //        MemberPetEnum.age.englishName to "5",
@@ -63,12 +63,40 @@ class MemberPetEditActivity : BaseActivity() {
 
         setTop(true, "我的寶貝")
 
-        init()
+        loading = Loading(this)
+        if (memberPetToken != null) {
+            refresh()
+        } else {
+            init()
+        }
+    }
+
+    override fun refresh() {
+
+        super.refresh()
+
+        loading.show()
+        val params: HashMap<String, String> = hashMapOf("member_pet_token" to memberPetToken!!)
+        MemberService.postPetOne(this, params) { success ->
+            if (success) {
+                memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
+                runOnUiThread {
+                    if (memberPetModel != null) {
+                        for (enum in MemberPetEnum.getAllEnum()) {
+                            val name = enum.englishName
+                            val value = getPropertyValue(memberPetModel!!, name)
+                            initData.put(name, value)
+                        }
+                        init()
+                    }
+                    loading.hide()
+                }
+            }
+        }
     }
 
     override fun init() {
         super.init()
-        loading = Loading(this)
 
         val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
         for (enum in allEnums) {
@@ -79,14 +107,10 @@ class MemberPetEditActivity : BaseActivity() {
 
                 if (enum == MemberPetEnum.blood_image) {
                     bloodImage = it as UploadImage
-
-                    imagePickerKey = MemberPetEnum.blood_image
-                    bloodImage!!.setOnImagePickListener(pickImage, pickCameraImage)
+                    bloodImage!!.setOnImagePickListener(key, pickImage, pickCameraImage)
                 } else if (enum == MemberPetEnum.body_image) {
                     bodyImge = it as UploadImage
-
-                    imagePickerKey = MemberPetEnum.body_image
-                    bodyImge!!.setOnImagePickListener(pickImage, pickCameraImage)
+                    bodyImge!!.setOnImagePickListener(key, pickImage, pickCameraImage)
                 } else if (enum == MemberPetEnum.type) {
                     typeRadio = it as TwoRadio
                     //use typeRadio.value can get radio value
@@ -125,14 +149,6 @@ class MemberPetEditActivity : BaseActivity() {
             }
         }
     }
-
-//    private val iDoLambda: (String)-> Unit = {
-//        println(it)
-//    }
-//
-//    private val typeLambda: (String)-> Unit = {
-//        println(it)
-//    }
 
     private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res: ActivityResult ->
         val resultCode: Int = res.resultCode
@@ -201,7 +217,7 @@ class MemberPetEditActivity : BaseActivity() {
         //.start(CAMERA_IMAGE_REQ_CODE)
     }
 
-    val pickImage: () -> Unit = {
+    val pickImage: (String) -> Unit = { key ->
         ImagePicker.with(this)
             // Crop Square image
             .galleryOnly()
@@ -216,6 +232,7 @@ class MemberPetEditActivity : BaseActivity() {
             // Image resolution will be less than 512 x 512
             .maxResultSize(200, 200)
             .createIntent { intent ->
+                imagePickerKey = MemberPetEnum.enumFromString(key)
                 startForProfileImageResult.launch(intent)
             }
         //.start(PROFILE_IMAGE_REQ_CODE)
@@ -241,14 +258,18 @@ class MemberPetEditActivity : BaseActivity() {
             }
         }
 
-//        println(params)
+        if (memberPetToken != null) {
+            params.put("member_pet_token", memberPetToken!!)
+        }
+
+        //println(params)
 
         loading.show()
-        MemberService.pet(this, params, bloodImageUri?.path, bodyImageUri?.path) { success ->
+        MemberService.postPet(this, params, bloodImageUri?.path, bodyImageUri?.path) { success ->
             if (success) {
                 runOnUiThread {
                     try {
-                        //println(MemberService.jsonString)
+//                        println(MemberService.jsonString)
                         val successModel =
                             jsonToModel<SuccessModel<MemberPetModel>>(MemberService.jsonString)
                         if (successModel != null) {
@@ -258,7 +279,7 @@ class MemberPetEditActivity : BaseActivity() {
                                     prev()
                                 }
                             } else {
-                                warning(successModel.msg)
+                                warning(successModel.msgs.parseErrmsg())
                             }
                         } else {
                             warning("app無法解析系統傳回值，請洽管理員")

@@ -42,7 +42,7 @@ class MemberPetShowActivity : ShowActivity() {
         val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
         for (enum in allEnums) {
 
-            val value: String = getProperty(memberPetModel!!, enum.englishName)
+            val value: String = getPropertyValue(memberPetModel!!, enum.englishName)
 
             if (enum == MemberPetEnum.type) {
                 findViewById<ImageView>(R.id.type)?.let {
@@ -75,10 +75,6 @@ class MemberPetShowActivity : ShowActivity() {
         MemberService.postPetOne(this, params) { success ->
             if (success) {
                 memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
-//                runOnUiThread {
-//                    init()
-//                    loading.hide()
-//                }
             }
         }
     }

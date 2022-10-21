@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.dpToPx
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
@@ -134,12 +135,7 @@ class LoginActivity : BaseActivity() {
                         val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
                         if (successModel != null) {
                             if (!successModel.success) {
-                                val msgs: ArrayList<String> = successModel.msgs
-                                var str: String = ""
-                                for (msg in msgs) {
-                                    str += msg + "\n"
-                                }
-                                warning(str)
+                                warning(successModel.msgs.parseErrmsg())
                             } else {
                                 val memberModel = successModel.model
                                 memberModel?.toSession(this, true)

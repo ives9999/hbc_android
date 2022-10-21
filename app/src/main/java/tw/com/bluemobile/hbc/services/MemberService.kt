@@ -126,11 +126,14 @@ object MemberService: BaseService() {
         _simpleService(context, url, _params, complete)
     }
 
-    fun pet(context: Context, params: MutableMap<String, String>, blood_image: String?, body_image: String?, complete: CompletionHandler) {
+    fun postPet(context: Context, params: MutableMap<String, String>, blood_image: String?, body_image: String?, complete: CompletionHandler) {
         getBaseUrl()
         val url = URL_HOME + "member/postPet"
 
         val _params: Map<String, String> = composeParams(params, true)
+
+//        println(url)
+        println(_params)
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 

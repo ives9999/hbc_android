@@ -51,13 +51,14 @@ class UploadImage @JvmOverloads constructor(context: Context, attrs: AttributeSe
         image?.setLocalImage(uri, applyCircle)
     }
 
-    fun setOnImagePickListener(pickImage: () -> Unit, pickCameraImage: () -> Unit) {
+    fun setOnImagePickListener(key: String, pickImage: (key: String) -> Unit, pickCameraImage: () -> Unit) {
+        this.key = key
         image?.setOnClickListener {
             sourceSelectDialog(pickImage, pickCameraImage)
         }
     }
 
-    fun sourceSelectDialog(pickImage: () -> Unit, pickCameraImage: () -> Unit) {
+    private fun sourceSelectDialog(pickImage: (key: String) -> Unit, pickCameraImage: () -> Unit) {
         (context as? BaseActivity) ?. let {
             AwesomeDialog.build(it)
                 .title("選擇圖片", titleColor = ContextCompat.getColor(it, R.color.MY_BLACK))
@@ -65,11 +66,11 @@ class UploadImage @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 .icon(com.github.dhaval2404.imagepicker.R.drawable.ic_photo_black_48dp)
                 .onPositive("從圖庫中選擇") {
                     //println("gallery")
-                    pickImage()
+                    pickImage.invoke(key)
                 }
                 .onNegative("開啟相機拍攝") {
                     //println("camera")
-                    pickCameraImage()
+                    pickCameraImage.invoke()
                 }
         }
     }
