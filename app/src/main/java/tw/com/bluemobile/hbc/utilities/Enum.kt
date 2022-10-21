@@ -99,12 +99,12 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
                 "type" -> type
                 "age" -> age
                 "weight" -> weight
-                "bloodType" -> blood_type
+                "blood_type" -> blood_type
                 "IDo" -> IDo
-                "trafficFee" -> traffic_fee
-                "nutrientFee" -> nutrient_fee
-                "bloodImage" -> blood_image
-                "bodyImage" -> body_image
+                "traffic_fee" -> traffic_fee
+                "nutrient_fee" -> nutrient_fee
+                "blood_image" -> blood_image
+                "body_image" -> body_image
                 else -> petName
             }
         }

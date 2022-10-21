@@ -40,8 +40,6 @@ class UploadImage @JvmOverloads constructor(context: Context, attrs: AttributeSe
             key = typedArray.getString(R.styleable.UploadImage_uploadImageKey) ?: ""
         }
 
-
-
         view.findViewById<AppCompatImageView>(R.id.imageIV) ?. let {
             image = it
         }
