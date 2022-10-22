@@ -23,7 +23,7 @@ open class EditActivity: BaseActivity() {
         return baseModel
     }
 
-    open fun refresh() {
+    override fun refresh() {
         loading.show()
     }
 

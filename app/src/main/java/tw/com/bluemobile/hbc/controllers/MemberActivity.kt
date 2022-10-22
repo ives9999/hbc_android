@@ -113,7 +113,7 @@ class MemberActivity : BaseActivity() {
         }
     }
 
-    private fun refresh() {
+    override fun refresh() {
         loading.show()
         MemberService.getOne(this, hashMapOf()) { success ->
             if (success) {

@@ -2,6 +2,8 @@ package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
 import android.widget.ImageView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.MemberPetModel
@@ -38,6 +40,8 @@ class MemberPetShowActivity : ShowActivity() {
         super.init()
 
         top!!.setTitle(memberPetModel!!.name)
+        top!!.showAdd(true)
+        top!!.showEdit(true)
 
         val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
         for (enum in allEnums) {
@@ -50,11 +54,31 @@ class MemberPetShowActivity : ShowActivity() {
                 }
             } else if (enum == MemberPetEnum.IDo) {
                 val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
-                findViewById<IconText>(r) ?. let {
+                findViewById<IconText>(r)?.let {
                     it.setIconIV(enum.getIcon())
                     it.setTitleTV("${enum.chineseName}：")
-                    it.setValueTV((value == "1") then { "願意" } ?: "不願意")
+                    it.setValueTV(((value == "1") then { "願意" }) ?: "不願意")
                     it.setUnitTV(enum.getUnit())
+                }
+            } else if (enum == MemberPetEnum.blood_image) {
+                findViewById<ImageView>(R.id.blood_imageIV) ?. let {
+                    if (memberPetModel?.blood_image != null) {
+                        Picasso.with(this)
+                            .load(memberPetModel?.blood_image)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .into(it)
+                    }
+
+                }
+            } else if (enum == MemberPetEnum.body_image) {
+                findViewById<ImageView>(R.id.body_imageIV) ?. let {
+                    if (memberPetModel?.body_image != null) {
+                        Picasso.with(this)
+                            .load(memberPetModel?.body_image)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .into(it)
+                    }
+
                 }
             } else {
                 val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
@@ -68,6 +92,15 @@ class MemberPetShowActivity : ShowActivity() {
         }
     }
 
+    override fun add() {
+        super.add()
+        toMemberPetEdit(this)
+    }
+
+    override fun edit() {
+        toMemberPetEdit(this, memberPetToken)
+    }
+
     override fun refresh() {
 
         super.refresh()
@@ -75,6 +108,7 @@ class MemberPetShowActivity : ShowActivity() {
         MemberService.postPetOne(this, params) { success ->
             if (success) {
                 memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
+                memberPetModel?.filterRow()
             }
         }
     }

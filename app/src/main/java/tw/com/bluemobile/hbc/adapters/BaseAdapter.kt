@@ -75,7 +75,7 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     }
 
     fun setRows(rows: ArrayList<U>) {
-        this.rows += rows
+        this.rows = rows
     }
 }
 

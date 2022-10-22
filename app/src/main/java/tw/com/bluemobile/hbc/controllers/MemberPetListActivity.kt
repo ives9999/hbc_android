@@ -66,6 +66,21 @@ class MemberPetListActivity : ListActivity<MemberPetListViewHolder, MemberPetMod
         return false
     }
 
+    private fun delete(token: String) {
+        loading.show()
+        MemberService.postDeletePet(this, token) {
+            runOnUiThread {
+                //println(MemberService.jsonString)
+
+                loading.hide()
+                success("刪除完成") {
+                    refresh()
+                }
+            }
+        }
+
+    }
+
     override val onEditClick: ((Int) -> Unit) = { idx ->
         val row: MemberPetModel = rows[idx]
         toMemberPetEdit(this, row.token)
@@ -73,15 +88,8 @@ class MemberPetListActivity : ListActivity<MemberPetListViewHolder, MemberPetMod
 
     override val onDeleteClick: ((Int) -> Unit) = { idx ->
         val row: MemberPetModel = rows[idx]
-    }
-
-    val memberPetEditAR: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-            val i: Intent? = res.data
-            if (i != null) {
-                refresh()
-            }
+        warning("是否確定要刪除?", "刪除") {
+            delete(row.token)
         }
     }
 }

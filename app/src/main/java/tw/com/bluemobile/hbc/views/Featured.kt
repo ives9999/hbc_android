@@ -33,8 +33,8 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         if (url.contains("nophoto")) {
             featured?.setImage("ic_person")
         } else {
-            val a: Uri = Uri.parse(url)
-            setFeatured(a, applyCircle)
+            val uri: Uri = Uri.parse(url)
+            setFeatured(uri, applyCircle)
         }
 //        Picasso.with(context)
 //            .load(url)

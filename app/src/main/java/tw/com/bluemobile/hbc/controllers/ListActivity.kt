@@ -73,7 +73,7 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
 
     open fun getList(page: Int, perPage: Int) {}
 
-    protected fun refresh() {
+    override fun refresh() {
         page = 1
         rows.clear()
         adapter.setRows(rows)
@@ -89,11 +89,7 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
             countTotalPage()
         }
 
-        if (page == totalPage) {
-            recyclerView.removeOnScrollListener(scrollListener)
-        }
-
-        rows = baseModels?.rows .let { baseModels!!.rows  }
+        rows += baseModels?.rows .let { baseModels!!.rows  }
         if (rows.size > 0) {
             adapter.setRows(rows)
             adapter.notifyDataSetChanged()
@@ -126,6 +122,9 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
         //totalItemCount: 已經下載幾頁
         override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
             //page已經+1了
+            if (page == totalPage) {
+                recyclerView.removeOnScrollListener(scrollListener)
+            }
             getList(page, PERPAGE)
         }
 

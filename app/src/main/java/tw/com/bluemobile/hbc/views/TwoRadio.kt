@@ -75,6 +75,7 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     fun setCheck(text: String) {
+        val a = yesRB?.text
         if (yesRB?.text == text) {
             yesRB?.isChecked = true
             value = text

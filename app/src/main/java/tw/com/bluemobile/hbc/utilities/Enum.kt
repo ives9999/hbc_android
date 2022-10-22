@@ -129,7 +129,18 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
             "願意" -> "1"
             "不願意" -> "0"
 
-            else -> ""
+            else -> text
+        }
+    }
+
+    fun DBNameToRadioText(text: String): String {
+        return when (text) {
+            "cat" -> "貓"
+            "dog" -> "狗"
+            "1" -> "願意"
+            "0" -> "不願意"
+
+            else -> text
         }
     }
 

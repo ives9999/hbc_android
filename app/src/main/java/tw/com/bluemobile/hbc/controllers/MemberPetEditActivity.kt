@@ -80,6 +80,7 @@ class MemberPetEditActivity : EditActivity() {
         MemberService.postPetOne(this, params) { success ->
             if (success) {
                 memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
+                memberPetModel?.filterRow()
                 runOnUiThread {
                     if (memberPetModel != null) {
                         for (enum in MemberPetEnum.getAllEnum()) {
@@ -108,16 +109,23 @@ class MemberPetEditActivity : EditActivity() {
                 if (enum == MemberPetEnum.blood_image) {
                     bloodImage = it as UploadImage
                     bloodImage!!.setOnImagePickListener(key, pickImage, pickCameraImage)
+
+                    if (initData.containsKey(key)) {
+                        val n = initData[key]!!
+                        it.setImage(initData[key]!!, false)
+                    }
                 } else if (enum == MemberPetEnum.body_image) {
                     bodyImge = it as UploadImage
                     bodyImge!!.setOnImagePickListener(key, pickImage, pickCameraImage)
-                } else if (enum == MemberPetEnum.type) {
-                    typeRadio = it as TwoRadio
-                    //use typeRadio.value can get radio value
-                    //it.setOnGroupCheckedChangeListener(typeLambda)
 
                     if (initData.containsKey(key)) {
-                        it.setCheck(initData[key]!!)
+                        it.setImage(initData[key]!!, false)
+                    }
+                } else if (enum == MemberPetEnum.type) {
+                    typeRadio = it as TwoRadio
+
+                    if (initData.containsKey(key)) {
+                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
 
                     val h: HashMap<MemberPetEnum, MyLayout> = hashMapOf(enum to it)
@@ -127,7 +135,7 @@ class MemberPetEditActivity : EditActivity() {
                     //it.setOnGroupCheckedChangeListener(iDoLambda)
 
                     if (initData.containsKey(key)) {
-                        it.setCheck(initData[key]!!)
+                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
 
                     val h: HashMap<MemberPetEnum, MyLayout> = hashMapOf(enum to it)
@@ -141,6 +149,10 @@ class MemberPetEditActivity : EditActivity() {
                     it.value = initData[key]!!
                 }
             }
+        }
+
+        if (memberPetModel != null) {
+            top!!.setTitle(memberPetModel!!.name)
         }
 
         findViewById<LinearLayout>(R.id.submitLL) ?. let {
@@ -269,7 +281,7 @@ class MemberPetEditActivity : EditActivity() {
             if (success) {
                 runOnUiThread {
                     try {
-//                        println(MemberService.jsonString)
+                        //println(MemberService.jsonString)
                         val successModel =
                             jsonToModel<SuccessModel<MemberPetModel>>(MemberService.jsonString)
                         if (successModel != null) {

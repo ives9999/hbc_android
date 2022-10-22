@@ -34,7 +34,7 @@ open class ShowActivity : BaseActivity() {
         return baseModel
     }
 
-    open fun refresh() {
+    override fun refresh() {
         loading = Loading(this)
         loading.show()
 

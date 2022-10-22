@@ -39,6 +39,16 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/editIB"
+            android:layout_width="@dimen/prev_width"
+            android:layout_height="@dimen/prev_height"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_edit"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageButton
             android:id="@+id/addIB"
             android:layout_width="@dimen/prev_width"
             android:layout_height="@dimen/prev_height"

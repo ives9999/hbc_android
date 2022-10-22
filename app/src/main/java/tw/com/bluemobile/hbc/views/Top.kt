@@ -16,6 +16,7 @@ class Top @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nul
     val view = View.inflate(context, R.layout.top, this)
     private var prevIB: ImageButton = view.findViewById(R.id.prevIB)
     private var addIB: ImageButton = view.findViewById(R.id.addIB)
+    private var editIB: ImageButton = view.findViewById(R.id.editIB)
     private var titleTV: TextView = view.findViewById(R.id.title)
 
     init {
@@ -27,11 +28,19 @@ class Top @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nul
             addIB.setOnClickListener {
                 delegate.add()
             }
+
+            editIB.setOnClickListener {
+                delegate.edit()
+            }
         }
     }
 
     fun showAdd(isShow: Boolean = false) {
         addIB.visibility = (isShow then { VISIBLE }) ?: GONE
+    }
+
+    fun showEdit(isShow: Boolean = false) {
+        editIB.visibility = (isShow then { VISIBLE }) ?: GONE
     }
 
     fun showPrev(isShow: Boolean = true) {

@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.example.awesomedialog.*
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
+import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.extensions.setLocalImage
 
 class UploadImage @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
@@ -48,6 +49,16 @@ class UploadImage @JvmOverloads constructor(context: Context, attrs: AttributeSe
     fun setImage(uri: Uri, applyCircle: Boolean) {
         image?.setLocalImage(uri, applyCircle)
     }
+
+    fun setImage(url: String, applyCircle: Boolean) {
+        if (url.contains("nophoto")) {
+            image?.setImage("ic_person")
+        } else {
+            val uri: Uri = Uri.parse(url)
+            setImage(uri, applyCircle)
+        }
+    }
+
 
     fun setOnImagePickListener(key: String, pickImage: (key: String) -> Unit, pickCameraImage: () -> Unit) {
         this.key = key

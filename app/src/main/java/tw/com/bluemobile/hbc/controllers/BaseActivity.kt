@@ -7,6 +7,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.awesomedialog.*
 import id.ionbit.ionalert.IonAlert
 import tw.com.bluemobile.hbc.R
@@ -39,6 +41,9 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
         //println(id)
     }
 
+    open fun edit() {
+    }
+
     open fun info(msg: String) {
         AwesomeDialog.build(this)
             .title("訊息")
@@ -57,6 +62,8 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
+
+    open fun refresh() {}
 
     protected fun setBottom(able_enum: TabEnum) {
 
@@ -91,8 +98,8 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     fun success(msg: String) {
         AwesomeDialog.build(this)
-            .title("成功")
-            .body(msg)
+            .title("成功", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.MY_BLACK)
             .icon(R.drawable.ic_success)
             .position(AwesomeDialog.POSITIONS.CENTER)
             .onPositive("關閉")
@@ -100,8 +107,8 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     fun success(msg: String, buttonAction: () -> Unit) {
         AwesomeDialog.build(this)
-            .title("成功")
-            .body(msg)
+            .title("成功", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.MY_BLACK)
             .icon(R.drawable.ic_success)
             .position(AwesomeDialog.POSITIONS.CENTER)
             .onPositive("關閉") {
@@ -111,8 +118,8 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
 
     fun warning(msg: String) {
         AwesomeDialog.build(this)
-            .title("警告")
-            .body(msg)
+            .title("警告", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.MY_BLACK)
             .icon(R.drawable.ic_warning)
             .position(AwesomeDialog.POSITIONS.CENTER)
             .onPositive("關閉")
@@ -121,8 +128,8 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
     fun warning(msg: String, buttonAction: () -> Unit) {
 
         AwesomeDialog.build(this)
-            .title("警告")
-            .body(msg)
+            .title("警告", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.MY_BLACK)
             .icon(R.drawable.ic_warning)
             .position(AwesomeDialog.POSITIONS.CENTER)
             .onPositive("關閉") {
@@ -130,19 +137,26 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To {
             }
     }
 
-    fun warning(msg: String, cancelButtonTitle: String, buttonAction: () -> Unit) {
-        val box = IonAlert(this, IonAlert.WARNING_TYPE)
-        box.titleText = "警吿"
-        box.contentText = msg
-        box.confirmText = "關閉"
-        box.cancelText = cancelButtonTitle
-        box.showCancelButton(true)
+    fun warning(msg: String, actionButtonTitle: String, buttonAction: () -> Unit) {
+        AwesomeDialog.build(this)
+            .title("警告", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.amber_900)
+            .icon(R.drawable.ic_warning)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive(actionButtonTitle) {
+                buttonAction()
+            }
+            .onNegative("關閉")
+    }
 
-        box.setConfirmClickListener {
-            buttonAction()
-            it.cancel()
+    val memberPetEditAR: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            val i: Intent? = res.data
+            if (i != null) {
+                refresh()
+            }
         }
-        box.show()
     }
 }
 
