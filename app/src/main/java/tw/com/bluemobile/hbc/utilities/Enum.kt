@@ -179,6 +179,80 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
     }
 }
 
+enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
+
+    hospital_name("hospital_name", "醫院名稱"),
+    hospital_city_id("hospital_city_id", "醫院縣市"),
+    hospital_area_id("hospital_area_id", "醫院區域"),
+    hospital_road("hospital_road", "醫院住址"),
+    type("type", "動物類型"),
+    blood_type("blood_type", "血液血型"),
+    traffic_fee("traffic_fee", "車馬費"),
+    nutrient_fee("nutrient_fee", "營養費");
+
+    companion object {
+        fun enumFromString(value: String): NeedBloodEnum {
+            return when (value) {
+                "hospital_name" -> hospital_name
+                "hospital_city_id" -> hospital_city_id
+                "hospital_area_id" -> hospital_area_id
+                "hospital_road" -> hospital_road
+                "type" -> type
+                "blood_type" -> blood_type
+                "traffic_fee" -> traffic_fee
+                "nutrient_fee" -> nutrient_fee
+                else -> hospital_name
+            }
+        }
+
+        fun getAllEnum(): ArrayList<NeedBloodEnum> {
+            return arrayListOf(
+                hospital_name,
+                hospital_city_id,
+                hospital_area_id,
+                hospital_road,
+                type,
+                blood_type,
+                traffic_fee,
+                nutrient_fee
+            )
+        }
+    }
+
+    fun radioTextToDBName(text: String): String {
+        return when (text) {
+            "貓" -> "cat"
+            "狗" -> "dog"
+
+            else -> text
+        }
+    }
+
+    fun DBNameToRadioText(text: String): String {
+        return when (text) {
+            "cat" -> "貓"
+            "dog" -> "狗"
+
+            else -> text
+        }
+    }
+
+    fun errMsg(): String {
+        return when (this) {
+            hospital_name -> "請填醫院名稱\n"
+            hospital_city_id -> "請選擇縣市\n"
+            hospital_area_id -> "請選擇區域\n"
+            hospital_road -> "請填寫路名等\n"
+            type -> "請選擇品種\n"
+            blood_type -> "請填寫血型\n"
+            traffic_fee -> "請填寫車馬費\n"
+            nutrient_fee -> "請填寫營養費\n"
+
+            else -> ""
+        }
+    }
+}
+
 enum class PasswordEnum(val englishName: String, val chineseName: String) {
     forget("forget", "忘記密碼"),
     reset("reset", "更改密碼"),

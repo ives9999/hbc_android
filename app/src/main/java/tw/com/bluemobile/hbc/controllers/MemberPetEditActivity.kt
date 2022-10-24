@@ -270,6 +270,11 @@ class MemberPetEditActivity : EditActivity() {
             }
         }
 
+        if (msg.isNotEmpty()) {
+            warning(msg)
+            return
+        }
+
         if (memberPetToken != null) {
             params.put("member_pet_token", memberPetToken!!)
         }

@@ -16,6 +16,7 @@
         android:layout_height="57dp"
         android:background="@drawable/button_submit"
         android:text="@string/submit"
+        android:textColor="@color/MY_BLACK"
         android:visibility="gone" />
 
 
@@ -25,6 +26,7 @@
         android:layout_width="177dp"
         android:layout_height="57dp"
         android:background="@drawable/button_cancel"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:textColor="@color/MY_WHITE" />
 
 </LinearLayout>
