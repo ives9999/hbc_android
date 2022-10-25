@@ -43,19 +43,23 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             view.findViewById<RadioButton>(R.id.yes) ?. let {
                 yesRB = it
                 it.text = typedArray.getString(R.styleable.TwoRadio_yesRadioTitle) ?: ""
+
+                val width: Int = typedArray.getInteger(R.styleable.TwoRadio_yesRadioWidth, 80).dpToPx()
+                setWidth(it, width)
             }
 
             view.findViewById<RadioButton>(R.id.no) ?. let {
                 noRB = it
                 it.text = typedArray.getString(R.styleable.TwoRadio_noRadioTitle) ?: ""
+
+                val width: Int = typedArray.getInteger(R.styleable.TwoRadio_noRadioWidth, 80).dpToPx()
+                it.width = width
+                setWidth(it, width)
             }
 
             view.findViewById<LinearLayout>(R.id.titleLL) ?. let {
-                val widthStr: String = typedArray.getString(R.styleable.TwoRadio_twoRadioTitleWidth) ?: "130"
-                val width: Int = widthStr.toInt().dpToPx()
-                val params: ViewGroup.LayoutParams = it.layoutParams
-                params.width = width
-                it.layoutParams = params
+                val width: Int = typedArray.getInteger(R.styleable.TwoRadio_twoRadioTitleWidth, 100).dpToPx()
+                setWidth(it, width)
             }
         }
     }
@@ -70,6 +74,7 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     fun setOnGroupCheckedChangeListener(lambda: (String) -> Unit) {
         yesNoGroup?.setOnCheckedChangeListener { radioGroup, i ->
             val radioButton: RadioButton = view.findViewById(i)
+            value = radioButton.text.toString()
             lambda(radioButton.text.toString())
         }
     }
@@ -84,6 +89,11 @@ class TwoRadio @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
     }
 
+    fun setWidth(it: View, width: Int) {
+        val params: ViewGroup.LayoutParams = it.layoutParams
+        params.width = width
+        it.layoutParams = params
+    }
 }
 
 

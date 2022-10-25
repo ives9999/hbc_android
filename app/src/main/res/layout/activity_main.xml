@@ -70,13 +70,33 @@
                 app:twoRadioTitleWidth="130"
                 app:yesRadioTitle="@string/cat" />
 
-            <tw.com.bluemobile.hbc.views.EditTextNormal
-                android:id="@+id/blood_type"
+            <tw.com.bluemobile.hbc.views.ThreeRadio
+                android:id="@+id/blood_type_cat"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/formitem_container_height"
-                android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:key="blood"
-                app:titleTV="血液類型" />
+                android:layout_height="wrap_content"
+                app:threeKey="blood_type"
+                app:threeRadioTitleTV="血液類型"
+                app:threeRadioStarIV="true"
+                app:threeRadioTitleWidth="130"
+                app:oneRadioTitle="A"
+                app:twoRadioTitle="B"
+                app:threeRadioTitle="AB"
+                android:visibility="visible"
+                />
+
+            <tw.com.bluemobile.hbc.views.TwoRadio
+                android:id="@+id/blood_type_dog"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:twoKey="blood_type"
+                app:twoRadioTitleTV="血液類型"
+                app:twoRadioStarIV="true"
+                app:yesRadioTitle="DEA1陽性"
+                app:noRadioTitle="DEA1陰性"
+                app:twoRadioTitleWidth="130"
+                app:yesRadioWidth="110"
+                app:noRadioWidth="110"
+                android:visibility="gone"/>
 
             <tw.com.bluemobile.hbc.views.EditTextUnit
                 android:id="@+id/traffic_fee"

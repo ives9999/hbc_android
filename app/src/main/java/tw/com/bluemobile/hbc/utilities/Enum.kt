@@ -186,7 +186,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
     hospital_area_id("hospital_area_id", "醫院區域"),
     hospital_road("hospital_road", "醫院住址"),
     type("type", "動物類型"),
-    blood_type("blood_type", "血液血型"),
+    blood_type_cat("blood_type_cat", "血液血型"),
+    blood_type_dog("blood_type_dog", "血液類型"),
     traffic_fee("traffic_fee", "車馬費"),
     nutrient_fee("nutrient_fee", "營養費");
 
@@ -198,7 +199,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 "hospital_area_id" -> hospital_area_id
                 "hospital_road" -> hospital_road
                 "type" -> type
-                "blood_type" -> blood_type
+                "blood_type_cat" -> blood_type_cat
+                "blood_type_dog" -> blood_type_dog
                 "traffic_fee" -> traffic_fee
                 "nutrient_fee" -> nutrient_fee
                 else -> hospital_name
@@ -212,7 +214,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 hospital_area_id,
                 hospital_road,
                 type,
-                blood_type,
+                blood_type_cat,
+                blood_type_dog,
                 traffic_fee,
                 nutrient_fee
             )
@@ -244,7 +247,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
             hospital_area_id -> "請選擇區域\n"
             hospital_road -> "請填寫路名等\n"
             type -> "請選擇品種\n"
-            blood_type -> "請填寫血型\n"
+            blood_type_cat -> "請選擇血型\n"
+            blood_type_dog -> "請選擇血型\n"
             traffic_fee -> "請填寫車馬費\n"
             nutrient_fee -> "請填寫營養費\n"
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/titleLL"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/edit_title"
+            android:text="@string/common"
+            android:textColor="@color/MY_BLACK" />
+
+        <TextView
+            android:id="@+id/titleTV"
+            style="@style/edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是否"
+            android:textColor="@color/MY_BLACK" />
+
+        <ImageView
+            android:id="@+id/starIV"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            app:srcCompat="@drawable/start" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/three_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/one"
+                style="@style/edit_title"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:textColor="@color/MY_BLACK" />
+
+            <RadioButton
+                android:id="@+id/two"
+                style="@style/edit_title"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="B"
+                android:textColor="@color/MY_BLACK" />
+
+            <RadioButton
+                android:id="@+id/three"
+                style="@style/edit_title"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="C"
+                android:textColor="@color/MY_BLACK" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</LinearLayout>

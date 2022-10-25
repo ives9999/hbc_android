@@ -35,10 +35,22 @@
     <declare-styleable name="TwoRadio">
         <attr name="twoKey" format="string" />
         <attr name="twoRadioTitleTV" format="string" />
+        <attr name="twoRadioStarIV" format="boolean" />
+        <attr name="twoRadioTitleWidth" format="integer" />
         <attr name="yesRadioTitle" format="string" />
         <attr name="noRadioTitle" format="string" />
-        <attr name="twoRadioStarIV" format="boolean" />
-        <attr name="twoRadioTitleWidth" format="string" />
+        <attr name="yesRadioWidth" format="integer" />
+        <attr name="noRadioWidth" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ThreeRadio">
+        <attr name="threeKey" format="string" />
+        <attr name="threeRadioTitleTV" format="string" />
+        <attr name="threeRadioStarIV" format="boolean" />
+        <attr name="threeRadioTitleWidth" format="string" />
+        <attr name="oneRadioTitle" format="string" />
+        <attr name="twoRadioTitle" format="string" />
+        <attr name="threeRadioTitle" format="string" />
     </declare-styleable>
 
     <declare-styleable name="UploadImage">
