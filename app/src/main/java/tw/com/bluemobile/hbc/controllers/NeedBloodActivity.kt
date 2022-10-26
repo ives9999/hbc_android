@@ -7,8 +7,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
+import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.services.MemberService
+import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
+import java.lang.Exception
 
 class NeedBloodActivity : BaseActivity() {
 
@@ -212,12 +218,46 @@ class NeedBloodActivity : BaseActivity() {
         params.remove("blood_type_cat")
         params.remove("blood_type_dog")
 
-        println(params)
+        //println(params)
 
         if (msg.isNotEmpty()) {
             warning(msg)
             return
         }
 
+        loading.show()
+        NeedBloodService.update(this, params) { success ->
+            if (success) {
+                runOnUiThread {
+                    try {
+                        //println(MemberService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<MemberPetModel>>(MemberService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                val memberPetModel = successModel.model
+                                success("新增/修改 我的寶貝成功") {
+                                    prev()
+                                }
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
+                    }
+                }
+            } else {
+                runOnUiThread {
+                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
+                }
+            }
+
+            runOnUiThread {
+                loading.hide()
+            }
+        }
     }
 }

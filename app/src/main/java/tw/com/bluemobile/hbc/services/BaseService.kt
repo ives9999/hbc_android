@@ -163,6 +163,18 @@ open class BaseService {
         return _params
     }
 
+    open fun update(context: Context, params: MutableMap<String, String>, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
+        getBaseUrl()
+        val url: String = getUpdateURL()
+
+        val _params: Map<String, String> = composeParams(params)
+        println(url)
+        println(_params.toJSON())
+
+        val i = 6
+
+    }
+
     open fun update(
         context: Context,
         params: MutableMap<String, String>,
