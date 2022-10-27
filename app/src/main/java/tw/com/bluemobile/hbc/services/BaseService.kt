@@ -158,6 +158,7 @@ open class BaseService {
         _params = _params.mergeWith(sourceParams)
         if (isMemberToken && member.token!!.isNotEmpty()) {
             _params = _params.mergeWith(hashMapOf(TOKEN_KEY to member.token!!))
+            _params = _params.mergeWith(hashMapOf("member_token" to member.token!!))
         }
 
         return _params
@@ -171,8 +172,7 @@ open class BaseService {
         println(url)
         println(_params.toJSON())
 
-        val i = 6
-
+        _simpleService(context, url, _params, complete)
     }
 
     open fun update(

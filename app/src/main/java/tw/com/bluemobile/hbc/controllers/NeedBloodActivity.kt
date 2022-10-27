@@ -9,6 +9,7 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
@@ -232,11 +233,11 @@ class NeedBloodActivity : BaseActivity() {
                     try {
                         //println(MemberService.jsonString)
                         val successModel =
-                            jsonToModel<SuccessModel<MemberPetModel>>(MemberService.jsonString)
+                            jsonToModel<SuccessModel<NeedBloodModel>>(NeedBloodService.jsonString)
                         if (successModel != null) {
                             if (successModel.success) {
                                 val memberPetModel = successModel.model
-                                success("新增/修改 我的寶貝成功") {
+                                success("新增/修改 我需要血成功") {
                                     prev()
                                 }
                             } else {
