@@ -30,7 +30,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ShowActivity"
+            android:name=".controllers.NeedBloodListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.ShowActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.MemberPetShowActivity"

@@ -238,7 +238,7 @@ class NeedBloodActivity : BaseActivity() {
                             if (successModel.success) {
                                 val memberPetModel = successModel.model
                                 success("新增/修改 我需要血成功") {
-                                    prev()
+                                    //prev()
                                 }
                             } else {
                                 warning(successModel.msgs.parseErrmsg())

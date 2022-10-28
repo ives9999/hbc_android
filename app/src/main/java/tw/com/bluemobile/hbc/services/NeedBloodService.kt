@@ -4,8 +4,12 @@ import tw.com.bluemobile.hbc.utilities.URL_HOME
 
 object NeedBloodService: BaseService() {
 
+    override fun getListURL(): String {
+        return URL_HOME + "needBlood/getList"
+    }
+
     override fun getOneURL(): String {
-        return URL_HOME + "need_blood/postOne"
+        return URL_HOME + "needBlood/postOne"
     }
 
     override fun getUpdateURL(): String {

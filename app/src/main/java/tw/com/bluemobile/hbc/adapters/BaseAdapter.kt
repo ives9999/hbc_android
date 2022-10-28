@@ -1,19 +1,15 @@
 package tw.com.bluemobile.hbc.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.BaseModel
-import java.lang.reflect.Type
 
 
 //class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
@@ -87,7 +83,7 @@ open class BaseViewHolder<U: BaseModel>(
     open fun bind(row: U, idx: Int) {
 
         setTV(R.id.noTV, (idx + 1).toString())
-        setTV(R.id.nameTV, row.name)
+        setTV(R.id.typeTV, row.name)
 
     }
 

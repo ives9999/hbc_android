@@ -88,6 +88,25 @@ open class BaseService {
         URL_HOME = "$BASE_URL/"
     }
 
+    fun getList(context: Context, params: MutableMap<String, String>, page: Int, perPage: Int, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
+        getBaseUrl()
+        val url: String = getListURL()
+
+        val params1: MutableMap<String, String> = mutableMapOf(
+            "page" to page.toString(),
+            "perPage" to perPage.toString()
+        )
+        params.putAll(params1)
+
+        val _params: Map<String, String> = composeParams(params)
+//        println(url)
+//        println(_params.toJSON())
+
+        _simpleService(context, url, _params, complete, true)
+    }
+
+    open fun getListURL(): String { return "" }
+
     fun getOne(context: Context, params: MutableMap<String, String>, complete: CompletionHandler) {
 
         getBaseUrl()
@@ -169,8 +188,8 @@ open class BaseService {
         val url: String = getUpdateURL()
 
         val _params: Map<String, String> = composeParams(params)
-        println(url)
-        println(_params.toJSON())
+        //println(url)
+        //println(_params.toJSON())
 
         _simpleService(context, url, _params, complete)
     }

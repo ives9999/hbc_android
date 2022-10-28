@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="傻眼貓咪"
+                android:text="貓"
                 android:textColor="@color/MY_BLACK" />
 
             <LinearLayout
@@ -81,6 +81,22 @@
                     android:textColor="@color/deep_orange_500" />
 
             </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/created_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/edit_title"
+                    android:text="2022-09-30 18:00"
+                    android:textColor="@color/MY_BLACK" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -101,20 +117,32 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/ageTV"
                         style="@style/edit_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
+                        android:text="車馬費："
+                        android:textColor="@color/MY_BLACK" />
+
+                    <TextView
+                        android:id="@+id/traffic_feeTV"
+                        style="@style/edit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="500"
                         android:textColor="@color/MY_BLACK" />
 
                     <TextView
                         style="@style/edit_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="歲"
+                        android:text="元"
                         android:textColor="@color/MY_BLACK" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -123,37 +151,29 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/weightTV"
                         style="@style/edit_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10"
+                        android:text="營養費："
+                        android:textColor="@color/MY_BLACK" />
+
+                    <TextView
+                        android:id="@+id/nutrient_feeTV"
+                        style="@style/edit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="800"
                         android:textColor="@color/MY_BLACK" />
 
                     <TextView
                         style="@style/edit_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="公斤"
+                        android:text="元"
                         android:textColor="@color/MY_BLACK" />
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/created_at"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/edit_title"
-                    android:text="2022-09-30 18:00"
-                    android:textColor="@color/MY_BLACK" />
-            </LinearLayout>
+
 
         </LinearLayout>
 
