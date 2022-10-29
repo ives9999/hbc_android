@@ -15,9 +15,9 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     MyLayout(context, attrs, defStyleAttr) {
 
     protected val view: View = View.inflate(context, R.layout.more, this)
-    protected var keyEnum: KeyEnum = KeyEnum.city_id
-    protected var valueTV: TextView? = null
-    protected var cancelIV: ImageView? = null
+    var keyEnum: KeyEnum = KeyEnum.city_id
+    private var valueTV: TextView? = null
+    private var cancelIV: ImageView? = null
 
     init {
         attrs?.let { it ->
@@ -52,7 +52,6 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
         return value.isEmpty()
     }
-
 
     override fun setOnClickListener(lambda: () -> Unit) {
         valueTV?.setOnClickListener {

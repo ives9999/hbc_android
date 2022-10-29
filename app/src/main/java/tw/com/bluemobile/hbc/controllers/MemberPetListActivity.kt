@@ -78,7 +78,6 @@ class MemberPetListActivity : ListActivity<MemberPetListViewHolder, MemberPetMod
                 }
             }
         }
-
     }
 
     override val onEditClick: ((Int) -> Unit) = { idx ->

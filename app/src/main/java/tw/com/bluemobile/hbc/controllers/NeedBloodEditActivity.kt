@@ -1,14 +1,12 @@
 package tw.com.bluemobile.hbc.controllers
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
@@ -17,9 +15,7 @@ import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
 
-class NeedBloodActivity : EditActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+class NeedBloodEditActivity : EditActivity() {
 
     var moreCity: More? = null
     var moreArea: More? = null
@@ -46,24 +42,13 @@ class NeedBloodActivity : EditActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        able_enum = TabEnum.need_blood
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_need_blood_edit)
 
         if (intent.hasExtra("token")) {
             token = intent.getStringExtra("token")!!
         }
-
-        if (token == null) {
-//        Thread.sleep(1000)
-            val splashScreen = installSplashScreen()
-        }
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
-        //setContentView(binding.root)
-
-        setTop(false, "我需要血")
+        setTop(true, "我需要血")
         loading = Loading(this)
 
         if (token != null) {
@@ -79,19 +64,33 @@ class NeedBloodActivity : EditActivity() {
         super.refresh()
 
         loading.show()
-        val params: HashMap<String, String> = hashMapOf("needblood_token" to token!!)
+        val params: HashMap<String, String> = hashMapOf("token" to token!!)
         NeedBloodService.getOne(this, params) { success ->
             if (success) {
-                needBloodModel = parseJSON<NeedBloodModel>(NeedBloodService.jsonString)
-                needBloodModel?.filterRow()
                 runOnUiThread {
-                    if (needBloodModel != null) {
-                        for (enum in MemberPetEnum.getAllEnum()) {
-                            val name = enum.englishName
-                            val value = getPropertyValue(needBloodModel!!, name)
-                            initData.put(name, value)
+                    try {
+                        println(NeedBloodService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<NeedBloodModel>>(NeedBloodService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                needBloodModel = successModel.model
+                                if (needBloodModel != null) {
+                                    for (enum in NeedBloodEnum.getAllEnum()) {
+                                        val name = enum.englishName
+                                        val value = getPropertyValue(needBloodModel!!, name)
+                                        initData.put(name, value)
+                                    }
+                                    init()
+                                }
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
                         }
-                        init()
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
                     }
                     loading.hide()
                 }
@@ -136,6 +135,7 @@ class NeedBloodActivity : EditActivity() {
                                 warning("請先選擇縣市")
                             } else {
                                 val city_id: Int = moreCity?.value?.toInt() ?: 0
+                                it.keyEnum = KeyEnum.area_id
                                 moreDialog = it.toMoreDialog(
                                     screenWidth,
                                     city_id,
@@ -175,7 +175,6 @@ class NeedBloodActivity : EditActivity() {
                     if (initData.containsKey(key)) {
                         it.value = initData[key]!!
                     }
-
                 }
                 val h: HashMap<NeedBloodEnum, MyLayout> = hashMapOf(enum to it)
                 formItems.add(h)
@@ -252,6 +251,9 @@ class NeedBloodActivity : EditActivity() {
         }
 
         params.put("blood_type", blood_type)
+        if (token != null) {
+            params.put(TOKEN_KEY, token!!)
+        }
         params.remove("blood_type_cat")
         params.remove("blood_type_dog")
 

@@ -88,6 +88,8 @@ open class BaseService {
         URL_HOME = "$BASE_URL/"
     }
 
+    open fun getDeleteURL(): String { return "" }
+
     fun getList(context: Context, params: MutableMap<String, String>, page: Int, perPage: Int, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
         getBaseUrl()
         val url: String = getListURL()
@@ -176,11 +178,20 @@ open class BaseService {
         _params = _params.mergeWith(PARAMS)
         _params = _params.mergeWith(sourceParams)
         if (isMemberToken && member.token!!.isNotEmpty()) {
-            _params = _params.mergeWith(hashMapOf(TOKEN_KEY to member.token!!))
+            //_params = _params.mergeWith(hashMapOf(TOKEN_KEY to member.token!!))
             _params = _params.mergeWith(hashMapOf("member_token" to member.token!!))
         }
 
         return _params
+    }
+
+    open fun postDelete(context: Context, token: String, complete: CompletionHandler) {
+        getBaseUrl()
+        val url = getDeleteURL()
+        val params: HashMap<String, String> = hashMapOf("token" to token)
+        val _params: Map<String, String> = composeParams(params, true)
+
+        _simpleService(context, url, _params, complete)
     }
 
     open fun update(context: Context, params: MutableMap<String, String>, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
@@ -188,8 +199,8 @@ open class BaseService {
         val url: String = getUpdateURL()
 
         val _params: Map<String, String> = composeParams(params)
-        //println(url)
-        //println(_params.toJSON())
+//        println(url)
+//        println(_params.toJSON())
 
         _simpleService(context, url, _params, complete)
     }
