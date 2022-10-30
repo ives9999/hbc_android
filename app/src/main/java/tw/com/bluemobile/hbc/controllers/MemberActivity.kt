@@ -94,7 +94,7 @@ class MemberActivity : BaseActivity() {
     private fun logout() {
         member.isLoggedIn = false
         member.reset()
-        member.dump()
+        //member.dump()
 
         toMemberHome(this)
     }
