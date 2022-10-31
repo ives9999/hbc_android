@@ -1,12 +1,8 @@
 package tw.com.bluemobile.hbc.controllers
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.*
 import tw.com.bluemobile.hbc.models.BaseModels
