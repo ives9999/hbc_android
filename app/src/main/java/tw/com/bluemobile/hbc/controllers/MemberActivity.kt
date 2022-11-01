@@ -103,7 +103,7 @@ class MemberActivity : BaseActivity() {
         //println(idx)
         when (memberHomeEnum) {
             MemberHomeEnum.account -> toRegister(this)
-            MemberHomeEnum.pet -> toMemberPetList(this)
+            MemberHomeEnum.pet -> toDonateBloodList(this, "member")
             MemberHomeEnum.need_blood -> toNeedBloodList(this, true)
             MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
             MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)

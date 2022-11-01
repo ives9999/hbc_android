@@ -35,8 +35,8 @@ import tw.com.bluemobile.hbc.models.BaseModel
 typealias viewHolder<T> = (Context, View)-> T
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
-    private val resource: Int,
-    private val viewHolderConstructor: viewHolder<T>
+    open val resource: Int,
+    open val viewHolderConstructor: viewHolder<T>
 ) : RecyclerView.Adapter<T>() {
 
     private var rows: ArrayList<U> = arrayListOf()

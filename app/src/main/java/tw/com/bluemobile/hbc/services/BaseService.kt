@@ -100,7 +100,7 @@ open class BaseService {
         )
         params.putAll(params1)
 
-        val _params: Map<String, String> = composeParams(params)
+        val _params: Map<String, String> = composeParams(params, false)//isMemberToken在傳params就決定了，不能從這邊決定
 //        println(url)
 //        println(_params.toJSON())
 

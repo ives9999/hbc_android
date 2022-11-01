@@ -69,6 +69,10 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
     protected fun countTotalPage() {
         val _totalPage: Int = totalCount / perPage
         totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
+
+        if (totalPage <= 1) {
+            recyclerView.removeOnScrollListener(scrollListener)
+        }
     }
 
     open fun getList(page: Int, perPage: Int) {}

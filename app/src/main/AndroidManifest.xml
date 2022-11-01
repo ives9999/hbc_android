@@ -42,13 +42,13 @@
             android:name=".controllers.ShowActivity"
             android:exported="false" />
         <activity
-            android:name=".controllers.MemberPetShowActivity"
+            android:name=".controllers.DonateBloodShowActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.MemberPetListActivity"
             android:exported="false" />
         <activity
-            android:name=".controllers.MemberPetEditActivity"
+            android:name=".controllers.DonateBloodEditActivity"
             android:exported="false" />
         <activity
             android:name=".controllers.BankAccountActivity"

@@ -10,18 +10,15 @@ import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.IconText
-import tw.com.bluemobile.hbc.views.MyLayout
-import kotlin.comparisons.then
-import kotlin.reflect.full.memberProperties
 
-class MemberPetShowActivity : ShowActivity() {
+class DonateBloodShowActivity : ShowActivity() {
 
     var memberPetToken: String? = null
     var memberPetModel: MemberPetModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_pet_show)
+        setContentView(R.layout.activity_donate_blood_show)
 
         if (intent.hasExtra("memberPetToken")) {
             memberPetToken = intent.getStringExtra("memberPetToken")
@@ -94,11 +91,11 @@ class MemberPetShowActivity : ShowActivity() {
 
     override fun add() {
         super.add()
-        toMemberPetEdit(this)
+        toDonateBloodEdit(this)
     }
 
     override fun edit() {
-        toMemberPetEdit(this, memberPetToken)
+        toDonateBloodEdit(this, memberPetToken)
     }
 
     override fun refresh() {

@@ -25,7 +25,7 @@ import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
 import java.lang.Exception
 
-class MemberPetEditActivity : EditActivity() {
+class DonateBloodEditActivity : EditActivity() {
 
     var memberPetToken: String? = null
     var memberPetModel: MemberPetModel? = null
@@ -54,7 +54,7 @@ class MemberPetEditActivity : EditActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_pet_edit)
+        setContentView(R.layout.activity_donate_blood_edit)
 
         if (intent.hasExtra("memberPetToken")) {
             memberPetToken = intent.getStringExtra("memberPetToken")
