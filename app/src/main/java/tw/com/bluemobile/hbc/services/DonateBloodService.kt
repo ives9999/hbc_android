@@ -5,7 +5,7 @@ import tw.com.bluemobile.hbc.utilities.URL_HOME
 object DonateBloodService: BaseService() {
 
     override fun getDeleteURL(): String {
-        return URL_HOME + "donateBlood/postDelete"
+        return URL_HOME + "donateBlood/getDelete"
     }
 
     override fun getListURL(): String {

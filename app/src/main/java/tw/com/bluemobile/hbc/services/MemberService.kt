@@ -101,15 +101,13 @@ object MemberService: BaseService() {
 //        _simpleService(context, url, _params, complete, true)
 //    }
 
-    fun postPetOne(context: Context, params: MutableMap<String, String>, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
-        getBaseUrl()
-        val url: String = URL_HOME + "member/postPetOne"
-
-        val _params: Map<String, String> = composeParams(params)
-//        println(url)
-//        println(_params.toJSON())
-        _simpleService(context, url, _params, complete)
-    }
+//    fun postPetOne(context: Context, params: MutableMap<String, String>, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
+//        getBaseUrl()
+//        val url: String = URL_HOME + "member/postPetOne"
+//
+//        val _params: Map<String, String> = composeParams(params)
+//        _simpleService(context, url, _params, complete)
+//    }
 
     fun login(
         context: Context,
@@ -126,14 +124,14 @@ object MemberService: BaseService() {
         _simpleService(context, url, _params, complete)
     }
 
-    fun postDeletePet(context: Context, token: String, complete: CompletionHandler) {
-        getBaseUrl()
-        val url = URL_HOME + "member/postDeletePet"
-        val params: HashMap<String, String> = hashMapOf("member_pet_token" to token)
-        val _params: Map<String, String> = composeParams(params, true)
-
-        _simpleService(context, url, _params, complete)
-    }
+//    fun postDeletePet(context: Context, token: String, complete: CompletionHandler) {
+//        getBaseUrl()
+//        val url = URL_HOME + "member/postDeletePet"
+//        val params: HashMap<String, String> = hashMapOf("member_pet_token" to token)
+//        val _params: Map<String, String> = composeParams(params, true)
+//
+//        _simpleService(context, url, _params, complete)
+//    }
 
     fun postPet(context: Context, params: MutableMap<String, String>, blood_image: String?, body_image: String?, complete: CompletionHandler) {
         getBaseUrl()

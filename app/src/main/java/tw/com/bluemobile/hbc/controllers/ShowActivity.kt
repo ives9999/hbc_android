@@ -1,14 +1,10 @@
 package tw.com.bluemobile.hbc.controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import tw.com.bluemobile.hbc.adapters.BaseViewHolder
-import tw.com.bluemobile.hbc.models.BaseModel
-import tw.com.bluemobile.hbc.models.MemberPetModel
-import tw.com.bluemobile.hbc.services.MemberService
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
+import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.jsonToModel
-import tw.com.bluemobile.hbc.utilities.jsonToModelForOne
+import tw.com.bluemobile.hbc.utilities.jsonToModelForList
 import java.lang.reflect.Type
 
 open class ShowActivity : BaseActivity() {
@@ -17,21 +13,29 @@ open class ShowActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
     }
 
-
     override fun init() {
         super.init()
     }
 
-    inline fun<reified U> parseJSON(jsonString: String): U? {
+    inline fun<reified U: BaseModel> parseJSONAndInit(jsonString: String, modelType: Type): U? {
 
         //println(jsonString)
-        val baseModel = jsonToModelForOne<U>(jsonString)
-        runOnUiThread {
-            init()
-            loading.hide()
-        }
+        val successModel = jsonToModelForList<SuccessModel<U>>(jsonString, modelType)
+        if (successModel != null && successModel.success) {
+            val model = successModel.model as U
+            model.filterRow()
+            runOnUiThread {
+                init()
+                loading.hide()
+            }
+            return model
 
-        return baseModel
+        } else {
+            runOnUiThread {
+                warning(successModel!!.msgs.parseErrmsg())
+            }
+            return null
+        }
     }
 
     override fun refresh() {

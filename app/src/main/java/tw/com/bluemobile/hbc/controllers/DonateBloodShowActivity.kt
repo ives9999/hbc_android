@@ -5,11 +5,18 @@ import android.widget.ImageView
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.extensions.setImage
+import tw.com.bluemobile.hbc.models.BaseModels
+import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.IconText
+import java.lang.Exception
+import java.lang.reflect.Type
 
 class DonateBloodShowActivity : ShowActivity() {
 
@@ -101,11 +108,37 @@ class DonateBloodShowActivity : ShowActivity() {
     override fun refresh() {
 
         super.refresh()
-        val params: HashMap<String, String> = hashMapOf("member_pet_token" to memberPetToken!!)
-        MemberService.postPetOne(this, params) { success ->
+        val params: HashMap<String, String> = hashMapOf("token" to memberPetToken!!)
+        DonateBloodService.getOne(this, params) { success ->
             if (success) {
-                memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
-                memberPetModel?.filterRow()
+                //println(DonateBloodService.jsonString)
+                val modelType: Type = genericType<SuccessModel<MemberPetModel>>()
+                memberPetModel = parseJSONAndInit<MemberPetModel>(DonateBloodService.jsonString, modelType)
+//                if (memberPetModel != null) {
+//                    runOnUiThread {
+//                        init()
+//                        loading.hide()
+//                    }
+//                } else {
+//                    runOnUiThread {
+//                        warning(errMsg)
+//                    }
+//                }
+
+//                parseJSON<SuccessModel<MemberPetModel>>(DonateBloodService.jsonString, modelType)
+//                val successModel = jsonToModelForOne<SuccessModel<MemberPetModel>>(DonateBloodService.jsonString, modelType)
+//                if (successModel != null && successModel.success) {
+//                    memberPetModel = successModel.model
+//                    memberPetModel?.filterRow()
+//                    runOnUiThread {
+//                        init()
+//                        loading.hide()
+//                    }
+//                } else {
+//                    runOnUiThread {
+//                        warning(successModel!!.msgs.parseErrmsg())
+//                    }
+//                }
             }
         }
     }

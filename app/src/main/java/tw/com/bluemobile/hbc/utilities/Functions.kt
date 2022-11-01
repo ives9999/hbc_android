@@ -51,6 +51,20 @@ inline fun <reified U> jsonToModelForOne(jsonString: String): U? {
     return u
 }
 
+//inline fun <reified U> jsonToModelForOne(jsonString: String, modelType: Type): U? {
+//
+//    var u: U? = null
+//    try {
+//        u = Gson().fromJson<U>(jsonString, modelType)
+//    } catch (e: java.lang.Exception) {
+//        //Global.message = e.localizedMessage
+//        println(e.localizedMessage)
+//    }
+//
+//    return U
+//}
+
+
 infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<String, String> {
     val result = this.toMutableMap()
     anotherMap.forEach {

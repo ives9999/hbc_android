@@ -11,11 +11,13 @@ import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
+import java.lang.reflect.Type
 
 class NeedBloodActivity : EditActivity() {
 
@@ -82,19 +84,22 @@ class NeedBloodActivity : EditActivity() {
         val params: HashMap<String, String> = hashMapOf("needblood_token" to token!!)
         NeedBloodService.getOne(this, params) { success ->
             if (success) {
-                needBloodModel = parseJSON<NeedBloodModel>(NeedBloodService.jsonString)
-                needBloodModel?.filterRow()
-                runOnUiThread {
-                    if (needBloodModel != null) {
-                        for (enum in MemberPetEnum.getAllEnum()) {
-                            val name = enum.englishName
-                            val value = getPropertyValue(needBloodModel!!, name)
-                            initData.put(name, value)
-                        }
-                        init()
-                    }
-                    loading.hide()
-                }
+                val modelType: Type = genericType<SuccessModel<NeedBloodModel>>()
+                needBloodModel = parseJSONAndInit<NeedBloodModel>(DonateBloodService.jsonString, modelType)
+
+//                needBloodModel = parseJSON<NeedBloodModel>(NeedBloodService.jsonString)
+//                needBloodModel?.filterRow()
+//                runOnUiThread {
+//                    if (needBloodModel != null) {
+//                        for (enum in MemberPetEnum.getAllEnum()) {
+//                            val name = enum.englishName
+//                            val value = getPropertyValue(needBloodModel!!, name)
+//                            initData.put(name, value)
+//                        }
+//                        init()
+//                    }
+//                    loading.hide()
+//                }
             }
         }
     }

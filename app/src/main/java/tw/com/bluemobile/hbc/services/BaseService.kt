@@ -88,6 +88,16 @@ open class BaseService {
         URL_HOME = "$BASE_URL/"
     }
 
+    open fun getDelete(context: Context, token: String, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
+        getBaseUrl()
+        val url: String = getDeleteURL()
+        val params: HashMap<String, String> = hashMapOf("token" to token)
+//        println(url)
+//        println(params.toJSON())
+
+        _simpleService(context, url, params, complete, true)
+    }
+
     open fun getDeleteURL(): String { return "" }
 
     fun getList(context: Context, params: MutableMap<String, String>, page: Int, perPage: Int, complete: CompletionHandler /* = (Success: kotlin.Boolean) -> kotlin.Unit */) {
@@ -113,7 +123,6 @@ open class BaseService {
 
         getBaseUrl()
         val url: String = getOneURL()
-
         val _params: Map<String, String> = composeParams(params)
 //        println(url)
 //        println(_params.toJSON())

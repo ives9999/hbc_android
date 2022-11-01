@@ -20,6 +20,7 @@ import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.Loading
 import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
+import tw.com.bluemobile.hbc.utilities.TabEnum
 import tw.com.bluemobile.hbc.utilities.genericType
 import tw.com.bluemobile.hbc.views.Bottom
 import java.lang.reflect.Type
@@ -40,6 +41,7 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
         top?.showAdd(true)
 
         if (source == "home") {
+            able_enum = TabEnum.donate_blood
             setBottom(able_enum)
         } else {
             findViewById<Bottom>(R.id.bottom) ?. let {
@@ -99,7 +101,7 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
 
     private fun delete(token: String) {
         loading.show()
-        MemberService.postDeletePet(this, token) {
+        DonateBloodService.getDelete(this, token) {
             runOnUiThread {
                 //println(MemberService.jsonString)
 

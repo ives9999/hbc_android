@@ -16,6 +16,7 @@ import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.EditTextNormal
@@ -24,6 +25,7 @@ import tw.com.bluemobile.hbc.views.TwoRadio
 import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
 import java.lang.Exception
+import java.lang.reflect.Type
 
 class DonateBloodEditActivity : EditActivity() {
 
@@ -76,22 +78,11 @@ class DonateBloodEditActivity : EditActivity() {
         super.refresh()
 
         loading.show()
-        val params: HashMap<String, String> = hashMapOf("member_pet_token" to memberPetToken!!)
-        MemberService.postPetOne(this, params) { success ->
+        val params: HashMap<String, String> = hashMapOf("token" to memberPetToken!!)
+        DonateBloodService.getOne(this, params) { success ->
             if (success) {
-                memberPetModel = parseJSON<MemberPetModel>(MemberService.jsonString)
-                memberPetModel?.filterRow()
-                runOnUiThread {
-                    if (memberPetModel != null) {
-                        for (enum in MemberPetEnum.getAllEnum()) {
-                            val name = enum.englishName
-                            val value = getPropertyValue(memberPetModel!!, name)
-                            initData.put(name, value)
-                        }
-                        init()
-                    }
-                    loading.hide()
-                }
+                val modelType: Type = genericType<SuccessModel<MemberPetModel>>()
+                memberPetModel = parseJSONAndInit<MemberPetModel>(DonateBloodService.jsonString, modelType)
             }
         }
     }
