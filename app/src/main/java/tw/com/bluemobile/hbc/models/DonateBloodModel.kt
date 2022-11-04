@@ -2,7 +2,7 @@ package tw.com.bluemobile.hbc.models
 
 import tw.com.bluemobile.hbc.utilities.BASE_URL
 
-class MemberPetModel: BaseModel() {
+class DonateBloodModel: BaseModel() {
     var member_id: Int = 0
     var type: String = "cat"
     var age: Int = 0

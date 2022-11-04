@@ -7,7 +7,7 @@ interface ToDonateBlood {
 
     fun toDonateBloodEdit(activity: BaseActivity, token: String? = null) {
         val i = Intent(activity, DonateBloodEditActivity::class.java)
-        i.putExtra("memberPetToken", token)
+        i.putExtra("donateBloodToken", token)
         activity.memberPetEditAR.launch(i)
     }
 
@@ -17,9 +17,9 @@ interface ToDonateBlood {
         activity.startActivity(i)
     }
 
-    fun toDonateBloodShhow(activity: BaseActivity, token: String) {
+    fun toDonateBloodShow(activity: BaseActivity, token: String) {
         val i = Intent(activity, DonateBloodShowActivity::class.java)
-        i.putExtra("memberPetToken", token)
+        i.putExtra("donateBloodToken", token)
         activity.startActivity(i)
     }
 }

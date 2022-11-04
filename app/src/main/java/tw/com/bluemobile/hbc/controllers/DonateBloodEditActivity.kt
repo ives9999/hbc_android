@@ -5,21 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.view.View
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.models.MemberModel
-import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.DonateBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
-import tw.com.bluemobile.hbc.views.EditTextNormal
 import tw.com.bluemobile.hbc.views.MyLayout
 import tw.com.bluemobile.hbc.views.TwoRadio
 import tw.com.bluemobile.hbc.views.UploadImage
@@ -29,44 +24,44 @@ import java.lang.reflect.Type
 
 class DonateBloodEditActivity : EditActivity() {
 
-    var memberPetToken: String? = null
-    var memberPetModel: MemberPetModel? = null
+    var donateBloodToken: String? = null
+    var donateBloodModel: DonateBloodModel? = null
 
     var bloodImage: UploadImage? = null
     var bodyImge: UploadImage? = null
     var bloodImageUri: Uri? = null
     var bodyImageUri: Uri? = null
 
-    var imagePickerKey: MemberPetEnum? = null
-    private val formItems: ArrayList<HashMap<MemberPetEnum, MyLayout>> = arrayListOf()
+    var imagePickerKey: DonateBloodEnum? = null
+    private val formItems: ArrayList<HashMap<DonateBloodEnum, MyLayout>> = arrayListOf()
 
     var typeRadio: TwoRadio? = null
     var iDoRadio: TwoRadio? = null
 
     private val initData: MutableMap<String, String> = mutableMapOf(
-//        MemberPetEnum.petName.englishName to "幸運貓",
-//        MemberPetEnum.type.englishName to "狗",
-//        MemberPetEnum.age.englishName to "5",
-//        MemberPetEnum.weight.englishName to "10",
-//        MemberPetEnum.blood_type.englishName to "A",
-//        MemberPetEnum.IDo.englishName to "願意",
-//        MemberPetEnum.traffic_fee.englishName to "100",
-//        MemberPetEnum.nutrient_fee.englishName to "200"
+//        DonateBloodEnum.petName.englishName to "幸運貓",
+//        DonateBloodEnum.type.englishName to "狗",
+//        DonateBloodEnum.age.englishName to "5",
+//        DonateBloodEnum.weight.englishName to "10",
+//        DonateBloodEnum.blood_type.englishName to "A",
+//        DonateBloodEnum.IDo.englishName to "願意",
+//        DonateBloodEnum.traffic_fee.englishName to "100",
+//        DonateBloodEnum.nutrient_fee.englishName to "200"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_donate_blood_edit)
 
-        if (intent.hasExtra("memberPetToken")) {
-            memberPetToken = intent.getStringExtra("memberPetToken")
+        if (intent.hasExtra("donateBloodToken")) {
+            donateBloodToken = intent.getStringExtra("donateBloodToken")
             //println(memberPetToken)
         }
 
         setTop(true, "我的寶貝")
 
         loading = Loading(this)
-        if (memberPetToken != null) {
+        if (donateBloodToken != null) {
             refresh()
         } else {
             init()
@@ -78,11 +73,11 @@ class DonateBloodEditActivity : EditActivity() {
         super.refresh()
 
         loading.show()
-        val params: HashMap<String, String> = hashMapOf("token" to memberPetToken!!)
+        val params: HashMap<String, String> = hashMapOf("token" to donateBloodToken!!)
         DonateBloodService.getOne(this, params) { success ->
             if (success) {
-                val modelType: Type = genericType<SuccessModel<MemberPetModel>>()
-                memberPetModel = parseJSONAndInit<MemberPetModel>(DonateBloodService.jsonString, modelType)
+                val modelType: Type = genericType<SuccessModel<DonateBloodModel>>()
+                donateBloodModel = parseJSONAndInit<DonateBloodModel>(DonateBloodService.jsonString, modelType)
             }
         }
     }
@@ -90,14 +85,14 @@ class DonateBloodEditActivity : EditActivity() {
     override fun init() {
         super.init()
 
-        val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
+        val allEnums: ArrayList<DonateBloodEnum> = DonateBloodEnum.getAllEnum()
         for (enum in allEnums) {
 
             val key: String = enum.englishName
             val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
             findViewById<MyLayout>(r) ?. let {
 
-                if (enum == MemberPetEnum.blood_image) {
+                if (enum == DonateBloodEnum.blood_image) {
                     bloodImage = it as UploadImage
                     bloodImage!!.setOnImagePickListener(key, pickImage, pickCameraImage)
 
@@ -105,23 +100,23 @@ class DonateBloodEditActivity : EditActivity() {
                         val n = initData[key]!!
                         it.setImage(initData[key]!!, false)
                     }
-                } else if (enum == MemberPetEnum.body_image) {
+                } else if (enum == DonateBloodEnum.body_image) {
                     bodyImge = it as UploadImage
                     bodyImge!!.setOnImagePickListener(key, pickImage, pickCameraImage)
 
                     if (initData.containsKey(key)) {
                         it.setImage(initData[key]!!, false)
                     }
-                } else if (enum == MemberPetEnum.type) {
+                } else if (enum == DonateBloodEnum.type) {
                     typeRadio = it as TwoRadio
 
                     if (initData.containsKey(key)) {
                         it.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
 
-                    val h: HashMap<MemberPetEnum, MyLayout> = hashMapOf(enum to it)
+                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
                     formItems.add(h)
-                } else if (enum == MemberPetEnum.IDo) {
+                } else if (enum == DonateBloodEnum.IDo) {
                     iDoRadio = it as TwoRadio
                     //it.setOnGroupCheckedChangeListener(iDoLambda)
 
@@ -129,10 +124,10 @@ class DonateBloodEditActivity : EditActivity() {
                         it.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
 
-                    val h: HashMap<MemberPetEnum, MyLayout> = hashMapOf(enum to it)
+                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
                     formItems.add(h)
                 } else {
-                    val h: HashMap<MemberPetEnum, MyLayout> = hashMapOf(enum to it)
+                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
                     formItems.add(h)
                 }
 
@@ -142,8 +137,8 @@ class DonateBloodEditActivity : EditActivity() {
             }
         }
 
-        if (memberPetModel != null) {
-            top!!.setTitle(memberPetModel!!.name)
+        if (donateBloodModel != null) {
+            top!!.setTitle(donateBloodModel!!.name)
         }
 
         findViewById<LinearLayout>(R.id.submitLL) ?. let {
@@ -160,7 +155,7 @@ class DonateBloodEditActivity : EditActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (data != null && data.data != null) {
                 val mProfileUri = data.data!!
-                if (imagePickerKey == MemberPetEnum.blood_image) {
+                if (imagePickerKey == DonateBloodEnum.blood_image) {
                     bloodImage?.setImage(mProfileUri, false)
                     bloodImageUri = mProfileUri
                 } else {
@@ -235,7 +230,7 @@ class DonateBloodEditActivity : EditActivity() {
             // Image resolution will be less than 512 x 512
             .maxResultSize(200, 200)
             .createIntent { intent ->
-                imagePickerKey = MemberPetEnum.enumFromString(key)
+                imagePickerKey = DonateBloodEnum.enumFromString(key)
                 startForProfileImageResult.launch(intent)
             }
         //.start(PROFILE_IMAGE_REQ_CODE)
@@ -251,7 +246,7 @@ class DonateBloodEditActivity : EditActivity() {
                 } else {
                     val k = enum.englishName
                     var v = layout.value
-                    if (enum == MemberPetEnum.type || enum == MemberPetEnum.IDo) {
+                    if (enum == DonateBloodEnum.type || enum == DonateBloodEnum.IDo) {
                         v = enum.radioTextToDBName(v)
                     }
                     val temp: HashMap<String, String> =
@@ -266,23 +261,23 @@ class DonateBloodEditActivity : EditActivity() {
             return
         }
 
-        if (memberPetToken != null) {
-            params.put("member_pet_token", memberPetToken!!)
+        if (donateBloodToken != null) {
+            params.put("token", donateBloodToken!!)
         }
 
         //println(params)
 
         loading.show()
-        MemberService.postPet(this, params, bloodImageUri?.path, bodyImageUri?.path) { success ->
+        DonateBloodService.postUpdate(this, params, bloodImageUri?.path, bodyImageUri?.path) { success ->
             if (success) {
                 runOnUiThread {
                     try {
-                        //println(MemberService.jsonString)
+                        //println(DonateBloodService.jsonString)
                         val successModel =
-                            jsonToModel<SuccessModel<MemberPetModel>>(MemberService.jsonString)
+                            jsonToModel<SuccessModel<DonateBloodModel>>(DonateBloodService.jsonString)
                         if (successModel != null) {
                             if (successModel.success) {
-                                val memberPetModel = successModel.model
+                                val donateBloodModel = successModel.model
                                 success("新增/修改 我的寶貝成功") {
                                     prev()
                                 }

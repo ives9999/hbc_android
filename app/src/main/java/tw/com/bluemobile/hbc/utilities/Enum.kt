@@ -1,12 +1,8 @@
 package tw.com.bluemobile.hbc.utilities
 
 import android.content.res.Resources
-import android.provider.ContactsContract
 import android.widget.ImageView
 import tw.com.bluemobile.hbc.extensions.setImage
-import tw.com.bluemobile.hbc.views.EditTextNormal
-import tw.com.bluemobile.hbc.views.MyLayout
-import kotlin.reflect.KClass
 
 enum class KeyEnum(val englishName: String, val chineseName: String) {
     city_id(CITY_ID_KEY, "縣市"),
@@ -79,7 +75,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
     }
 }
 
-enum class MemberPetEnum(val englishName: String, val chineseName: String) {
+enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
 
     petName("name", "名稱"),
     type("type", "品種"),
@@ -93,7 +89,7 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
     body_image("body_image", "體檢資料");
 
     companion object {
-        fun enumFromString(value: String): MemberPetEnum {
+        fun enumFromString(value: String): DonateBloodEnum {
             return when (value) {
                 "name" -> petName
                 "type" -> type
@@ -109,15 +105,15 @@ enum class MemberPetEnum(val englishName: String, val chineseName: String) {
             }
         }
 
-        fun getMustEnum(): ArrayList<MemberPetEnum> {
+        fun getMustEnum(): ArrayList<DonateBloodEnum> {
             return arrayListOf(petName, type, age, weight, blood_type, IDo)
         }
 
-        fun getNonImageEnum(): ArrayList<MemberPetEnum> {
+        fun getNonImageEnum(): ArrayList<DonateBloodEnum> {
             return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee)
         }
 
-        fun getAllEnum(): ArrayList<MemberPetEnum> {
+        fun getAllEnum(): ArrayList<DonateBloodEnum> {
             return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
         }
     }

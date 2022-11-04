@@ -1,7 +1,6 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,8 @@ import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.MemberPetModel
-import tw.com.bluemobile.hbc.models.NeedBloodModel
+import tw.com.bluemobile.hbc.models.DonateBloodModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.services.MemberService
-import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.Loading
 import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 import tw.com.bluemobile.hbc.utilities.TabEnum
@@ -25,7 +21,7 @@ import tw.com.bluemobile.hbc.utilities.genericType
 import tw.com.bluemobile.hbc.views.Bottom
 import java.lang.reflect.Type
 
-class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPetModel>() {
+class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, DonateBloodModel>() {
 
     var source: String = "home"
 
@@ -78,7 +74,7 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
             runOnUiThread {
                 //println(DonateBloodService.jsonString)
 
-                val modelType: Type = genericType<BaseModels<MemberPetModel>>()
+                val modelType: Type = genericType<BaseModels<DonateBloodModel>>()
                 parseJSON(DonateBloodService.jsonString, modelType)
                 loading.hide()
             }
@@ -86,16 +82,23 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
     }
 
     override fun add() {
+        if (!member.isLoggedIn) {
+            warning("請先登入") {
+                toLogin(this)
+            }
+            return
+        }
+
         super.add()
         toDonateBloodEdit(this)
     }
 
     override val onRowClick: ((Int) -> Unit) = { idx ->
-        val row: MemberPetModel = rows[idx]
-        toDonateBloodShhow(this, row.token)
+        val row: DonateBloodModel = rows[idx]
+        toDonateBloodShow(this, row.token)
     }
 
-    fun listSetSelected(row: MemberPetModel): Boolean {
+    fun listSetSelected(row: DonateBloodModel): Boolean {
 
         return false
     }
@@ -115,19 +118,19 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
     }
 
     override val onEditClick: ((Int) -> Unit) = { idx ->
-        val row: MemberPetModel = rows[idx]
+        val row: DonateBloodModel = rows[idx]
         toDonateBloodEdit(this, row.token)
     }
 
     override val onDeleteClick: ((Int) -> Unit) = { idx ->
-        val row: MemberPetModel = rows[idx]
+        val row: DonateBloodModel = rows[idx]
         warning("是否確定要刪除?", "刪除") {
             delete(row.token)
         }
     }
 }
 
-class DonateBloodListAdapter(override val resource: Int, override val viewHolderConstructor: viewHolder<DonateBloodListViewHolder>, val source: String): BaseAdapter<DonateBloodListViewHolder, MemberPetModel>(resource, viewHolderConstructor) {
+class DonateBloodListAdapter(override val resource: Int, override val viewHolderConstructor: viewHolder<DonateBloodListViewHolder>, val source: String): BaseAdapter<DonateBloodListViewHolder, DonateBloodModel>(resource, viewHolderConstructor) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DonateBloodListViewHolder {
 
@@ -143,11 +146,11 @@ class DonateBloodListAdapter(override val resource: Int, override val viewHolder
 class DonateBloodListViewHolder(
     context: Context,
     view: View,
-): BaseViewHolder<MemberPetModel>(context, view) {
+): BaseViewHolder<DonateBloodModel>(context, view) {
 
     var source: String = ""
 
-    override fun bind(row: MemberPetModel, idx: Int) {
+    override fun bind(row: DonateBloodModel, idx: Int) {
 
         row.filterRow()
         super.bind(row, idx)
@@ -167,6 +170,8 @@ class DonateBloodListViewHolder(
         setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
 
         setTV(R.id.blood_typeTV, row.blood_type)
+        setTV(R.id.ageTV, row.age.toString())
+        setTV(R.id.weightTV, row.weight.toString())
         setTV(R.id.created_at, row.created_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())

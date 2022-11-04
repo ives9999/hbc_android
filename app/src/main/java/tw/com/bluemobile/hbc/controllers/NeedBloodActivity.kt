@@ -3,16 +3,13 @@ package tw.com.bluemobile.hbc.controllers
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*

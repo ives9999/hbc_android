@@ -5,33 +5,28 @@ import android.widget.ImageView
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.extensions.setImage
-import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.MemberModel
-import tw.com.bluemobile.hbc.models.MemberPetModel
+import tw.com.bluemobile.hbc.models.DonateBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.IconText
-import java.lang.Exception
 import java.lang.reflect.Type
 
 class DonateBloodShowActivity : ShowActivity() {
 
-    var memberPetToken: String? = null
-    var memberPetModel: MemberPetModel? = null
+    var donateBloodToken: String? = null
+    var donateBloodModel: DonateBloodModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_donate_blood_show)
 
-        if (intent.hasExtra("memberPetToken")) {
-            memberPetToken = intent.getStringExtra("memberPetToken")
+        if (intent.hasExtra("donateBloodToken")) {
+            donateBloodToken = intent.getStringExtra("donateBloodToken")
         }
 
-        if (memberPetToken == null) {
+        if (donateBloodToken == null) {
 
         }
 
@@ -43,20 +38,20 @@ class DonateBloodShowActivity : ShowActivity() {
     override fun init() {
         super.init()
 
-        top!!.setTitle(memberPetModel!!.name)
+        top!!.setTitle(donateBloodModel!!.name)
         top!!.showAdd(true)
         top!!.showEdit(true)
 
-        val allEnums: ArrayList<MemberPetEnum> = MemberPetEnum.getAllEnum()
+        val allEnums: ArrayList<DonateBloodEnum> = DonateBloodEnum.getAllEnum()
         for (enum in allEnums) {
 
-            val value: String = getPropertyValue(memberPetModel!!, enum.englishName)
+            val value: String = getPropertyValue(donateBloodModel!!, enum.englishName)
 
-            if (enum == MemberPetEnum.type) {
+            if (enum == DonateBloodEnum.type) {
                 findViewById<ImageView>(R.id.type)?.let {
                     it.setImage("ic_${value}")
                 }
-            } else if (enum == MemberPetEnum.IDo) {
+            } else if (enum == DonateBloodEnum.IDo) {
                 val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
                 findViewById<IconText>(r)?.let {
                     it.setIconIV(enum.getIcon())
@@ -64,21 +59,21 @@ class DonateBloodShowActivity : ShowActivity() {
                     it.setValueTV(((value == "1") then { "願意" }) ?: "不願意")
                     it.setUnitTV(enum.getUnit())
                 }
-            } else if (enum == MemberPetEnum.blood_image) {
+            } else if (enum == DonateBloodEnum.blood_image) {
                 findViewById<ImageView>(R.id.blood_imageIV) ?. let {
-                    if (memberPetModel?.blood_image != null) {
+                    if (donateBloodModel?.blood_image != null) {
                         Picasso.with(this)
-                            .load(memberPetModel?.blood_image)
+                            .load(donateBloodModel?.blood_image)
                             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                             .into(it)
                     }
 
                 }
-            } else if (enum == MemberPetEnum.body_image) {
+            } else if (enum == DonateBloodEnum.body_image) {
                 findViewById<ImageView>(R.id.body_imageIV) ?. let {
-                    if (memberPetModel?.body_image != null) {
+                    if (donateBloodModel?.body_image != null) {
                         Picasso.with(this)
-                            .load(memberPetModel?.body_image)
+                            .load(donateBloodModel?.body_image)
                             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                             .into(it)
                     }
@@ -102,18 +97,18 @@ class DonateBloodShowActivity : ShowActivity() {
     }
 
     override fun edit() {
-        toDonateBloodEdit(this, memberPetToken)
+        toDonateBloodEdit(this, donateBloodToken)
     }
 
     override fun refresh() {
 
         super.refresh()
-        val params: HashMap<String, String> = hashMapOf("token" to memberPetToken!!)
+        val params: HashMap<String, String> = hashMapOf("token" to donateBloodToken!!)
         DonateBloodService.getOne(this, params) { success ->
             if (success) {
                 //println(DonateBloodService.jsonString)
-                val modelType: Type = genericType<SuccessModel<MemberPetModel>>()
-                memberPetModel = parseJSONAndInit<MemberPetModel>(DonateBloodService.jsonString, modelType)
+                val modelType: Type = genericType<SuccessModel<DonateBloodModel>>()
+                donateBloodModel = parseJSONAndInit<DonateBloodModel>(DonateBloodService.jsonString, modelType)
 //                if (memberPetModel != null) {
 //                    runOnUiThread {
 //                        init()

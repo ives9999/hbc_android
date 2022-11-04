@@ -1,16 +1,13 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.MemberPetModel
 import tw.com.bluemobile.hbc.models.NeedBloodModel
-import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 import tw.com.bluemobile.hbc.utilities.genericType
