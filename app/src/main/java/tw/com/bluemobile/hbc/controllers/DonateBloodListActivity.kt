@@ -48,6 +48,7 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, MemberPe
                 it.visibility = View.GONE
             }
             top?.showPrev(true)
+            top?.setTitle("我的寶貝")
         }
 
         loading = Loading(this)
