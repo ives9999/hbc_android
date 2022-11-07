@@ -53,7 +53,8 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, DonateBl
     }
 
     override fun init() {
-        adapter = DonateBloodListAdapter(R.layout.list_member_pet, ::DonateBloodListViewHolder, source)
+        adapter = DonateBloodListAdapter(R.layout.list_donate_blood, ::DonateBloodListViewHolder, source, onAcceptClick)
+        //adapter
         super.init()
 
         refresh()
@@ -128,9 +129,18 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, DonateBl
             delete(row.token)
         }
     }
+
+    val onAcceptClick: ((Int) -> Unit) = { idx ->
+        println(idx)
+    }
 }
 
-class DonateBloodListAdapter(override val resource: Int, override val viewHolderConstructor: viewHolder<DonateBloodListViewHolder>, val source: String): BaseAdapter<DonateBloodListViewHolder, DonateBloodModel>(resource, viewHolderConstructor) {
+class DonateBloodListAdapter(
+    override val resource: Int,
+    override val viewHolderConstructor: viewHolder<DonateBloodListViewHolder>,
+    val source: String,
+    val onAcceptClick: ((Int) -> Unit)?):
+    BaseAdapter<DonateBloodListViewHolder, DonateBloodModel>(resource, viewHolderConstructor) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DonateBloodListViewHolder {
 
@@ -140,6 +150,12 @@ class DonateBloodListAdapter(override val resource: Int, override val viewHolder
         viewHolder.source = source
 
         return viewHolder
+    }
+
+    override fun onBindViewHolder(holder: DonateBloodListViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        holder.setOnAcceptClickListener(position, onAcceptClick)
     }
 }
 
@@ -162,6 +178,10 @@ class DonateBloodListViewHolder(
             view.findViewById<LinearLayout>(R.id.iconContainer)?.let {
                 it.visibility = View.GONE
             }
+        } else {
+            view.findViewById<LinearLayout>(R.id.acceptContainer) ?. let {
+                it.visibility = View.GONE
+            }
         }
 
         setIV(R.id.typeIV, "ic_${row.type}")
@@ -169,11 +189,20 @@ class DonateBloodListViewHolder(
         val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
         setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
 
+        setTV(R.id.nameTV, row.name)
         setTV(R.id.blood_typeTV, row.blood_type)
         setTV(R.id.ageTV, row.age.toString())
         setTV(R.id.weightTV, row.weight.toString())
         setTV(R.id.created_at, row.created_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
+    }
+
+    fun setOnAcceptClickListener(idx: Int, onAcceptClick: ((Int) -> Unit)?) {
+        view.findViewById<LinearLayout>(R.id.acceptContainer) ?. let {
+            it.setOnClickListener {
+                onAcceptClick?.invoke(idx)
+            }
+        }
     }
 }

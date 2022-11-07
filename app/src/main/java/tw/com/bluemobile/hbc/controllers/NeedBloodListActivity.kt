@@ -28,7 +28,7 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
     }
 
     override fun init() {
-        adapter = BaseAdapter(R.layout.list_member_pet, ::NeedBloodListViewHolder)
+        adapter = BaseAdapter(R.layout.list_donate_blood, ::NeedBloodListViewHolder)
         super.init()
 
         refresh()

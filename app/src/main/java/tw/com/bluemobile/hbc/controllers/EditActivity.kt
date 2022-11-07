@@ -4,9 +4,7 @@ import android.os.Bundle
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.BaseModel
 import tw.com.bluemobile.hbc.models.SuccessModel
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.jsonToModelForList
-import tw.com.bluemobile.hbc.utilities.jsonToModelForOne
+import tw.com.bluemobile.hbc.utilities.*
 import java.lang.reflect.Type
 
 open class EditActivity: BaseActivity() {
@@ -27,6 +25,9 @@ open class EditActivity: BaseActivity() {
         if (successModel != null && successModel.success) {
             val model = successModel.model as U
             model.filterRow()
+
+            modelToInitData(model)
+
             runOnUiThread {
                 init()
                 loading.hide()
@@ -45,4 +46,5 @@ open class EditActivity: BaseActivity() {
         loading.show()
     }
 
+    open fun modelToInitData(model: BaseModel) {}
 }

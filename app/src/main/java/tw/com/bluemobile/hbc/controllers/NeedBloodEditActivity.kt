@@ -37,8 +37,8 @@ class NeedBloodEditActivity : EditActivity() {
 //        NeedBloodEnum.traffic_fee.englishName to "100",
 //        NeedBloodEnum.nutrient_fee.englishName to "200",
 //
-//        NeedBloodEnum.type.englishName to "貓",
-//        NeedBloodEnum.blood_type_cat.englishName to "B"
+        NeedBloodEnum.type.englishName to "貓",
+        NeedBloodEnum.blood_type_cat.englishName to "A"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +69,7 @@ class NeedBloodEditActivity : EditActivity() {
             if (success) {
                 runOnUiThread {
                     try {
-                        println(NeedBloodService.jsonString)
+                        //println(NeedBloodService.jsonString)
                         val successModel =
                             jsonToModel<SuccessModel<NeedBloodModel>>(NeedBloodService.jsonString)
                         if (successModel != null) {
