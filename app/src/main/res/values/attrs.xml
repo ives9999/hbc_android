@@ -4,6 +4,7 @@
         <attr name="titleTV" format="string" />
         <attr name="valueET" format="string" />
         <attr name="keyboard" format="string" />
+        <attr name="starIV" format="boolean" />
         <attr name="key" format="string" />
     </declare-styleable>
 

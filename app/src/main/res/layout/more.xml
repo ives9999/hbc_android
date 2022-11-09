@@ -36,6 +36,7 @@
                 android:textColor="@color/MY_BLACK" />
 
             <ImageView
+                android:id="@+id/starIV"
                 android:layout_width="@dimen/star"
                 android:layout_height="@dimen/star"
                 android:layout_gravity="center_vertical"

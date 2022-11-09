@@ -29,6 +29,14 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             view.findViewById<TextView>(R.id.titleTV) ?. let { textView: TextView->
                 textView.text = typedArray.getString(R.styleable.More_moreTitleTV) ?: ""
             }
+
+            view.findViewById<ImageView>(R.id.starIV) ?. let {
+                starIV = it
+                val b: Boolean = typedArray.getBoolean(R.styleable.More_moreStarTV, true)
+                if (!b) {
+                    starIV!!.visibility = View.GONE
+                }
+            }
         }
 
         view.findViewById<TextView>(R.id.valueTV) ?. let {

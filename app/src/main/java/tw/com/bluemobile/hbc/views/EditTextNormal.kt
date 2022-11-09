@@ -53,6 +53,14 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
                 editET!!.text = (typedArray.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
             }
 
+            view.findViewById<ImageView>(R.id.starIV) ?. let {
+                starIV = it
+                val b: Boolean = typedArray.getBoolean(R.styleable.EditTextNormal_starIV, true)
+                if (!b) {
+                    starIV!!.visibility = View.GONE
+                }
+            }
+
             key = typedArray.getString(R.styleable.EditTextNormal_key) ?: ""
         }
 

@@ -55,7 +55,7 @@ class RegisterActivity : BaseActivity() {
 //    var editTextNickname: EditTextNormal? = null
 //    var editTextMobile: EditTextNormal? = null
     private var moreCity: SelectCity? = null
-    var moreArea: SelectArea? = null
+    private var moreArea: SelectArea? = null
 //    var editTextRoad: EditTextNormal? = null
 //    var editTextLine: EditTextNormal? = null
     private var privacy: Privacy? = null
@@ -190,7 +190,6 @@ class RegisterActivity : BaseActivity() {
                                     )
                                 }
                             }
-
                         }
                     } else if (key == PRIVACY_KEY) {
                         privacy = it as Privacy

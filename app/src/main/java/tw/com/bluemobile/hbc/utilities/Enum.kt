@@ -4,74 +4,83 @@ import android.content.res.Resources
 import android.widget.ImageView
 import tw.com.bluemobile.hbc.extensions.setImage
 
-enum class KeyEnum(val englishName: String, val chineseName: String) {
+enum class DonateEnum(val englishName: String, val chineseName: String) {
+    amount(AMOUNT_KEY, "amount"),
+    realname(NAME_KEY, "姓名"),
+    tax_no(TAX_NO_KEY, "公司統編"),
+    tel(TEL_KEY, "聯絡電話"),
+    email(EMAIL_KEY, "Email"),
     city_id(CITY_ID_KEY, "縣市"),
-    area_id(AREA_ID_KEY, "區域");
+    area_id(AREA_ID_KEY, "區域"),
+    road(ROAD_KEY, "路、街，巷"),
+    receipt(RECEIPT_KEY, "是否寄送收據");
 
     companion object {
-        fun enumFromString(value: String): KeyEnum {
+        fun enumFromString(value: String): DonateEnum {
             when (value) {
+                AMOUNT_KEY -> return amount
+                NAME_KEY -> return realname
+                TAX_NO_KEY -> return tax_no
+                EMAIL_KEY -> return email
+                TEL_KEY -> return tel
                 CITY_ID_KEY -> return city_id
                 AREA_ID_KEY -> return area_id
+                ROAD_KEY -> return road
+                RECEIPT_KEY -> return receipt
+                else -> return realname
             }
-            return city_id
-        }
-    }
-}
-
-enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
-
-    account("account", "帳戶資料"),
-    pet("pet", "我的寶貝"),
-    donate_blood("donate_blood", "我的捐血"),
-    need_blood("need_blood", "我需要血"),
-    reset_password("reset_password", "更改密碼"),
-    bank_account("bank", "銀行帳號"),
-    //credit_card("credit_card", "信用卡資料"),
-    validate_email("validate_email", "信箱認證"),
-    validate_mobile("validate_mobile", "手機認證"),
-    refresh("refresh", "重新整理");
-
-    companion object {
-        fun enumFromString(value: String): MemberHomeEnum {
-            when (value) {
-                "account" -> return account
-                "pet" ->return pet
-                "need_blood" -> return need_blood
-                "donate_blood" -> return donate_blood
-                "bank_account" -> return bank_account
-                "reset_password" -> return reset_password
-                //"credit_card" -> return credit_card
-                "validate_email" -> return validate_email
-                "validate_mobile" -> return validate_mobile
-                "refresh" -> return  refresh
-            }
-            return account
         }
 
-        fun enumFromIdx(idx: Int): MemberHomeEnum {
-            when (idx) {
-                0 -> return account
-                1 -> return pet
-                2 -> return need_blood
-                3 -> return donate_blood
-                4 -> return bank_account
-                5 -> return reset_password
-                //5 -> return credit_card
-                6 -> return validate_email
-                7 -> return validate_mobile
-                8 -> return  refresh
-            }
-            return account
+        fun getAllEnum(): ArrayList<DonateEnum> {
+            return arrayListOf(amount, realname, tax_no, email, tel, city_id, area_id, road, receipt)
         }
 
-        fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, refresh)
+        fun getMustEnum(): ArrayList<DonateEnum> {
+            return arrayListOf(
+                amount,
+                realname,
+                tel,
+                email,
+                receipt
+            )
         }
     }
 
-    fun getIconID(resources: Resources, packageName: String): Int {
-        return resources.getIdentifier("member_" + this.englishName, "drawable", packageName)
+    fun radioTextToDBName(text: String): String {
+        return when (text) {
+            "是" -> "1"
+            "否" -> "0"
+
+            else -> text
+        }
+    }
+
+    fun DBNameToRadioText(text: String): String {
+        return when (text) {
+            "1" -> "是"
+            "0" -> "否"
+
+            else -> text
+        }
+    }
+
+    fun errMsg(): String {
+        when (this) {
+            amount -> return "請填捐款金額\n"
+            realname -> return "請填真實姓名\n"
+            email -> return "請填郵件\n"
+            city_id -> return "請選擇縣市\n"
+            area_id -> return "請選擇區域\n"
+            road -> return "請填路名\n"
+            tel -> return "請填聯絡電話\n"
+            receipt -> return "請選擇是否寄送收據\n"
+
+            else -> return ""
+        }
+    }
+
+    fun getLayout(resources: Resources, packageName: String) {
+        var r: Int = resources.getIdentifier(this.englishName, "id", packageName)
     }
 }
 
@@ -176,6 +185,77 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             nutrient_fee -> "元"
             else -> ""
         }
+    }
+}
+
+enum class KeyEnum(val englishName: String, val chineseName: String) {
+    city_id(CITY_ID_KEY, "縣市"),
+    area_id(AREA_ID_KEY, "區域");
+
+    companion object {
+        fun enumFromString(value: String): KeyEnum {
+            when (value) {
+                CITY_ID_KEY -> return city_id
+                AREA_ID_KEY -> return area_id
+            }
+            return city_id
+        }
+    }
+}
+
+enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
+
+    account("account", "帳戶資料"),
+    pet("pet", "我的寶貝"),
+    donate_blood("donate_blood", "我的捐血"),
+    need_blood("need_blood", "我需要血"),
+    reset_password("reset_password", "更改密碼"),
+    bank_account("bank", "銀行帳號"),
+    //credit_card("credit_card", "信用卡資料"),
+    validate_email("validate_email", "信箱認證"),
+    validate_mobile("validate_mobile", "手機認證"),
+    refresh("refresh", "重新整理");
+
+    companion object {
+        fun enumFromString(value: String): MemberHomeEnum {
+            when (value) {
+                "account" -> return account
+                "pet" ->return pet
+                "need_blood" -> return need_blood
+                "donate_blood" -> return donate_blood
+                "bank_account" -> return bank_account
+                "reset_password" -> return reset_password
+                //"credit_card" -> return credit_card
+                "validate_email" -> return validate_email
+                "validate_mobile" -> return validate_mobile
+                "refresh" -> return  refresh
+            }
+            return account
+        }
+
+        fun enumFromIdx(idx: Int): MemberHomeEnum {
+            when (idx) {
+                0 -> return account
+                1 -> return pet
+                2 -> return need_blood
+                3 -> return donate_blood
+                4 -> return bank_account
+                5 -> return reset_password
+                //5 -> return credit_card
+                6 -> return validate_email
+                7 -> return validate_mobile
+                8 -> return  refresh
+            }
+            return account
+        }
+
+        fun getAllEnum(): Array<MemberHomeEnum> {
+            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, refresh)
+        }
+    }
+
+    fun getIconID(resources: Resources, packageName: String): Int {
+        return resources.getIdentifier("member_" + this.englishName, "drawable", packageName)
     }
 }
 
@@ -305,7 +385,7 @@ enum class RegisterEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getRegisterAllEnum(): ArrayList<RegisterEnum> {
-            return arrayListOf(email, password, repassword, realname, realname, nickname, city_id, area_id, road, mobile, line, privacy)
+            return arrayListOf(email, password, repassword, realname, nickname, city_id, area_id, road, mobile, line, privacy)
         }
 
         fun getUpdateAllEnum(): ArrayList<RegisterEnum> {
