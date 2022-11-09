@@ -5,17 +5,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
+import tw.com.bluemobile.hbc.models.BaseModel
 import tw.com.bluemobile.hbc.models.DonateBloodModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.MyLayout
+import tw.com.bluemobile.hbc.views.ThreeRadio
 import tw.com.bluemobile.hbc.views.TwoRadio
 import tw.com.bluemobile.hbc.views.UploadImage
 import java.io.File
@@ -36,15 +39,17 @@ class DonateBloodEditActivity : EditActivity() {
     private val formItems: ArrayList<HashMap<DonateBloodEnum, MyLayout>> = arrayListOf()
 
     var typeRadio: TwoRadio? = null
+    var catBloodTypeRadio: ThreeRadio? = null
+    var dogBloodTypeRadio: TwoRadio? = null
     var iDoRadio: TwoRadio? = null
 
     private val initData: MutableMap<String, String> = mutableMapOf(
 //        DonateBloodEnum.petName.englishName to "幸運貓",
-//        DonateBloodEnum.type.englishName to "狗",
+        DonateBloodEnum.type.englishName to "貓",
+        DonateBloodEnum.blood_type_cat.englishName to "A",
 //        DonateBloodEnum.age.englishName to "5",
 //        DonateBloodEnum.weight.englishName to "10",
-//        DonateBloodEnum.blood_type.englishName to "A",
-//        DonateBloodEnum.IDo.englishName to "願意",
+        DonateBloodEnum.IDo.englishName to "願意",
 //        DonateBloodEnum.traffic_fee.englishName to "100",
 //        DonateBloodEnum.nutrient_fee.englishName to "200"
     )
@@ -110,12 +115,30 @@ class DonateBloodEditActivity : EditActivity() {
                 } else if (enum == DonateBloodEnum.type) {
                     typeRadio = it as TwoRadio
 
+                    it.setOnGroupCheckedChangeListener { newType ->
+                        typeChange(newType)
+                    }
+
                     if (initData.containsKey(key)) {
                         it.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
 
                     val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
                     formItems.add(h)
+                } else if (enum == DonateBloodEnum.blood_type_cat) {
+                    catBloodTypeRadio = it as ThreeRadio
+
+                    if (initData.containsKey(key)) {
+                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+                    }
+
+                } else if (enum == DonateBloodEnum.blood_type_dog) {
+                    dogBloodTypeRadio = it as TwoRadio
+
+                    if (initData.containsKey(key)) {
+                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+                    }
+
                 } else if (enum == DonateBloodEnum.IDo) {
                     iDoRadio = it as TwoRadio
                     //it.setOnGroupCheckedChangeListener(iDoLambda)
@@ -145,6 +168,26 @@ class DonateBloodEditActivity : EditActivity() {
             it.setOnClickListener {
                 submit()
             }
+        }
+    }
+
+    override fun modelToInitData(model: BaseModel) {
+
+        val donateBloodModel = model as DonateBloodModel
+        for (enum in DonateBloodEnum.getAllEnum()) {
+            val name = enum.englishName
+            val value = getPropertyValue(donateBloodModel, name)
+            initData.put(name, value)
+        }
+    }
+
+    private fun typeChange(type: String) {
+        if (type == "狗") {
+            dogBloodTypeRadio?.visibility = View.VISIBLE
+            catBloodTypeRadio?.visibility = View.GONE
+        } else {
+            dogBloodTypeRadio?.visibility = View.GONE
+            catBloodTypeRadio?.visibility = View.VISIBLE
         }
     }
 

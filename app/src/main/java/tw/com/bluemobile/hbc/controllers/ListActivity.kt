@@ -21,7 +21,7 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
     open var rows: ArrayList<U> = arrayListOf()
 
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: BaseAdapter<T, U>
+    open lateinit var adapter: BaseAdapter<T, U>
 
     //RecycleView scroll
     protected lateinit var scrollListener: BaseEndlessRecyclerViewScrollListener

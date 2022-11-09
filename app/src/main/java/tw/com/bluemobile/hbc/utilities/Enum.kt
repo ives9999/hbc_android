@@ -79,9 +79,10 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
 
     petName("name", "名稱"),
     type("type", "品種"),
+    blood_type_cat("blood_type_cat", "血液血型"),
+    blood_type_dog("blood_type_dog", "血液類型"),
     age("age", "年齡"),
     weight("weight", "體重"),
-    blood_type("blood_type", "血型"),
     IDo("IDo", "是否願意捐血"),
     traffic_fee("traffic_fee", "車馬費(每500公尺)"),
     nutrient_fee("nutrient_fee", "營養費(50CC共)"),
@@ -93,9 +94,10 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             return when (value) {
                 "name" -> petName
                 "type" -> type
+                "blood_type_cat" -> blood_type_cat
+                "blood_type_dog" -> blood_type_dog
                 "age" -> age
                 "weight" -> weight
-                "blood_type" -> blood_type
                 "IDo" -> IDo
                 "traffic_fee" -> traffic_fee
                 "nutrient_fee" -> nutrient_fee
@@ -106,15 +108,15 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getMustEnum(): ArrayList<DonateBloodEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, IDo)
+            return arrayListOf(petName, type, age, weight, blood_type_cat, blood_type_dog, IDo)
         }
 
         fun getNonImageEnum(): ArrayList<DonateBloodEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee)
+            return arrayListOf(petName, type, age, weight, blood_type_cat, blood_type_dog, IDo, traffic_fee, nutrient_fee)
         }
 
         fun getAllEnum(): ArrayList<DonateBloodEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
+            return arrayListOf(petName, type, age, weight, blood_type_cat, blood_type_dog, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
         }
     }
 
@@ -146,7 +148,8 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             type -> "請選擇品種\n"
             age -> "請填寫年齡\n"
             weight -> "請填重量\n"
-            blood_type -> "請填寫血型\n"
+            blood_type_cat -> "請選擇血型\n"
+            blood_type_dog -> "請選擇血型\n"
             IDo -> "請選擇是否願意捐血\n"
 
             else -> ""
@@ -167,7 +170,8 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             petName -> ""
             age -> "歲"
             weight -> "公斤"
-            blood_type -> "型"
+            blood_type_cat -> "貓血型\n"
+            blood_type_dog -> "狗血型\n"
             traffic_fee -> "元"
             nutrient_fee -> "元"
             else -> ""

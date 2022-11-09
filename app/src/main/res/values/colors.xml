@@ -14,5 +14,6 @@
     <color name="colorPrimary">@color/TOP</color>
 
     <color name="CELL_SELECTED">#444444</color>
+    <color name="CIRCLE">#FCD29F</color>
 
 </resources>
