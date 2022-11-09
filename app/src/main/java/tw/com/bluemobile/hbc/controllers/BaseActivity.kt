@@ -19,7 +19,7 @@ import tw.com.bluemobile.hbc.routes.*
 import tw.com.bluemobile.hbc.utilities.*
 
 
-open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To, ToDonateBlood {
+open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To, ToDonateBlood, ToDonate {
 
     var able_enum: TabEnum = TabEnum.member //每一組頁面，都有一個專屬的代號的enum
     var msg: String = "" //目前使用在傳送錯誤訊息

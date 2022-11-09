@@ -67,4 +67,8 @@
         <attr name="IconTextUnitTV" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="SessionName">
+        <attr name="SessionNameTitleTV" format="string" />
+    </declare-styleable>
+
 </resources>

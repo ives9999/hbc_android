@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/MY_WHITE"
     android:orientation="vertical"
-    tools:context=".controllers.MemberPetEditActivity">
+    tools:context=".controllers.DonateBloodEditActivity">
 
     <tw.com.bluemobile.hbc.views.Top
         android:id="@+id/top"

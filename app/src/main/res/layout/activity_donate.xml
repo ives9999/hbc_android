@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_WHITE"
+    android:orientation="vertical"
+    tools:context=".controllers.DonateActivity">
+
+    <tw.com.bluemobile.hbc.views.Top
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:layout_alignParentTop="true" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/bottom"
+        android:layout_below="@id/top"
+        android:layout_marginBottom="12dp"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/list_background"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="受捐單位"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="社團法人台灣流浪貓關懷協會"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.SessionName
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:SessionNameTitleTV="捐款金額" />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="amount"
+                app:titleTV="金額" />
+
+            <tw.com.bluemobile.hbc.views.SessionName
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:SessionNameTitleTV="捐款人基本資料" />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="name"
+                app:titleTV="姓名(公司名稱)" />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/tel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="tel"
+                app:keyboard="number"
+                app:titleTV="聯絡電話" />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="email"
+                app:keyboard="email"
+                app:titleTV="Email" />
+
+            <tw.com.bluemobile.hbc.views.SelectCity
+                android:id="@+id/city_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:moreKey="city_id"
+                app:moreTitleTV="縣市" />
+
+            <tw.com.bluemobile.hbc.views.SelectArea
+                android:id="@+id/area_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:moreKey="area_id"
+                app:moreTitleTV="區域" />
+
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/road"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="road"
+                app:titleTV="路、街，巷等" />
+
+            <tw.com.bluemobile.hbc.views.TwoRadio
+                android:id="@+id/recept"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:noRadioTitle="否"
+                app:twoKey="donateBlood"
+                app:twoRadioStarIV="true"
+                app:twoRadioTitleTV="是否寄送收據"
+                app:twoRadioTitleWidth="210"
+                app:yesRadioTitle="是" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <tw.com.bluemobile.hbc.views.Bottom
+        android:id="@id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_height"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

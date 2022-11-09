@@ -39,13 +39,13 @@ class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
                                 delegate.toLogin(delegate)
                             }
                         }
+                        TabEnum.donate -> delegate.toDonate(delegate)
 
                         else -> delegate.toMemberHome(delegate)
                     }
                 }
             }
         }
-
     }
 
     fun setFocus(packageName: String, able_enum: TabEnum) {
