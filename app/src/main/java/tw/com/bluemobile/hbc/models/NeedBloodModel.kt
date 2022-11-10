@@ -1,7 +1,5 @@
 package tw.com.bluemobile.hbc.models
 
-import tw.com.bluemobile.hbc.utilities.BASE_URL
-
 class NeedBloodModel: BaseModel() {
 
     var hospital_name: String = ""
@@ -16,6 +14,5 @@ class NeedBloodModel: BaseModel() {
 
     override fun filterRow() {
         super.filterRow()
-
     }
 }

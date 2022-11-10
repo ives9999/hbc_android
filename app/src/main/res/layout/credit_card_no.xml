@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:gravity="center_vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/common"
+            android:textColor="@color/MY_BLACK" />
+
+        <TextView
+            android:id="@+id/titleTV"
+            style="@style/edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="卡號"
+            android:textColor="@color/MY_BLACK" />
+
+        <ImageView
+            android:id="@+id/starIV"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            app:srcCompat="@drawable/start" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/edit_text_border"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp">
+        <EditText
+            android:id="@+id/part1ET"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/MY_BLACK" />
+
+    </LinearLayout>
+    <TextView
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="–"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:textColor="@color/MY_BLACK" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp">
+
+        <EditText
+            android:id="@+id/part2ET"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/MY_BLACK" />
+
+    </LinearLayout>
+    <TextView
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="–"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:textColor="@color/MY_BLACK" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp">
+
+        <EditText
+            android:id="@+id/part3ET"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/MY_BLACK" />
+
+    </LinearLayout>
+    <TextView
+        style="@style/edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="–"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:textColor="@color/MY_BLACK" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp">
+
+        <EditText
+            android:id="@+id/part4ET"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/MY_BLACK" />
+
+    </LinearLayout>
+
+</LinearLayout>

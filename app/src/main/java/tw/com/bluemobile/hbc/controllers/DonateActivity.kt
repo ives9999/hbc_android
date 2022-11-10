@@ -5,8 +5,10 @@ import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.DonateBloodModel
+import tw.com.bluemobile.hbc.models.DonateModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.DonateBloodService
+import tw.com.bluemobile.hbc.services.DonateService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
@@ -18,6 +20,8 @@ class DonateActivity : EditActivity() {
     private var moreCity: SelectCity? = null
     private var moreArea: SelectArea? = null
     var moreDialog: MoreDialog? = null
+
+    var creditCardMy: CreditCardMY? = null
 
     private val initData: MutableMap<String, String> = mutableMapOf(
         DonateEnum.amount.englishName to "500",
@@ -61,6 +65,9 @@ class DonateActivity : EditActivity() {
                     if (initData.containsKey(key)) {
                         receptRadio.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
+                } else if (enum == DonateEnum.credit_card_my) {
+                    creditCardMy = it as CreditCardMY
+                    creditCardMy?.setOnChangeListener(showWarning)
                 } else if (enum == DonateEnum.city_id || enum == DonateEnum.area_id) {
                     if (enum == DonateEnum.city_id) {
                         moreCity = it as SelectCity
@@ -132,6 +139,7 @@ class DonateActivity : EditActivity() {
 
     override fun submit() {
         val params: MutableMap<String, String> = hashMapOf()
+        msg = ""
 
         for (formItem in formItems) {
             for ((enum, layout) in formItem) {
@@ -158,39 +166,43 @@ class DonateActivity : EditActivity() {
         println(params)
         val n = 6
 
-//        loading.show()
-//        DonateBloodService.postUpdate(this, params, bloodImageUri?.path, bodyImageUri?.path) { success ->
-//            if (success) {
-//                runOnUiThread {
-//                    try {
-//                        //println(DonateBloodService.jsonString)
-//                        val successModel =
-//                            jsonToModel<SuccessModel<DonateBloodModel>>(DonateBloodService.jsonString)
-//                        if (successModel != null) {
-//                            if (successModel.success) {
-//                                val donateBloodModel = successModel.model
-//                                success("新增/修改 我的寶貝成功") {
-//                                    prev()
-//                                }
-//                            } else {
-//                                warning(successModel.msgs.parseErrmsg())
-//                            }
-//                        } else {
-//                            warning("app無法解析系統傳回值，請洽管理員")
-//                        }
-//                    } catch (e: Exception) {
-//                        warning(e.localizedMessage)
-//                    }
-//                }
-//            } else {
-//                runOnUiThread {
-//                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
-//                }
-//            }
-//
-//            runOnUiThread {
-//                loading.hide()
-//            }
-//        }
+        loading.show()
+        DonateService.update(this, params) { success ->
+            if (success) {
+                runOnUiThread {
+                    try {
+                        //println(DonateBloodService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<DonateModel>>(DonateService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                val donateBloodModel = successModel.model
+                                success("新增 捐款成功") {
+                                    //prev()
+                                }
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
+                    }
+                }
+            } else {
+                runOnUiThread {
+                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
+                }
+            }
+
+            runOnUiThread {
+                loading.hide()
+            }
+        }
+    }
+
+    val showWarning: (String) -> Unit = {
+        warning(it)
     }
 }

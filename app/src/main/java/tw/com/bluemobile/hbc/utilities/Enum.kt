@@ -5,7 +5,10 @@ import android.widget.ImageView
 import tw.com.bluemobile.hbc.extensions.setImage
 
 enum class DonateEnum(val englishName: String, val chineseName: String) {
-    amount(AMOUNT_KEY, "amount"),
+    amount(AMOUNT_KEY, "金額"),
+    credit_card_no(CREDIT_CARD_NO, "信用卡號"),
+    credit_card_my(CREDIT_CARD_MY, "信用卡到期月年"),
+    credit_card_cvv(CREDIT_CARD_CVV, "信用卡安全碼"),
     realname(NAME_KEY, "姓名"),
     tax_no(TAX_NO_KEY, "公司統編"),
     tel(TEL_KEY, "聯絡電話"),
@@ -19,6 +22,9 @@ enum class DonateEnum(val englishName: String, val chineseName: String) {
         fun enumFromString(value: String): DonateEnum {
             when (value) {
                 AMOUNT_KEY -> return amount
+                CREDIT_CARD_NO -> return credit_card_no
+                CREDIT_CARD_MY -> return credit_card_my
+                CREDIT_CARD_CVV -> return credit_card_cvv
                 NAME_KEY -> return realname
                 TAX_NO_KEY -> return tax_no
                 EMAIL_KEY -> return email
@@ -32,12 +38,15 @@ enum class DonateEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): ArrayList<DonateEnum> {
-            return arrayListOf(amount, realname, tax_no, email, tel, city_id, area_id, road, receipt)
+            return arrayListOf(amount, credit_card_no, credit_card_my, credit_card_cvv, realname, tax_no, email, tel, city_id, area_id, road, receipt)
         }
 
         fun getMustEnum(): ArrayList<DonateEnum> {
             return arrayListOf(
                 amount,
+                credit_card_no,
+                credit_card_my,
+                credit_card_no,
                 realname,
                 tel,
                 email,
@@ -67,6 +76,9 @@ enum class DonateEnum(val englishName: String, val chineseName: String) {
     fun errMsg(): String {
         when (this) {
             amount -> return "請填捐款金額\n"
+            credit_card_no -> return "請填信用卡號\n"
+            credit_card_my -> return "請填信用到期月年\n"
+            credit_card_cvv -> return "請填信用卡安全碼\n"
             realname -> return "請填真實姓名\n"
             email -> return "請填郵件\n"
             city_id -> return "請選擇縣市\n"

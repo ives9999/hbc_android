@@ -72,4 +72,16 @@
         <attr name="SessionNameTitleTV" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CreditCardNO">
+        <attr name="creditCardNOStarIV" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CreditCardMY">
+        <attr name="creditCardMYStarIV" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CreditCardCvv">
+        <attr name="creditCardCvvStarIV" format="boolean" />
+    </declare-styleable>
+
 </resources>

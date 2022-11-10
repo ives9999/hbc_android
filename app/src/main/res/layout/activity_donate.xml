@@ -59,7 +59,7 @@
             <tw.com.bluemobile.hbc.views.SessionName
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:SessionNameTitleTV="捐款金額" />
+                app:SessionNameTitleTV="信用卡資料" />
 
             <tw.com.bluemobile.hbc.views.EditTextNormal
                 android:id="@+id/amount"
@@ -67,7 +67,24 @@
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:key="amount"
+                app:keyboard="number"
                 app:titleTV="金額" />
+
+            <tw.com.bluemobile.hbc.views.CreditCardNO
+                android:id="@+id/credit_card_no"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                />
+
+            <tw.com.bluemobile.hbc.views.CreditCardMY
+                android:id="@+id/credit_card_my"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height" />
+
+            <tw.com.bluemobile.hbc.views.CreditCardCvv
+                android:id="@+id/credit_card_cvv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height" />
 
             <tw.com.bluemobile.hbc.views.SessionName
                 android:layout_width="wrap_content"
