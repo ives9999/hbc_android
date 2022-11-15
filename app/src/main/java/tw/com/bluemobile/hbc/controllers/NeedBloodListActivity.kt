@@ -2,10 +2,13 @@ package tw.com.bluemobile.hbc.controllers
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.BaseModels
 import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.services.NeedBloodService
@@ -15,7 +18,7 @@ import java.lang.reflect.Type
 
 class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>() {
 
-    var isMember: Boolean = false
+    var source: String = "member"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,7 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
     }
 
     override fun init() {
-        adapter = BaseAdapter(R.layout.list_donate_blood, ::NeedBloodListViewHolder)
+        adapter = NeedBloodListAdapter(R.layout.list_donate_blood, ::NeedBloodListViewHolder, source, onAcceptClick)
         super.init()
 
         refresh()
@@ -39,6 +42,9 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
         loading.show()
 
         val params: MutableMap<String, String> = hashMapOf()
+        if (source == "member") {
+            params.putAll(hashMapOf("member_token" to member.token!!))
+        }
         NeedBloodService.getList(this, params, page, perPage) { success ->
             runOnUiThread {
                 //println(NeedBloodService.jsonString)
@@ -66,6 +72,7 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
             delete(row.token)
         }
     }
+
     private fun delete(token: String) {
         loading.show()
         NeedBloodService.postDelete(this, token) {
@@ -78,28 +85,9 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
                 }
             }
         }
-
     }
-}
 
-class NeedBloodListViewHolder(
-    context: Context,
-    view: View
-): BaseViewHolder<NeedBloodModel>(context, view) {
-
-    override fun bind(row: NeedBloodModel, idx: Int) {
-
-        row.filterRow()
-        super.bind(row, idx)
-
-        setIV(R.id.typeIV, "ic_${row.type}")
-
-        val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
-        setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
-
-        setTV(R.id.blood_typeTV, row.blood_type)
-        setTV(R.id.created_at, row.created_at_show)
-        setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
-        setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
+    val onAcceptClick: ((Int) -> Unit) = { idx ->
+        println(idx)
     }
 }

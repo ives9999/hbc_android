@@ -1,22 +1,26 @@
 package tw.com.bluemobile.hbc.controllers
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.adapters.BaseAdapter
+import tw.com.bluemobile.hbc.adapters.BaseViewHolder
+import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
-import tw.com.bluemobile.hbc.extensions.parseErrmsg
+import tw.com.bluemobile.hbc.member
+import tw.com.bluemobile.hbc.models.BaseModels
 import tw.com.bluemobile.hbc.models.NeedBloodModel
-import tw.com.bluemobile.hbc.models.SuccessModel
-import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
-import java.lang.Exception
 import java.lang.reflect.Type
 
-class NeedBloodActivity : EditActivity() {
+class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -29,6 +33,7 @@ class NeedBloodActivity : EditActivity() {
     var moreDialog: MoreDialog? = null
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
+    var source: String = "home"
 
     private val formItems: ArrayList<HashMap<NeedBloodEnum, MyLayout>> = arrayListOf()
 
@@ -58,245 +63,160 @@ class NeedBloodActivity : EditActivity() {
             val splashScreen = installSplashScreen()
         }
 
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")!!
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
         //setContentView(binding.root)
 
-        setTop(false, "我需要血")
+        setTop(true, "我需要血")
+        top?.showAdd(true)
+
+        if (source == "home") {
+            setBottom(able_enum)
+        } else {
+            findViewById<Bottom>(R.id.bottom) ?. let {
+                it.visibility = View.GONE
+            }
+            top?.showPrev(true)
+            top?.setTitle("我需要血")
+        }
         loading = Loading(this)
 
-        if (token != null) {
-            refresh()
-        } else {
-            init()
-            setBottom(able_enum)
-        }
-    }
-
-    override fun refresh() {
-
-        super.refresh()
-
-        loading.show()
-        val params: HashMap<String, String> = hashMapOf("needblood_token" to token!!)
-        NeedBloodService.getOne(this, params) { success ->
-            if (success) {
-                val modelType: Type = genericType<SuccessModel<NeedBloodModel>>()
-                needBloodModel = parseJSONAndInit<NeedBloodModel>(DonateBloodService.jsonString, modelType)
-
-//                needBloodModel = parseJSON<NeedBloodModel>(NeedBloodService.jsonString)
-//                needBloodModel?.filterRow()
-//                runOnUiThread {
-//                    if (needBloodModel != null) {
-//                        for (enum in MemberPetEnum.getAllEnum()) {
-//                            val name = enum.englishName
-//                            val value = getPropertyValue(needBloodModel!!, name)
-//                            initData.put(name, value)
-//                        }
-//                        init()
-//                    }
-//                    loading.hide()
-//                }
-            }
-        }
+        init()
     }
 
     override fun init() {
+        adapter = NeedBloodListAdapter(R.layout.list_donate_blood, ::NeedBloodListViewHolder, source, onAcceptClick)
         super.init()
 
-        val allEnums: ArrayList<NeedBloodEnum> = NeedBloodEnum.getAllEnum()
-        for (enum in allEnums) {
-
-            val key: String = enum.englishName
-            val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
-            findViewById<MyLayout>(r)?.let {
-
-                if (enum == NeedBloodEnum.hospital_city_id || enum == NeedBloodEnum.hospital_area_id) {
-
-                    if (initData.containsKey(key)) {
-                        it.value = initData[key]!!
-                        it.setZone()
-                    }
-
-                    val screenWidth = Global.getScreenWidth(resources)
-                    if (enum == NeedBloodEnum.hospital_city_id) {
-                        moreCity = it as SelectCity
-                        it.setOnClickListener {
-                            moreDialog =
-                                it.toMoreDialog(screenWidth, it.value, this)
-                            //println(moreCity?.value)
-                        }
-
-                        it.setOnCancelClickListener {
-                            it.clear()
-                            moreArea?.clear()
-                        }
-                    } else {
-                        moreArea = it as SelectArea
-                        it.setOnClickListener {
-                            if (moreCity == null || moreCity!!.value.isEmpty()) {
-                                warning("請先選擇縣市")
-                            } else {
-                                val city_id: Int = moreCity?.value?.toInt() ?: 0
-                                moreDialog = it.toMoreDialog(
-                                    screenWidth,
-                                    city_id,
-                                    moreArea!!.value,
-                                    this
-                                )
-                            }
-                        }
-
-                    }
-                } else if (enum == NeedBloodEnum.type) {
-                    typeRadio = it as TwoRadio
-
-                    it.setOnGroupCheckedChangeListener { newType ->
-                        typeChange(newType)
-                    }
-
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
-
-                } else if (enum == NeedBloodEnum.blood_type_cat) {
-                    catBloodTypeRadio = it as ThreeRadio
-
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
-
-                } else if (enum == NeedBloodEnum.blood_type_dog) {
-                    dogBloodTypeRadio = it as TwoRadio
-
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
-
-                } else {
-                    if (initData.containsKey(key)) {
-                        it.value = initData[key]!!
-                    }
-
-                }
-                val h: HashMap<NeedBloodEnum, MyLayout> = hashMapOf(enum to it)
-                formItems.add(h)
-            }
-        }
-
-        findViewById<LinearLayout>(R.id.submitLL) ?. let {
-            it.setOnClickListener {
-                submit()
-            }
-        }
+        refresh()
     }
 
-    private fun typeChange(type: String) {
-        if (type == "狗") {
-            dogBloodTypeRadio?.visibility = View.VISIBLE
-            catBloodTypeRadio?.visibility = View.GONE
-        } else {
-            dogBloodTypeRadio?.visibility = View.GONE
-            catBloodTypeRadio?.visibility = View.VISIBLE
-        }
-    }
-
-    // set setting after city and area click.
-    override fun cellClick(keyEnum: KeyEnum, id: Int) {
-//        println(key)
-//        println(id)
-        if (keyEnum == KeyEnum.city_id) {
-            moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.value = id.toString()
-            moreDialog?.hide()
-        } else if (keyEnum == KeyEnum.area_id) {
-            moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.value = id.toString()
-            moreDialog?.hide()
-        }
-    }
-
-    override fun submit() {
-
-        val params: MutableMap<String, String> = hashMapOf()
-
-        var type: String = "" //cat or dog
-        for (formItem in formItems) {
-            for ((enum, layout) in formItem) {
-                if (layout.isEmpty()) {
-                    msg += enum.errMsg()
-                } else {
-                    val k = enum.englishName
-                    var v = layout.value
-                    if (enum == NeedBloodEnum.type) {
-                        v = enum.radioTextToDBName(v)
-                        type = v
-                    }
-                    val temp: HashMap<String, String> =
-                        hashMapOf(k to v)
-                    params.putAll(temp)
-                }
-            }
-        }
-
-        var blood_type: String = ""
-
-        for (formItem in formItems) {
-            for ((enum, layout) in formItem) {
-                if (enum.englishName == "blood_type_${type}") {
-                    if (layout.value.isEmpty()) {
-                        msg += "請選擇血液血型\n"
-                    } else {
-                        blood_type = layout.value
-                    }
-                }
-            }
-        }
-
-        params.put("blood_type", blood_type)
-        params.remove("blood_type_cat")
-        params.remove("blood_type_dog")
-
-        //println(params)
-
-        if (msg.isNotEmpty()) {
-            warning(msg)
-            return
-        }
+    override fun getList(page: Int, perPage: Int) {
 
         loading.show()
-        NeedBloodService.update(this, params) { success ->
-            if (success) {
-                runOnUiThread {
-                    try {
-                        //println(MemberService.jsonString)
-                        val successModel =
-                            jsonToModel<SuccessModel<NeedBloodModel>>(NeedBloodService.jsonString)
-                        if (successModel != null) {
-                            if (successModel.success) {
-                                val memberPetModel = successModel.model
-                                success("新增/修改 我需要血成功") {
-                                    //prev()
-                                }
-                            } else {
-                                warning(successModel.msgs.parseErrmsg())
-                            }
-                        } else {
-                            warning("app無法解析系統傳回值，請洽管理員")
-                        }
-                    } catch (e: Exception) {
-                        warning(e.localizedMessage)
-                    }
-                }
-            } else {
-                runOnUiThread {
-                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
-                }
-            }
 
+        val params: MutableMap<String, String> = hashMapOf()
+        if (source == "member") {
+            params.putAll(hashMapOf("member_token" to member.token!!))
+        }
+        NeedBloodService.getList(this, params, page, perPage) { success ->
             runOnUiThread {
+                //println(NeedBloodService.jsonString)
+
+                val modelType: Type = genericType<BaseModels<NeedBloodModel>>()
+                parseJSON(NeedBloodService.jsonString, modelType)
                 loading.hide()
             }
         }
     }
+
+    override fun add() {
+        super.add()
+        toNeedBloodEdit(this)
+    }
+
+    override val onEditClick: ((Int) -> Unit) = { idx ->
+        val row: NeedBloodModel = rows[idx]
+        toNeedBloodEdit(this, row.token)
+    }
+
+    override val onDeleteClick: ((Int) -> Unit) = { idx ->
+        val row: NeedBloodModel = rows[idx]
+        warning("是否確定要刪除?", "刪除") {
+            delete(row.token)
+        }
+    }
+
+    private fun delete(token: String) {
+        loading.show()
+        NeedBloodService.postDelete(this, token) {
+            runOnUiThread {
+                //println(MemberService.jsonString)
+
+                loading.hide()
+                success("刪除完成") {
+                    refresh()
+                }
+            }
+        }
+    }
+
+    private val onAcceptClick: ((Int) -> Unit) = { idx ->
+        toBloodProcess(this)
+    }
+}
+
+class NeedBloodListAdapter(
+    override val resource: Int,
+    override val viewHolderConstructor: viewHolder<NeedBloodListViewHolder>,
+    val source: String,
+    val onAcceptClick: ((Int) -> Unit)?):
+    BaseAdapter<NeedBloodListViewHolder, NeedBloodModel>(resource, viewHolderConstructor) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NeedBloodListViewHolder {
+
+        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        val view: View = inflater.inflate(resource, parent, false)
+        val viewHolder: NeedBloodListViewHolder = viewHolderConstructor(parent.context, view)
+        viewHolder.source = source
+
+        return viewHolder
+    }
+
+    override fun onBindViewHolder(holder: NeedBloodListViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        holder.setOnAcceptClickListener(position, onAcceptClick)
+    }
+}
+
+class NeedBloodListViewHolder(
+    context: Context,
+    view: View
+): BaseViewHolder<NeedBloodModel>(context, view) {
+
+    var source: String = ""
+
+    override fun bind(row: NeedBloodModel, idx: Int) {
+
+        row.filterRow()
+        super.bind(row, idx)
+
+        if (source == "home") {
+            view.findViewById<View>(R.id.line)?.let {
+                it.visibility = View.GONE
+            }
+            view.findViewById<LinearLayout>(R.id.iconContainer)?.let {
+                it.visibility = View.GONE
+            }
+        } else {
+            view.findViewById<LinearLayout>(R.id.acceptContainer) ?. let {
+                it.visibility = View.GONE
+            }
+        }
+
+
+        setIV(R.id.typeIV, "ic_${row.type}")
+
+        val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
+        setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
+
+        setTV(R.id.blood_typeTV, row.blood_type)
+        setTV(R.id.created_at, row.created_at_show)
+        setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
+        setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
+    }
+
+    fun setOnAcceptClickListener(idx: Int, onAcceptClick: ((Int) -> Unit)?) {
+        view.findViewById<LinearLayout>(R.id.acceptContainer) ?. let {
+            it.setOnClickListener {
+                onAcceptClick?.invoke(idx)
+            }
+        }
+    }
+
 }

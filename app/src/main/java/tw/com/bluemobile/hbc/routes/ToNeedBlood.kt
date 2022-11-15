@@ -24,9 +24,9 @@ interface ToNeedBlood {
         activity.startActivity(i)
     }
 
-    fun toNeedBloodList(activity: BaseActivity, isMember: Boolean) {
+    fun toNeedBloodList(activity: BaseActivity, source: String="home") {
         val i = Intent(activity, NeedBloodListActivity::class.java)
-        i.putExtra("isMember", isMember)
+        i.putExtra("source", source)
         activity.startActivity(i)
     }
 }
