@@ -84,12 +84,22 @@
         <attr name="creditCardCvvStarIV" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="ProcessBlock">
-        <attr name="ProcessBlockTitleTV" format="string" />
+    <declare-styleable name="ProcessCenterNode">
+        <attr name="ProcessCenterNodeTitleTV" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="ArrowLine">
-
+    <declare-styleable name="ArrowLineVertical">
+        <attr name="ArrowLineVerticalHeight" format="integer" />
+        <attr name="ArrowLineVerticalArrowShow" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ProcessLeftNode">
+        <attr name="ProcessLeftNodeTitleTV" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ProcessRightNode">
+        <attr name="ProcessRightNodeTitleTV" format="string" />
+    </declare-styleable>
+
 
 </resources>
