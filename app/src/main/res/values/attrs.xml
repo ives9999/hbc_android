@@ -84,4 +84,12 @@
         <attr name="creditCardCvvStarIV" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="ProcessBlock">
+        <attr name="ProcessBlockTitleTV" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ArrowLine">
+
+    </declare-styleable>
+
 </resources>

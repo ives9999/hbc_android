@@ -146,7 +146,9 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     private val onAcceptClick: ((Int) -> Unit) = { idx ->
-        toBloodProcess(this)
+
+        val row: NeedBloodModel = rows[idx]
+        toBloodProcess(this, row.token, member.token!!)
     }
 }
 

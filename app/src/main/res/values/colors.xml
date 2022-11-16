@@ -16,4 +16,7 @@
     <color name="CELL_SELECTED">#444444</color>
     <color name="CIRCLE">#FCD29F</color>
 
+    <color name="PROCESS_BK_BLUE">#0D99FF</color>
+    <color name="PROCESS_LINE">#CECCCC</color>
+
 </resources>

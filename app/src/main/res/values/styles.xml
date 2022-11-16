@@ -34,6 +34,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="process_blue_text">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="ShapeAppearance.Capsule" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
