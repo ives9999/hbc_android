@@ -1,7 +1,10 @@
 package tw.com.bluemobile.hbc.utilities
 
+import android.content.Context
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.models.BaseModel
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
@@ -109,6 +112,10 @@ fun getPropertyValue(instance: Any, propertyName: String): String {
             }
         }
     return ""
+}
+
+fun getColor(context: Context, color: Int): Int {
+    return ContextCompat.getColor(context, color)
 }
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layoutDirection="rtl"
     android:orientation="horizontal"
@@ -21,9 +22,10 @@
 
 
     <LinearLayout
+        android:id="@+id/nodeLL"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/process_blue"
+        android:background="@drawable/process_node"
         android:orientation="horizontal">
 
         <TextView
@@ -35,7 +37,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="發出需血需求" />
+            android:text="到達醫院" />
     </LinearLayout>
 
 </LinearLayout>

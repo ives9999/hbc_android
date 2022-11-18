@@ -24,47 +24,256 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="12dp">
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeTitleTV="需血捐血流程開始" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <tw.com.bluemobile.hbc.views.LineVertical
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:LineVerticalHeight="50" />
+            </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/send_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_YELLOW"
+                app:ProcessCenterNodeTextColor="@color/MY_BLACK"
+                app:ProcessCenterNodeTitleTV="發出通知" />
+
             <tw.com.bluemobile.hbc.views.ArrowLineVertical
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ArrowLineVerticalArrowShow="false"
-                app:ArrowLineVerticalHeight="100" />
+                app:ArrowLineVerticalHeight="30" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_weight="3"
+                android:layout_height="90dp"
                 android:orientation="horizontal">
 
                 <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:id="@+id/need_blood_arrive_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:ProcessLeftNodeTitleTV="發出需血需求" />
+                    app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessLeftNodeTextColor="@color/brown_300"
+                    app:ProcessLeftNodeTitleTV="到達醫院" />
 
-                <tw.com.bluemobile.hbc.views.ArrowLineVertical
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:ArrowLineVerticalArrowShow="false"
-                    app:ArrowLineVerticalHeight="250" />
+                    android:orientation="vertical">
+
+                    <tw.com.bluemobile.hbc.views.LineVertical
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:LineVerticalHeight="380" />
+                </LinearLayout>
 
 
                 <tw.com.bluemobile.hbc.views.ProcessRightNode
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:ProcessRightNodeTitleTV="願意捐血" />
-
+                    app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessRightNodeTextColor="@color/brown_300"
+                    app:ProcessRightNodeTitleTV="到達醫院" />
 
             </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
+                app:ProcessCenterNodeTextColor="@color/brown_300"
+                app:ProcessCenterNodeTitleTV="雙方見面" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <tw.com.bluemobile.hbc.views.LineVertical
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:LineVerticalHeight="30" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal">
+
+                <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessLeftNodeTextColor="@color/brown_300"
+                    app:ProcessLeftNodeTitleTV="發出車馬費" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tw.com.bluemobile.hbc.views.LineVertical
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:LineVerticalHeight="310" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
+                app:ProcessCenterNodeTextColor="@color/brown_300"
+                app:ProcessCenterNodeTitleTV="平台付出車馬費" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal">
+
+                <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
+
+                <tw.com.bluemobile.hbc.views.ArrowLineVertical
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:ArrowLineVerticalArrowShow="false"
+                    app:ArrowLineVerticalHeight="310" />
+
+
+                <tw.com.bluemobile.hbc.views.ProcessRightNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessRightNodeTextColor="@color/brown_300"
+                    app:ProcessRightNodeTitleTV="確認收到" />
+
+            </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
+                app:ProcessCenterNodeTextColor="@color/brown_300"
+                app:ProcessCenterNodeTitleTV="配對成功" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <tw.com.bluemobile.hbc.views.LineVertical
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:LineVerticalHeight="30" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal">
+
+                <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessLeftNodeTextColor="@color/brown_300"
+                    app:ProcessLeftNodeTitleTV="發出營養金" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <tw.com.bluemobile.hbc.views.LineVertical
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:LineVerticalHeight="310" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
+                app:ProcessCenterNodeTextColor="@color/brown_300"
+                app:ProcessCenterNodeTitleTV="平台付出營養金" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal">
+
+                <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
+
+                <tw.com.bluemobile.hbc.views.ArrowLineVertical
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:ArrowLineVerticalArrowShow="false"
+                    app:ArrowLineVerticalHeight="310" />
+
+                <tw.com.bluemobile.hbc.views.ProcessRightNode
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
+                    app:ProcessRightNodeTextColor="@color/brown_300"
+                    app:ProcessRightNodeTitleTV="確認收到" />
+            </LinearLayout>
+            <tw.com.bluemobile.hbc.views.ArrowDown
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
+                app:ProcessCenterNodeTextColor="@color/brown_300"
+                app:ProcessCenterNodeTitleTV="手術開始" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

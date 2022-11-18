@@ -17,6 +17,11 @@
     <color name="CIRCLE">#FCD29F</color>
 
     <color name="PROCESS_BK_BLUE">#0D99FF</color>
-    <color name="PROCESS_LINE">#CECCCC</color>
+    <color name="PROCESS_BK_PURPLE">#D99BFF</color>
+    <color name="PROCESS_BK_GREEN">#14AE5C</color>
+    <color name="PROCESS_BK_YELLOW">#FFD233</color>
+    <color name="PROCESS_BK_GRAY">#CECCCC</color>
+    <color name="PROCESS_LINE">#000000</color>
+<!--    <color name="PROCESS_LINE">#CECCCC</color>-->
 
 </resources>

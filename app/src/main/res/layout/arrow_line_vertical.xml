@@ -13,22 +13,21 @@
         <View
             android:id="@+id/line"
             android:layout_width="1dp"
-            android:layout_height="40dp"
-            android:background="@color/PROCESS_LINE" />
+            android:layout_height="100dp"
+            android:background="@color/MY_BLACK" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/arrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 
         <View
-            android:id="@+id/arrow"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="9dp"
             android:background="@drawable/arrow_down"
-            android:visibility="gone"
             android:orientation="horizontal" />
     </LinearLayout>
 

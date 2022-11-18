@@ -71,7 +71,7 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
         setContentView(R.layout.activity_main)
         //setContentView(binding.root)
 
-        setTop(true, "我需要血")
+        setTop(false, "我需要血")
         top?.showAdd(true)
 
         if (source == "home") {
@@ -89,7 +89,7 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     override fun init() {
-        adapter = NeedBloodListAdapter(R.layout.list_donate_blood, ::NeedBloodListViewHolder, source, onAcceptClick)
+        adapter = NeedBloodListAdapter(R.layout.list_need_blood, ::NeedBloodListViewHolder, source, onAcceptClick)
         super.init()
 
         refresh()

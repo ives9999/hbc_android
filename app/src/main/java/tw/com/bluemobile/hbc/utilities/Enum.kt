@@ -4,6 +4,22 @@ import android.content.res.Resources
 import android.widget.ImageView
 import tw.com.bluemobile.hbc.extensions.setImage
 
+enum class BloodProcessEnum(val englishName: String, val chineseName: String) {
+
+    send_message("send_message", "發出通知"),
+    need_blood_arrive_hospital("need_blood_arrive_hospital", "需血方到達醫院"),
+    donate_blood_arrive_hospital("donate_blood_arrive_hospital", "捐血方到達醫院"),
+    meet("meet", "雙方見面"),
+    need_blood_traffic_fee("need_blood_traffic_fee", "需血方發出車馬費"),
+    platform_traffic_fee("need_blood_traffic_fee", "平台收到並發出車馬費"),
+    donate_blood_traffic_fee("donate_blood_traffic_fee", "捐血方收到車馬費"),
+    pair_success("pair_success","配對成功"),
+    need_blood_nutrient_fee("need_blood_nutrient_fee", "需血方發出營養金"),
+    platform_nutrient_fee("need_blood_nutrient_fee", "平台收到並發出營養金"),
+    donate_blood_nutrient_fee("donate_blood_nutrient_fee", "捐血方收到營養金"),
+    complete("complete", "完成")
+}
+
 enum class DonateEnum(val englishName: String, val chineseName: String) {
     amount(AMOUNT_KEY, "金額"),
     credit_card_no(CREDIT_CARD_NO, "信用卡號"),
