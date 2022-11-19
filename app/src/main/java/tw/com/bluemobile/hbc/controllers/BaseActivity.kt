@@ -116,6 +116,18 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To, ToDona
             }
     }
 
+    fun success(msg: String, actionButtonTitle: String, buttonAction: () -> Unit) {
+        AwesomeDialog.build(this)
+            .title("成功", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.amber_900)
+            .icon(R.drawable.ic_success)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive(actionButtonTitle) {
+                buttonAction()
+            }
+            .onNegative("關閉")
+    }
+
     fun warning(msg: String) {
         AwesomeDialog.build(this)
             .title("警告", null, R.color.MY_BLACK)

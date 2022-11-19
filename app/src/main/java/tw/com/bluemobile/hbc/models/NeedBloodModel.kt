@@ -11,6 +11,8 @@ class NeedBloodModel: BaseModel() {
     var blood_type: String = ""
     var traffic_fee: Int = 0
     var nutrient_fee: Int = 0
+    var member_token: String = ""
+    var member_nickname: String = ""
 
     override fun filterRow() {
         super.filterRow()

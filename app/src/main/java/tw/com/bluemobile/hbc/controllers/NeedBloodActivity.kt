@@ -12,12 +12,15 @@ import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
-import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.NeedBloodModel
+import tw.com.bluemobile.hbc.models.*
+import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.NeedBloodService
+import tw.com.bluemobile.hbc.services.OrderService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
+import java.lang.Exception
 import java.lang.reflect.Type
 
 class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>() {
@@ -147,8 +150,52 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
 
     private val onAcceptClick: ((Int) -> Unit) = { idx ->
 
-        val row: NeedBloodModel = rows[idx]
-        toBloodProcess(this, row.token, member.token!!)
+        if (!member.isLoggedIn) {
+            warning("請先登入！！", "登入") {
+                toLogin(this)
+            }
+        } else {
+            warning("是否確定要做捐血", "確定捐血") {
+                val row: NeedBloodModel = rows[idx]
+                val params: HashMap<String, String> = hashMapOf(
+                    "need_blood_token" to row.token,
+                    "memberA_token" to member.token!!,
+                    "memberB_token" to row.member_token,
+                    "product_type" to "blood"
+                )
+                //println(params);
+
+                loading.show()
+                OrderService.update(this, params) { success ->
+                    runOnUiThread {
+                        loading.hide()
+                    }
+                    if (success) {
+                        runOnUiThread {
+                            try {
+                                //println(DonateBloodService.jsonString)
+                                val successModel =
+                                    jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
+                                if (successModel != null) {
+                                    if (successModel.success) {
+                                        val orderModel: OrderModel = successModel.model!!
+                                        success("已經建立此筆訂單，是否前往後續流程服務頁面？", "是") {
+                                            toBloodProcess(this, orderModel.token)
+                                        }
+                                    } else {
+                                        warning(successModel.msgs.parseErrmsg())
+                                    }
+                                } else {
+                                    warning("app無法解析系統傳回值，請洽管理員")
+                                }
+                            } catch (e: Exception) {
+                                warning(e.localizedMessage)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -277,5 +277,5 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+    <include layout="@layout/loading" />
 </RelativeLayout>

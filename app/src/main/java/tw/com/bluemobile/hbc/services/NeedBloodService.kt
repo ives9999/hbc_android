@@ -17,8 +17,6 @@ object NeedBloodService: BaseService() {
     }
 
     override fun getUpdateURL(): String {
-
         return URL_HOME + "needBlood/postUpdate"
     }
-
 }
