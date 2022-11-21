@@ -19,7 +19,6 @@ open class ShowActivity : BaseActivity() {
 
     inline fun<reified U: BaseModel> parseJSONAndInit(jsonString: String, modelType: Type): U? {
 
-        //println(jsonString)
         val successModel = jsonToModelForList<SuccessModel<U>>(jsonString, modelType)
         if (successModel != null && successModel.success) {
             val model = successModel.model as U

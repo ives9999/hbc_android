@@ -15,21 +15,19 @@ class ProcessCenterNode @JvmOverloads constructor(context: Context, attrs: Attri
     private val view: View = View.inflate(context, R.layout.process_center_node, this)
 
     init {
+        myInit(view)
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ProcessCenterNode, 0, 0)
 
-            view.findViewById<TextView>(R.id.titleTV)?.let { textView ->
-                titleTV = textView
-                if (typedArray.hasValue(R.styleable.ProcessCenterNode_ProcessCenterNodeTitleTV)) {
-                    textView.text =
-                        typedArray.getString(R.styleable.ProcessCenterNode_ProcessCenterNodeTitleTV)
-                            ?: ""
-                }
+            if (typedArray.hasValue(R.styleable.ProcessCenterNode_ProcessCenterNodeTitleTV)) {
+                titleTV?.text =
+                    typedArray.getString(R.styleable.ProcessCenterNode_ProcessCenterNodeTitleTV)
+                        ?: ""
+            }
 
-                if (typedArray.hasValue(R.styleable.ProcessCenterNode_ProcessCenterNodeTextColor)) {
-                    val color: Int = typedArray.getColor(R.styleable.ProcessCenterNode_ProcessCenterNodeTextColor, getColor(context, R.color.MY_WHITE))
-                    textView.setTextColor(color)
-                }
+            if (typedArray.hasValue(R.styleable.ProcessCenterNode_ProcessCenterNodeTextColor)) {
+                val color: Int = typedArray.getColor(R.styleable.ProcessCenterNode_ProcessCenterNodeTextColor, getColor(context, R.color.MY_WHITE))
+                titleTV?.setTextColor(color)
             }
 
             view.findViewById<LinearLayout>(R.id.nodeLL) ?. let { linearLayout ->

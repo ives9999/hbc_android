@@ -15,6 +15,12 @@ class ProcessRightNode @JvmOverloads constructor(context: Context, attrs: Attrib
     ProcessNode(context, attrs, defStyleAttr) {
 
     private val view: View = View.inflate(context, R.layout.process_right_node, this)
+    override var background: Int
+        get() = R.color.PROCESS_BK_GREEN
+        set(value) {}
+    override var textColor: Int
+        get() = R.color.MY_WHITE
+        set(value) {}
 
     init {
         attrs?.let {

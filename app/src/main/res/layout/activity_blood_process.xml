@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
-                android:id="@+id/send_message"
+                android:id="@+id/send_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_YELLOW"
@@ -68,7 +68,7 @@
                 android:orientation="horizontal">
 
                 <tw.com.bluemobile.hbc.views.ProcessLeftNode
-                    android:id="@+id/need_blood_arrive_hospital"
+                    android:id="@+id/arrive_hospitalA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
@@ -88,6 +88,7 @@
 
 
                 <tw.com.bluemobile.hbc.views.ProcessRightNode
+                    android:id="@+id/arrive_hospitalB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
@@ -101,6 +102,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/meet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
@@ -125,6 +127,7 @@
                 android:orientation="horizontal">
 
                 <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:id="@+id/traffic_feeA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
@@ -149,6 +152,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/traffic_feeP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
@@ -173,6 +177,7 @@
 
 
                 <tw.com.bluemobile.hbc.views.ProcessRightNode
+                    android:id="@+id/traffic_feeB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
@@ -186,6 +191,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/pair"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
@@ -210,6 +216,7 @@
                 android:orientation="horizontal">
 
                 <tw.com.bluemobile.hbc.views.ProcessLeftNode
+                    android:id="@+id/nutrient_feeA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessLeftNodeBackground="@color/PROCESS_BK_GRAY"
@@ -234,6 +241,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/nutrient_feeP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"
@@ -257,6 +265,7 @@
                     app:ArrowLineVerticalHeight="310" />
 
                 <tw.com.bluemobile.hbc.views.ProcessRightNode
+                    android:id="@+id/nutrient_feeB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ProcessRightNodeBackground="@color/PROCESS_BK_GRAY"
@@ -268,6 +277,7 @@
                 android:layout_height="wrap_content" />
 
             <tw.com.bluemobile.hbc.views.ProcessCenterNode
+                android:id="@+id/complete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ProcessCenterNodeBackground="@color/PROCESS_BK_GRAY"

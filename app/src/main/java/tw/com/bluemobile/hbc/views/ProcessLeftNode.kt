@@ -16,6 +16,9 @@ class ProcessLeftNode @JvmOverloads constructor(context: Context, attrs: Attribu
     ProcessNode(context, attrs, defStyleAttr) {
 
     private val view: View = View.inflate(context, R.layout.process_left_node, this)
+    override var background: Int
+        get() = R.color.PROCESS_BK_PURPLE
+        set(value) {}
 
     init {
         attrs?.let {

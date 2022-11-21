@@ -124,8 +124,8 @@ open class BaseService {
         getBaseUrl()
         val url: String = getOneURL()
         val _params: Map<String, String> = composeParams(params)
-//        println(url)
-//        println(_params.toJSON())
+        println(url)
+        println(_params.toJSON())
         _simpleService(context, url, _params, complete, true)
 
 //        val request: okhttp3.Request = getRequest(url, _params)

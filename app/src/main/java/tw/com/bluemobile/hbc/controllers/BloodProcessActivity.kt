@@ -4,28 +4,37 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.dpToPx
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.extensions.pxToDp
-import tw.com.bluemobile.hbc.models.DonateBloodModel
-import tw.com.bluemobile.hbc.models.OrderModel
-import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.member
+import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.OrderService
-import tw.com.bluemobile.hbc.utilities.BloodProcessEnum
-import tw.com.bluemobile.hbc.utilities.Global
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.genericType
-import tw.com.bluemobile.hbc.views.ProcessCenterNode
-import tw.com.bluemobile.hbc.views.ProcessLeftNode
+import tw.com.bluemobile.hbc.utilities.*
+import tw.com.bluemobile.hbc.views.*
+import java.lang.Exception
 import java.lang.reflect.Type
 
 class BloodProcessActivity : ShowActivity() {
 
     private var order_token: String? = null
 
-    private var processSendMessage: ProcessCenterNode? = null
-    private var processArriveHospitalA: ProcessLeftNode? = null
+    private val processNodes: ArrayList<HashMap<BloodProcessEnum, ProcessNode>> = arrayListOf()
 
-    private var process: BloodProcessEnum = BloodProcessEnum.send_message
+//    private var processSendMessage: ProcessCenterNode? = null
+//    private var processArriveHospitalA: ProcessLeftNode? = null
+//    private var processArriveHospitalB: ProcessRightNode? = null
+//    private var processMeet: ProcessCenterNode? = null
+//    private var processTrafficFeeA: ProcessLeftNode? = null
+//    private var processTrafficFeeP: ProcessCenterNode? = null
+//    private var processTrafficFeeB: ProcessRightNode? = null
+//    private var processNutrientFeeA: ProcessLeftNode? = null
+//    private var processNutrientFeeP: ProcessCenterNode? = null
+//    private var processNutrientFeeB: ProcessRightNode? = null
+//    private var processPair: ProcessCenterNode? = null
+//    private var processComplete: ProcessCenterNode? = null
+
+//    private var allProcess: BloodProcessEnum = BloodProcessEnum.send_information
     var orderModel: OrderModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +48,45 @@ class BloodProcessActivity : ShowActivity() {
         setTop(true, "需血捐血配對流程")
         loading = Loading(this)
 
-        findViewById<ProcessCenterNode>(R.id.send_message) ?. let {
-            processSendMessage = it
-            it.process = process
-        }
+        setAllNodes()
+        refresh()
+    }
 
-        findViewById<ProcessLeftNode>(R.id.need_blood_arrive_hospital) ?. let {
-            processArriveHospitalA = it
-            it.setOnClickListener(n)
+    override fun init() {
+        super.init()
+
+        if (orderModel != null && orderModel!!.abProcessModel != null) {
+            val abProcessModel: ABProcessModel = orderModel!!.abProcessModel!!
+            abProcessModel.dump()
+
+            val enums: ArrayList<BloodProcessEnum> = BloodProcessEnum.getAllEnum()
+            for (enum in enums) {
+                val show: String = getPropertyValue(abProcessModel, enum.englishName + "_at_show")
+                if (show.isNotEmpty()) {
+                    val node: ProcessNode? = getNodeFromEnum(enum)
+                    if (node != null) {
+                        node.setOpen()
+                    }
+                }
+            }
         }
     }
 
-    val n: () -> Unit = {
-        println("aaa")
+    private fun getNodeFromEnum(enum: BloodProcessEnum): ProcessNode? {
+        for (processNode in processNodes) {
+            for ((nodeEnum, node) in processNode) {
+                if (enum == nodeEnum) {
+                    return node
+                }
+            }
+        }
+
+        return null
+    }
+
+    val changeProcess: (BloodProcessEnum) -> Unit = {
+        //println(it)
+        updateProcess(it)
     }
 
     override fun refresh() {
@@ -64,11 +99,59 @@ class BloodProcessActivity : ShowActivity() {
                 loading.hide()
             }
             if (success) {
-                //println(DonateBloodService.jsonString)
+//                println(OrderService.jsonString)
                 val modelType: Type = genericType<SuccessModel<OrderModel>>()
-                orderModel = parseJSONAndInit<OrderModel>(DonateBloodService.jsonString, modelType)
+                orderModel = parseJSONAndInit<OrderModel>(OrderService.jsonString, modelType)
+            }
+        }
+    }
+
+    private fun setAllNodes() {
+
+        val enums: ArrayList<BloodProcessEnum> = BloodProcessEnum.getAllEnum()
+        for (enum in enums) {
+            val key: String = enum.englishName
+            val r: Int = resources.getIdentifier(key, "id", packageName)
+            findViewById<ProcessNode>(r) ?. let {
+                val h: HashMap<BloodProcessEnum, ProcessNode> = hashMapOf(enum to it)
+                processNodes.add(h)
+                it.process = enum
+                it.setOnClickListener(changeProcess)
+            }
+        }
+    }
+
+    private fun updateProcess(process: BloodProcessEnum) {
+        val params: HashMap<String, String> = hashMapOf(
+            "token" to orderModel!!.token,
+            "abProcess_process" to process.englishName
+        )
+        //println(params);
+
+        loading.show()
+        OrderService.update(this, params) { success ->
+            runOnUiThread {
+                loading.hide()
+            }
+            if (success) {
                 runOnUiThread {
-                    init()
+                    try {
+                        //println(DonateBloodService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                orderModel = successModel.model!!
+                                init()
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
+                    }
                 }
             }
         }
