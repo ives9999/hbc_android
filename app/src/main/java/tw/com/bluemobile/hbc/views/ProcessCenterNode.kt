@@ -13,9 +13,13 @@ class ProcessCenterNode @JvmOverloads constructor(context: Context, attrs: Attri
     ProcessNode(context, attrs, defStyleAttr) {
 
     private val view: View = View.inflate(context, R.layout.process_center_node, this)
+    override var dateTextColor: Int
+        get() = R.color.MY_BLACK
+        set(value) {}
 
     init {
         myInit(view)
+
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ProcessCenterNode, 0, 0)
 
@@ -38,24 +42,10 @@ class ProcessCenterNode @JvmOverloads constructor(context: Context, attrs: Attri
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
+
+//    override fun setOpen() {
+//        super.setOpen()
+//        dateTV
+//    }
 }

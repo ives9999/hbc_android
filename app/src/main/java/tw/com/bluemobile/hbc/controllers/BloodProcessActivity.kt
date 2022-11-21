@@ -1,14 +1,9 @@
 package tw.com.bluemobile.hbc.controllers
 
 import android.os.Bundle
-import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.extensions.pxToDp
-import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.*
-import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.OrderService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
@@ -57,16 +52,13 @@ class BloodProcessActivity : ShowActivity() {
 
         if (orderModel != null && orderModel!!.abProcessModel != null) {
             val abProcessModel: ABProcessModel = orderModel!!.abProcessModel!!
-            abProcessModel.dump()
+            //abProcessModel.dump()
 
             val enums: ArrayList<BloodProcessEnum> = BloodProcessEnum.getAllEnum()
             for (enum in enums) {
                 val show: String = getPropertyValue(abProcessModel, enum.englishName + "_at_show")
                 if (show.isNotEmpty()) {
-                    val node: ProcessNode? = getNodeFromEnum(enum)
-                    if (node != null) {
-                        node.setOpen()
-                    }
+                    getNodeFromEnum(enum)?.setOpen(show)
                 }
             }
         }
@@ -95,9 +87,6 @@ class BloodProcessActivity : ShowActivity() {
         val params: HashMap<String, String> = hashMapOf("token" to order_token!!)
         loading.show()
         OrderService.getOne(this, params) { success ->
-            runOnUiThread {
-                loading.hide()
-            }
             if (success) {
 //                println(OrderService.jsonString)
                 val modelType: Type = genericType<SuccessModel<OrderModel>>()
@@ -141,7 +130,8 @@ class BloodProcessActivity : ShowActivity() {
                             jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
                         if (successModel != null) {
                             if (successModel.success) {
-                                orderModel = successModel.model!!
+                                orderModel = successModel.model
+                                orderModel?.filterRow()
                                 init()
                             } else {
                                 warning(successModel.msgs.parseErrmsg())

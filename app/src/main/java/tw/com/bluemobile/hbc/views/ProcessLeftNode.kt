@@ -19,8 +19,13 @@ class ProcessLeftNode @JvmOverloads constructor(context: Context, attrs: Attribu
     override var background: Int
         get() = R.color.PROCESS_BK_PURPLE
         set(value) {}
+    override var dateTextColor: Int
+        get() = R.color.MY_BLACK
+        set(value) {}
 
     init {
+        myInit(view)
+
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ProcessLeftNode, 0, 0)
 
@@ -31,18 +36,15 @@ class ProcessLeftNode @JvmOverloads constructor(context: Context, attrs: Attribu
                 container.layoutParams.width = ((screenWidth-n)/2).toInt()
             }
 
-            view.findViewById<TextView>(R.id.titleTV)?.let { textView ->
-                titleTV = textView
-                if (typedArray.hasValue(R.styleable.ProcessLeftNode_ProcessLeftNodeTitleTV)) {
-                    textView.text =
-                        typedArray.getString(R.styleable.ProcessLeftNode_ProcessLeftNodeTitleTV)
-                            ?: ""
-                }
+            if (typedArray.hasValue(R.styleable.ProcessLeftNode_ProcessLeftNodeTitleTV)) {
+                titleTV?.text =
+                    typedArray.getString(R.styleable.ProcessLeftNode_ProcessLeftNodeTitleTV)
+                        ?: ""
+            }
 
-                if (typedArray.hasValue(R.styleable.ProcessLeftNode_ProcessLeftNodeTextColor)) {
-                    val color: Int = typedArray.getColor(R.styleable.ProcessLeftNode_ProcessLeftNodeTextColor, getColor(context, R.color.MY_WHITE))
-                    textView.setTextColor(color)
-                }
+            if (typedArray.hasValue(R.styleable.ProcessLeftNode_ProcessLeftNodeTextColor)) {
+                val color: Int = typedArray.getColor(R.styleable.ProcessLeftNode_ProcessLeftNodeTextColor, getColor(context, R.color.MY_WHITE))
+                titleTV?.setTextColor(color)
             }
 
             view.findViewById<LinearLayout>(R.id.nodeLL) ?. let { linearLayout ->

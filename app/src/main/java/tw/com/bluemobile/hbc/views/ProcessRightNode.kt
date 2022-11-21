@@ -23,6 +23,8 @@ class ProcessRightNode @JvmOverloads constructor(context: Context, attrs: Attrib
         set(value) {}
 
     init {
+        myInit(view)
+
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ProcessRightNode, 0, 0)
 
@@ -33,18 +35,15 @@ class ProcessRightNode @JvmOverloads constructor(context: Context, attrs: Attrib
                 container.layoutParams.width = ((screenWidth-n)/2).toInt()
             }
 
-            view.findViewById<TextView>(R.id.titleTV)?.let { textView ->
-                titleTV = textView
-                if (typedArray.hasValue(R.styleable.ProcessRightNode_ProcessRightNodeTitleTV)) {
-                    textView.text =
-                        typedArray.getString(R.styleable.ProcessRightNode_ProcessRightNodeTitleTV)
-                            ?: ""
-                }
+            if (typedArray.hasValue(R.styleable.ProcessRightNode_ProcessRightNodeTitleTV)) {
+                titleTV?.text =
+                    typedArray.getString(R.styleable.ProcessRightNode_ProcessRightNodeTitleTV)
+                        ?: ""
+            }
 
-                if (typedArray.hasValue(R.styleable.ProcessRightNode_ProcessRightNodeTextColor)) {
-                    val color: Int = typedArray.getColor(R.styleable.ProcessRightNode_ProcessRightNodeTextColor, getColor(context, R.color.MY_WHITE))
-                    textView.setTextColor(color)
-                }
+            if (typedArray.hasValue(R.styleable.ProcessRightNode_ProcessRightNodeTextColor)) {
+                val color: Int = typedArray.getColor(R.styleable.ProcessRightNode_ProcessRightNodeTextColor, getColor(context, R.color.MY_WHITE))
+                titleTV?.setTextColor(color)
             }
 
             view.findViewById<LinearLayout>(R.id.nodeLL) ?. let { linearLayout ->
