@@ -14,7 +14,7 @@ import tw.com.bluemobile.hbc.extensions.afterTextChanged
 import tw.com.bluemobile.hbc.extensions.toEditable
 import tw.com.bluemobile.hbc.utilities.getColor
 
-class CreditCardCvv @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
+class CreditCardCVV @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
 ):
     MyLayout(context, attrs, defStyleAttr) {
 
@@ -43,7 +43,7 @@ class CreditCardCvv @JvmOverloads constructor(context: Context, attrs: Attribute
             view.findViewById<ImageView>(R.id.starIV)?.let { it1 ->
                 starIV = it1
                 val b: Boolean =
-                    typedArray.getBoolean(R.styleable.CreditCardNO_creditCardNOStarIV, true)
+                    typedArray.getBoolean(R.styleable.CreditCardCvv_creditCardCvvStarIV, true)
                 if (!b) {
                     starIV!!.visibility = View.GONE
                 }
@@ -54,6 +54,10 @@ class CreditCardCvv @JvmOverloads constructor(context: Context, attrs: Attribute
                 it1.inputType = InputType.TYPE_CLASS_PHONE
             }
         }
+    }
+
+    fun initFocus() {
+        valueET?.requestFocus()
     }
 
     private fun setStyle(color: Int) {

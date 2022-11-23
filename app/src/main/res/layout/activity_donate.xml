@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height" />
 
-            <tw.com.bluemobile.hbc.views.CreditCardCvv
+            <tw.com.bluemobile.hbc.views.CreditCardCVV
                 android:id="@+id/credit_card_cvv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height" />

@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.models.DonateBloodModel
 import tw.com.bluemobile.hbc.models.DonateModel
 import tw.com.bluemobile.hbc.models.SuccessModel
-import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.DonateService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
@@ -21,7 +19,9 @@ class DonateActivity : EditActivity() {
     private var moreArea: SelectArea? = null
     var moreDialog: MoreDialog? = null
 
+    var creditCardNO: CreditCardNO? = null
     var creditCardMy: CreditCardMY? = null
+    var creditCardCVV: CreditCardCVV? = null
 
     private val initData: MutableMap<String, String> = mutableMapOf(
         DonateEnum.amount.englishName to "500",
@@ -65,9 +65,15 @@ class DonateActivity : EditActivity() {
                     if (initData.containsKey(key)) {
                         receptRadio.setCheck(enum.DBNameToRadioText(initData[key]!!))
                     }
+                } else if (enum == DonateEnum.credit_card_no) {
+                    creditCardNO = it as CreditCardNO
+                    creditCardNO?.myRequestFocus(MYFocus)
                 } else if (enum == DonateEnum.credit_card_my) {
                     creditCardMy = it as CreditCardMY
                     creditCardMy?.setOnChangeListener(showWarning)
+                    creditCardMy?.myRequestFocus(CVVFocus)
+                } else if (enum == DonateEnum.credit_card_cvv) {
+                    creditCardCVV = it as CreditCardCVV
                 } else if (enum == DonateEnum.city_id || enum == DonateEnum.area_id) {
                     if (enum == DonateEnum.city_id) {
                         moreCity = it as SelectCity
@@ -120,6 +126,14 @@ class DonateActivity : EditActivity() {
                 submit()
             }
         }
+    }
+
+    val CVVFocus: ()->Unit = {
+        creditCardCVV?.initFocus()
+    }
+
+    val MYFocus: ()->Unit = {
+        creditCardMy?.initFocus()
     }
 
     // set setting after city and area click.

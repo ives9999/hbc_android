@@ -63,40 +63,48 @@ class CreditCardNO @JvmOverloads constructor(context: Context, attrs: AttributeS
                 val color: Int = typedArray.getColor(R.styleable.CreditCardNO_creditCardNOTextColor, getColor(context, R.color.MY_BLACK))
                 setStyle(color)
             }
+        }
+    }
 
-            view.findViewById<EditText>(R.id.part1ET) ?. let { it1 ->
-                part1ET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
-                it1.afterTextChanged { it2 ->
-                    if (it2.length == 4) {
-                        part2ET?.requestFocus()
-                    }
+    fun myRequestFocus(nextFocus: ()->Unit) {
+        view.findViewById<EditText>(R.id.part1ET) ?. let { it1 ->
+            part1ET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 4) {
+                    part2ET?.requestFocus()
                 }
             }
+        }
 
-            view.findViewById<EditText>(R.id.part2ET) ?. let { it1 ->
-                part2ET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
-                it1.afterTextChanged { it2 ->
-                    if (it2.length == 4) {
-                        part3ET?.requestFocus()
-                    }
+        view.findViewById<EditText>(R.id.part2ET) ?. let { it1 ->
+            part2ET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 4) {
+                    part3ET?.requestFocus()
                 }
             }
+        }
 
-            view.findViewById<EditText>(R.id.part3ET) ?. let { it1 ->
-                part3ET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
-                it1.afterTextChanged { it2 ->
-                    if (it2.length == 4) {
-                        part4ET?.requestFocus()
-                    }
+        view.findViewById<EditText>(R.id.part3ET) ?. let { it1 ->
+            part3ET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 4) {
+                    part4ET?.requestFocus()
                 }
             }
+        }
 
-            view.findViewById<EditText>(R.id.part4ET) ?. let { it1 ->
-                part4ET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
+        view.findViewById<EditText>(R.id.part4ET) ?. let { it1 ->
+            part4ET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 4) {
+                    part4ET?.clearFocus()
+                    nextFocus.invoke()
+                }
             }
         }
     }
