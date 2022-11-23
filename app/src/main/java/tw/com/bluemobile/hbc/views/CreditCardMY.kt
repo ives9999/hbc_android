@@ -57,20 +57,35 @@ class CreditCardMY @JvmOverloads constructor(context: Context, attrs: AttributeS
                 }
             }
 
-            view.findViewById<EditText>(R.id.monthET) ?. let { it1 ->
-                monthET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
-                it1.afterTextChanged { it2 ->
-                    if (it2.length == 2) {
-                        yearET?.requestFocus()
-                    }
+
+        }
+    }
+
+    fun myRequestFocus(nextFocus: ()->Unit) {
+        view.findViewById<EditText>(R.id.monthET) ?. let { it1 ->
+            monthET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 2) {
+                    yearET?.requestFocus()
                 }
             }
-            view.findViewById<EditText>(R.id.yearET) ?. let { it1 ->
-                yearET = it1
-                it1.inputType = InputType.TYPE_CLASS_PHONE
+        }
+        view.findViewById<EditText>(R.id.yearET) ?. let { it1 ->
+            yearET = it1
+            it1.inputType = InputType.TYPE_CLASS_PHONE
+
+            it1.afterTextChanged { it2 ->
+                if (it2.length == 2) {
+                    nextFocus.invoke()
+                }
             }
         }
+    }
+
+    fun initFocus() {
+        monthET?.requestFocus()
     }
 
     fun setOnChangeListener(warning: (String)->Unit) {

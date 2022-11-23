@@ -30,6 +30,9 @@ class BloodProcessActivity : ShowActivity() {
 
     var orderModel: OrderModel? = null
 
+    var creditCardMy: CreditCardMY? = null
+    var creditCardCVV: CreditCardCVV? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blood_process)
@@ -138,6 +141,12 @@ class BloodProcessActivity : ShowActivity() {
         return false
     }
 
+    //按下每一個步驟時，需有以下判斷
+    //1.在步驟執行中只有需血方與捐血方可以進入此頁面，此資格判斷在進入時就必須判斷
+    //2.已執行過的步驟不能再執行
+    //3.步驟需一步一步執行，不能跳躍，但雙方抵達醫院的步驟可以
+    //4.需血方與捐血方，只能按下自己邊的步驟
+    //5.在需血方付款時，需跳出信用卡輸入對話盒
     private val changeProcess: (BloodProcessEnum) -> Unit = { enum ->
         //println(it)
 
@@ -147,25 +156,7 @@ class BloodProcessActivity : ShowActivity() {
         } else {
             if (isNextCanOnNode(enum)) {
                 if (enum == BloodProcessEnum.traffic_feeA || enum == BloodProcessEnum.traffic_feeB) {
-                    val view = window.decorView.rootView as ViewGroup
-                    val maskView: LinearLayout = view.mask(this)
-
-                    val blackViewHeight: Int = 1500
-                    val blackViewPaddingLeft: Int = 20
-                    val blackView: RelativeLayout = maskView.blackView(this, blackViewPaddingLeft, blackViewHeight)
-
-                    val creditCardView = View.inflate(this, R.layout.credit_card, null)
-                    blackView.addView(creditCardView)
-                    val params = creditCardView.layoutParams as ViewGroup.MarginLayoutParams
-                    params.topMargin = 100
-                    creditCardView.layoutParams = params
-
-                    creditCardView.findViewById<CreditCardMY>(R.id.credit_card_my) ?. let {
-                        it.setOnChangeListener(showWarning)
-                    }
-
-                    val bottomView: LinearLayout = blackView.bottom2ButtonView(this, creditCardSubmit, creditCardCancel)
-
+                    showCreditCardLayer()
                 } else {
                     updateProcess(enum)
                 }
@@ -173,6 +164,14 @@ class BloodProcessActivity : ShowActivity() {
                 warning("無法跳過步驟執行!!")
             }
         }
+    }
+
+    val CVVFocus: ()->Unit = {
+        creditCardCVV?.initFocus()
+    }
+
+    val MYFocus: ()->Unit = {
+        creditCardMy?.initFocus()
     }
 
     val showWarning: (String)-> Unit = {
@@ -209,6 +208,36 @@ class BloodProcessActivity : ShowActivity() {
                 nodesOnOff.add(h1)
             }
         }
+    }
+
+    private fun showCreditCardLayer() {
+        val view = window.decorView.rootView as ViewGroup
+        val maskView: LinearLayout = view.mask(this)
+
+        val blackViewHeight: Int = 1500
+        val blackViewPaddingLeft: Int = 20
+        val blackView: RelativeLayout = maskView.blackView(this, blackViewPaddingLeft, blackViewHeight)
+
+        val creditCardView = View.inflate(this, R.layout.credit_card, null)
+        blackView.addView(creditCardView)
+        val params = creditCardView.layoutParams as ViewGroup.MarginLayoutParams
+        params.topMargin = 100
+        creditCardView.layoutParams = params
+
+        //設定輸完4位數後，往下一個輸入框
+        creditCardView.findViewById<CreditCardNO>(R.id.credit_card_no) ?. let {
+            it.myRequestFocus(MYFocus)
+        }
+        creditCardView.findViewById<CreditCardMY>(R.id.credit_card_my) ?. let {
+            creditCardMy = it
+            it.setOnChangeListener(showWarning)
+            it.myRequestFocus(CVVFocus)
+        }
+        creditCardView.findViewById<CreditCardCVV>(R.id.credit_card_cvv) ?. let {
+            creditCardCVV = it
+        }
+
+        val bottomView: LinearLayout = blackView.bottom2ButtonView(this, creditCardSubmit, creditCardCancel)
     }
 
     private fun updateProcess(process: BloodProcessEnum) {
