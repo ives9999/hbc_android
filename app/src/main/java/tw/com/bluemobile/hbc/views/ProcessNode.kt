@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.utilities.BloodProcessEnum
 import tw.com.bluemobile.hbc.utilities.getColor
@@ -16,11 +17,14 @@ open class ProcessNode @JvmOverloads constructor(context: Context, attrs: Attrib
     MyLayout(context, attrs, defStyleAttr) {
 
     protected var nodeLL: LinearLayout? = null
-    protected var dateTV: TextView? = null
+    private var dateTV: TextView? = null
     open var process: BloodProcessEnum? = null
     open var background: Int = R.color.PROCESS_BK_YELLOW
     open var textColor: Int = R.color.MY_BLACK
     open var dateTextColor: Int = R.color.MY_WHITE
+
+    var isOn: Boolean = false
+    private var nextEnum: BloodProcessEnum = BloodProcessEnum.send_information
 
     open fun myInit(view: View) {
         view.findViewById<TextView>(R.id.titleTV)?.let { textView ->
@@ -49,6 +53,8 @@ open class ProcessNode @JvmOverloads constructor(context: Context, attrs: Attrib
         dateTV?.setTextColor(getColor(context, dateTextColor))
         dateTV?.text = at
         setTitleBottomMargin(4)
+
+        this.isOn = true
     }
 
     private fun setTitleBottomMargin(value: Int) {

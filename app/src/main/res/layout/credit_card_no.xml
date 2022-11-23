@@ -15,6 +15,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/colonTV"
             style="@style/edit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/part1LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
@@ -55,16 +57,19 @@
             android:textColor="@color/MY_BLACK" />
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/dash1TV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="–"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
+        android:text="–"
         android:textColor="@color/MY_BLACK" />
 
     <LinearLayout
+        android:id="@+id/part2LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_border"
@@ -80,16 +85,19 @@
             android:textColor="@color/MY_BLACK" />
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/dash2TV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="–"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
+        android:text="–"
         android:textColor="@color/MY_BLACK" />
 
     <LinearLayout
+        android:id="@+id/part3LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_border"
@@ -105,16 +113,19 @@
             android:textColor="@color/MY_BLACK" />
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/dash3TV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="–"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
+        android:text="–"
         android:textColor="@color/MY_BLACK" />
 
     <LinearLayout
+        android:id="@+id/part4LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_border"

@@ -14,6 +14,10 @@ class NeedBloodModel: BaseModel() {
     var member_token: String = ""
     var member_nickname: String = ""
 
+    var order_token: String = ""
+    var memberA_token: String = ""
+    var memberB_token: String = ""
+
     override fun filterRow() {
         super.filterRow()
     }

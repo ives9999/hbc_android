@@ -6,6 +6,7 @@
         <attr name="keyboard" format="string" />
         <attr name="starIV" format="boolean" />
         <attr name="key" format="string" />
+        <attr name="myTheme" format="string" />
     </declare-styleable>
 
     <declare-styleable name="EditTextUnit">
@@ -74,14 +75,17 @@
 
     <declare-styleable name="CreditCardNO">
         <attr name="creditCardNOStarIV" format="boolean" />
+        <attr name="creditCardNOTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CreditCardMY">
         <attr name="creditCardMYStarIV" format="boolean" />
+        <attr name="creditCardMYTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CreditCardCvv">
         <attr name="creditCardCvvStarIV" format="boolean" />
+        <attr name="creditCardCvvTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ArrowDown">

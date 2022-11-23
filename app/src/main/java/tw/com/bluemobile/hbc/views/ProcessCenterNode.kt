@@ -43,9 +43,4 @@ class ProcessCenterNode @JvmOverloads constructor(context: Context, attrs: Attri
             }
         }
     }
-
-//    override fun setOpen() {
-//        super.setOpen()
-//        dateTV
-//    }
 }

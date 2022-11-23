@@ -56,4 +56,12 @@ class ProcessLeftNode @JvmOverloads constructor(context: Context, attrs: Attribu
             }
         }
     }
+
+    override fun setOpen(at: String) {
+        val strs = at.split(" ").toTypedArray()
+        if (strs.count() > 1) {
+            val _at: String = strs[1] + " " + strs[0]
+            super.setOpen(_at)
+        }
+    }
 }

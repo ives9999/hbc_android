@@ -6,9 +6,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.extensions.toEditable
+import tw.com.bluemobile.hbc.utilities.getColor
 
 class EditTextNormal @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
 ):
@@ -16,6 +20,7 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private val view: View = View.inflate(context, R.layout.edit_text_normal, this)
     private var editET: EditText? = null
+    private var theme: String = "light"
 
     override var value: String = ""
         get() {
@@ -31,13 +36,21 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.EditTextNormal, 0, 0)
 
-            view.findViewById<TextView>(R.id.titleTV) ?. let {
-                titleTV = it
-                it.text = typedArray.getString(R.styleable.EditTextNormal_titleTV) ?: ""
+            if (typedArray.hasValue(R.styleable.EditTextNormal_myTheme)) {
+                theme = typedArray.getString(R.styleable.EditTextNormal_myTheme) ?: "light"
             }
 
-            view.findViewById<EditText>(R.id.valueET) ?. let {
-                editET = it
+            view.findViewById<TextView>(R.id.titleTV) ?. let { iit ->
+                titleTV = iit
+                iit.text = typedArray.getString(R.styleable.EditTextNormal_titleTV) ?: ""
+
+                if (theme == "dark") {
+                    iit.setTextColor(getColor(context, R.color.MY_WHITE))
+                }
+            }
+
+            view.findViewById<EditText>(R.id.valueET) ?. let { iit ->
+                editET = iit
 
                 val keyboard: String = typedArray.getString(R.styleable.EditTextNormal_keyboard) ?: ""
                 if (keyboard == "password") {
@@ -51,6 +64,10 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
                 }
 
                 editET!!.text = (typedArray.getString(R.styleable.EditTextNormal_valueET) ?: "").toEditable()
+
+                if (theme == "dark") {
+                    iit.setTextColor(getColor(context, R.color.MY_WHITE))
+                }
             }
 
             view.findViewById<ImageView>(R.id.starIV) ?. let {
@@ -62,6 +79,18 @@ class EditTextNormal @JvmOverloads constructor(context: Context, attrs: Attribut
             }
 
             key = typedArray.getString(R.styleable.EditTextNormal_key) ?: ""
+
+            if (theme == "dark") {
+                view.findViewById<TextView>(R.id.colonTV) ?. let { iit ->
+                    iit.setTextColor(getColor(context, R.color.MY_WHITE))
+                }
+                view.findViewById<LinearLayout>(R.id.part1LL) ?. let { linearLayout ->
+                    linearLayout.background = ContextCompat.getDrawable(context, R.drawable.edit_text_border_white)
+                }
+                view.findViewById<ImageView>(R.id.clear) ?. let { iit ->
+                    iit.setImage("ic_clear_white")
+                }
+            }
         }
 
         view.findViewById<ImageView>(R.id.clear) ?. let {

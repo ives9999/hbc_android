@@ -8,8 +8,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.*
+import tw.com.bluemobile.hbc.utilities.getColor
 import java.util.*
 
 class CreditCardMY @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
@@ -39,6 +43,11 @@ class CreditCardMY @JvmOverloads constructor(context: Context, attrs: AttributeS
     init {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.CreditCardMY, 0, 0)
+
+            if (typedArray.hasValue(R.styleable.CreditCardMY_creditCardMYTextColor)) {
+                val color: Int = typedArray.getColor(R.styleable.CreditCardMY_creditCardMYTextColor, getColor(context, R.color.MY_BLACK))
+                setStyle(color)
+            }
 
             view.findViewById<ImageView>(R.id.starIV) ?. let { it1 ->
                 starIV = it1
@@ -134,6 +143,35 @@ class CreditCardMY @JvmOverloads constructor(context: Context, attrs: AttributeS
                     }
                 }
             }
+        }
+    }
+
+    private fun setStyle(color: Int) {
+        val idsTV: ArrayList<Int> = arrayListOf(
+            R.id.titleTV,
+            R.id.colonTV,
+            R.id.monthTV,
+            R.id.slashTV,
+            R.id.yearTV
+        )
+        for (idTV in idsTV) {
+            view.findViewById<TextView>(idTV)?.setTextColor(color)
+        }
+
+        val partsLL: ArrayList<Int> = arrayListOf(
+            R.id.part1LL, R.id.part2LL
+        )
+        for (partLL in partsLL) {
+            view.findViewById<LinearLayout>(partLL) ?. let { linearLayout ->
+                linearLayout.background = ContextCompat.getDrawable(context, R.drawable.edit_text_border_white)
+            }
+        }
+
+        val partsET: ArrayList<Int> = arrayListOf(
+            R.id.monthET, R.id.yearET
+        )
+        for (partET in partsET) {
+            view.findViewById<EditText>(partET)?.setTextColor(color)
         }
     }
 }

@@ -6,11 +6,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.afterTextChanged
 import tw.com.bluemobile.hbc.extensions.toEditable
+import tw.com.bluemobile.hbc.utilities.getColor
 
 class CreditCardNO @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
 ):
@@ -56,6 +59,11 @@ class CreditCardNO @JvmOverloads constructor(context: Context, attrs: AttributeS
                 }
             }
 
+            if (typedArray.hasValue(R.styleable.CreditCardNO_creditCardNOTextColor)) {
+                val color: Int = typedArray.getColor(R.styleable.CreditCardNO_creditCardNOTextColor, getColor(context, R.color.MY_BLACK))
+                setStyle(color)
+            }
+
             view.findViewById<EditText>(R.id.part1ET) ?. let { it1 ->
                 part1ET = it1
                 it1.inputType = InputType.TYPE_CLASS_PHONE
@@ -89,6 +97,39 @@ class CreditCardNO @JvmOverloads constructor(context: Context, attrs: AttributeS
             view.findViewById<EditText>(R.id.part4ET) ?. let { it1 ->
                 part4ET = it1
                 it1.inputType = InputType.TYPE_CLASS_PHONE
+            }
+        }
+    }
+
+    private fun setStyle(color: Int) {
+        val idsTV: ArrayList<Int> = arrayListOf(
+            R.id.titleTV,
+            R.id.colonTV,
+            R.id.dash1TV,
+            R.id.dash2TV,
+            R.id.dash3TV
+        )
+        for (idTV in idsTV) {
+            view.findViewById<TextView>(idTV) ?. let { textView ->
+                textView.setTextColor(color)
+            }
+        }
+
+        val partsLL: ArrayList<Int> = arrayListOf(
+            R.id.part1LL, R.id.part2LL, R.id.part3LL, R.id.part4LL
+        )
+        for (partLL in partsLL) {
+            view.findViewById<LinearLayout>(partLL) ?. let { linearLayout ->
+                linearLayout.background = ContextCompat.getDrawable(context, R.drawable.edit_text_border_white)
+            }
+        }
+
+        val partsET: ArrayList<Int> = arrayListOf(
+            R.id.part1ET, R.id.part2ET, R.id.part3ET, R.id.part4ET
+        )
+        for (partET in partsET) {
+            view.findViewById<EditText>(partET) ?. let { editText ->
+                editText.setTextColor(color)
             }
         }
     }

@@ -163,7 +163,7 @@ class DonateActivity : EditActivity() {
             return
         }
 
-        println(params)
+        //println(params)
         val n = 6
 
         loading.show()

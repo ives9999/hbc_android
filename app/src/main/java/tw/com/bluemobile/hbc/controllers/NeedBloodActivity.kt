@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
+import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.*
@@ -149,21 +152,27 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     private val onAcceptClick: ((Int) -> Unit) = { idx ->
-
-        toBloodProcess(this, "Ic5B5YP38USD31ikoQFcKZlRHMu4TvE")
-
-//        if (!member.isLoggedIn) {
-//            warning("請先登入！！", "登入") {
-//                toLogin(this)
-//            }
-//        } else {
-//            warning("是否確定要做捐血", "確定捐血") {
-//                updateProcess(idx)
-//            }
-//        }
+        if (!member.isLoggedIn) {
+            warning("請先登入！！", "登入") {
+                toLogin(this)
+            }
+        } else {
+            val row: NeedBloodModel = rows[idx]
+            if (row.status == "online") {
+                info("是否確定寵物要做捐血", "確定捐血") {
+                    insertBloodProcess(idx)
+                }
+            } else if (row.status == "process") {
+                if (member.token != row.memberA_token && member.token != row.memberB_token) {
+                    warning("您不是該捐需血的主人，無法檢視進行中的流程!!")
+                } else {
+                    toBloodProcess(this, row.order_token)
+                }
+            }
+        }
     }
 
-    private fun updateProcess(idx: Int) {
+    private fun insertBloodProcess(idx: Int) {
         val row: NeedBloodModel = rows[idx]
         val params: HashMap<String, String> = hashMapOf(
             "need_blood_token" to row.token,
@@ -264,6 +273,19 @@ class NeedBloodListViewHolder(
         setTV(R.id.created_at, row.created_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
+
+        if (row.status == "process") {
+            view.findViewById<LinearLayout>(R.id.acceptLL) ?. let {
+                it.background = ContextCompat.getDrawable(context, R.drawable.circle_blue)
+            }
+
+            view.findViewById<TextView>(R.id.acceptTV)?.let {
+                it.text = "進行中..."
+                val size: Int = 12
+                it.textSize = size.toFloat()
+                it.setTextColor(getColor(context, R.color.MY_WHITE))
+            }
+        }
     }
 
     fun setOnAcceptClickListener(idx: Int, onAcceptClick: ((Int) -> Unit)?) {

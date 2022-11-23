@@ -15,6 +15,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/colonTV"
             style="@style/edit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             android:textColor="@color/MY_BLACK" />
 
         <TextView
-            android:id="@+id/myTV"
+            android:id="@+id/titleTV"
             style="@style/edit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/part1LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
@@ -52,29 +54,34 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:hint="05"
             android:background="@android:color/transparent"
+            android:hint="05"
             android:textColor="@color/MY_BLACK" />
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/monthTV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="月"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        android:text="月"
         android:textColor="@color/MY_BLACK" />
 
     <TextView
+        android:id="@+id/slashTV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="/"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        android:text="/"
         android:textColor="@color/MY_BLACK" />
+
     <LinearLayout
+        android:id="@+id/part2LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
@@ -91,13 +98,15 @@
             android:hint="27"
             android:textColor="@color/MY_BLACK" />
     </LinearLayout>
+
     <TextView
+        android:id="@+id/yearTV"
         style="@style/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="年"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        android:text="年"
         android:textColor="@color/MY_BLACK" />
 
 </LinearLayout>

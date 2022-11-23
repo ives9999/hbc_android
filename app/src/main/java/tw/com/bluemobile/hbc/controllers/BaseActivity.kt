@@ -53,6 +53,29 @@ open class BaseActivity : AppCompatActivity(), ToMember, ToNeedBlood, To, ToDona
             .onPositive("關閉")
     }
 
+    fun info(msg: String, buttonAction: () -> Unit) {
+        AwesomeDialog.build(this)
+            .title("訊息", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.MY_BLACK)
+            .icon(R.drawable.ic_info)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive("關閉") {
+                buttonAction()
+            }
+    }
+
+    fun info(msg: String, actionButtonTitle: String, buttonAction: () -> Unit) {
+        AwesomeDialog.build(this)
+            .title("訊息", null, R.color.MY_BLACK)
+            .body(msg, null, R.color.amber_900)
+            .icon(R.drawable.ic_info)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive(actionButtonTitle) {
+                buttonAction()
+            }
+            .onNegative("關閉")
+    }
+
     open fun init() {
     }
 
