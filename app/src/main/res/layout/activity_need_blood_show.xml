@@ -39,9 +39,9 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:IconTextValueTV="ABC"
-                    app:IconTextIconIV="@drawable/ic_blood_type"
-                    app:IconTextTitleTV="血型：" />
+                    app:IconTextIconIV="ic_name"
+                    app:IconTextTitleTV="名稱："
+                    app:IconTextValueTV="來福" />
 
                 <ImageView
                     android:id="@+id/type"
@@ -56,49 +56,62 @@
                 android:id="@+id/blood_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="ABC"
-                app:IconTextIconIV="@drawable/ic_blood_type"
-                app:IconTextTitleTV="血型：" />
+                app:IconTextIconIV="ic_blood_type"
+                app:IconTextTitleTV="血型："
+                app:IconTextUnitTV="型"
+                app:IconTextValueTV="AB" />
 
             <tw.com.bluemobile.hbc.views.IconText
                 android:id="@+id/hospital_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="5歲"
-                app:IconTextIconIV="@drawable/ic_age"
+                app:IconTextValueTV="貓侍忍者"
+                app:IconTextIconIV="ic_hospital"
                 app:IconTextTitleTV="醫院名稱：" />
 
             <tw.com.bluemobile.hbc.views.IconText
                 android:id="@+id/hospital_city_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="5歲"
-                app:IconTextIconIV="@drawable/ic_age"
+                app:IconTextValueTV="台北市"
+                app:IconTextIconIV="ic_hospital"
+                app:IconTextUnitTV=""
                 app:IconTextTitleTV="醫院縣市：" />
 
             <tw.com.bluemobile.hbc.views.IconText
                 android:id="@+id/hospital_area_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="5歲"
-                app:IconTextIconIV="@drawable/ic_age"
+                app:IconTextValueTV="中正區"
+                app:IconTextIconIV="ic_hospital"
+                app:IconTextUnitTV=""
                 app:IconTextTitleTV="醫院區域：" />
+
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/hospital_road"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconTextValueTV="中正路61號"
+                app:IconTextIconIV="ic_hospital"
+                app:IconTextTitleTV="醫院住址：" />
 
             <tw.com.bluemobile.hbc.views.IconText
                 android:id="@+id/traffic_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="5歲"
-                app:IconTextIconIV="@drawable/ic_fee"
-                app:IconTextTitleTV="交通費：" />
+                app:IconTextIconIV="ic_age"
+                app:IconTextTitleTV="交通費："
+                app:IconTextUnitTV="元"
+                app:IconTextValueTV="500" />
 
             <tw.com.bluemobile.hbc.views.IconText
                 android:id="@+id/nutrient_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="5歲"
-                app:IconTextIconIV="@drawable/ic_fee"
-                app:IconTextTitleTV="營養金：" />
+                app:IconTextIconIV="ic_age"
+                app:IconTextTitleTV="營養金："
+                app:IconTextUnitTV="元"
+                app:IconTextValueTV="1000" />
 
 
 

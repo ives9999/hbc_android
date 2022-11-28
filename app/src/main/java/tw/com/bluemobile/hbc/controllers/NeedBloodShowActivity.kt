@@ -49,6 +49,14 @@ class NeedBloodShowActivity : ShowActivity() {
                 findViewById<ImageView>(R.id.type)?.let {
                     it.setImage("ic_${value}")
                 }
+            } else if (enum == NeedBloodEnum.hospital_city_id) {
+                findViewById<IconText>(R.id.hospital_city_id)?.let {
+                    it.setValueTV(needBloodModel!!.hospital_city_show)
+                }
+            } else if (enum == NeedBloodEnum.hospital_area_id) {
+                findViewById<IconText>(R.id.hospital_area_id) ?. let {
+                    it.setValueTV(needBloodModel!!.hospital_area_show)
+                }
             } else {
                 val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
                 findViewById<IconText>(r) ?. let {

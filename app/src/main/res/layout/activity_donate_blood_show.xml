@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height"
         android:layout_alignParentTop="true" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -21,148 +22,153 @@
         android:layout_below="@id/top"
         android:background="@android:color/transparent">
 
-    <LinearLayout
-        android:id="@+id/dataContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/top"
-        android:paddingTop="16dp"
-        android:orientation="vertical"
-        >
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/dataContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_below="@id/top"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <tw.com.bluemobile.hbc.views.IconText
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:IconTextIconIV="ic_name"
+                    app:IconTextTitleTV="名稱："
+                    app:IconTextValueTV="來福" />
+
+                <ImageView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_dog" />
+            </LinearLayout>
 
             <tw.com.bluemobile.hbc.views.IconText
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:id="@+id/blood_type"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconTextValueTV="ABC"
-                app:IconTextIconIV="@drawable/ic_blood_type"
-                app:IconTextTitleTV="血型：" />
+                app:IconTextIconIV="ic_blood_type"
+                app:IconTextTitleTV="血型："
+                app:IconTextUnitTV="型"
+                app:IconTextValueTV="AB" />
 
-            <ImageView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/age"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:src="@drawable/ic_dog" />
-        </LinearLayout>
+                app:IconTextIconIV="ic_age"
+                app:IconTextTitleTV="年齡："
+                app:IconTextUnitTV="歲"
+                app:IconTextValueTV="5" />
 
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/blood_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="ABC"
-            app:IconTextIconIV="@drawable/ic_blood_type"
-            app:IconTextTitleTV="血型：" />
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconTextIconIV="ic_weight"
+                app:IconTextTitleTV="體重："
+                app:IconTextUnitTV="公斤"
+                app:IconTextValueTV="10" />
 
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="5歲"
-            app:IconTextIconIV="@drawable/ic_age"
-            app:IconTextTitleTV="年齡：" />
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/IDo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconTextIconIV="ic_blood_type"
+                app:IconTextTitleTV="是否願意捐血："
+                app:IconTextUnitTV=""
+                app:IconTextValueTV="否" />
 
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="5歲"
-            app:IconTextIconIV="@drawable/ic_age"
-            app:IconTextTitleTV="年齡：" />
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/traffic_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconTextIconIV="ic_age"
+                app:IconTextTitleTV="交通費："
+                app:IconTextUnitTV="元"
+                app:IconTextValueTV="500" />
 
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/IDo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="5歲"
-            app:IconTextIconIV="@drawable/ic_age"
-            app:IconTextTitleTV="年齡：" />
-
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/traffic_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="5歲"
-            app:IconTextIconIV="@drawable/ic_age"
-            app:IconTextTitleTV="年齡：" />
-
-        <tw.com.bluemobile.hbc.views.IconText
-            android:id="@+id/nutrient_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:IconTextValueTV="5歲"
-            app:IconTextIconIV="@drawable/ic_age"
-            app:IconTextTitleTV="年齡：" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dataContainer"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="12dp">
+            <tw.com.bluemobile.hbc.views.IconText
+                android:id="@+id/nutrient_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconTextIconIV="ic_age"
+                app:IconTextTitleTV="營養金："
+                app:IconTextUnitTV="元"
+                app:IconTextValueTV="1000" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_below="@id/dataContainer"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="12dp">
 
-                <TextView
-                    style="@style/edit_title"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="血檢資料："
-                    android:textColor="@color/MY_BLACK" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/edit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="血檢資料："
+                        android:textColor="@color/MY_BLACK" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/blood_imageIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:scaleType="centerInside"
+                    tools:srcCompat="@drawable/ic_upload_image" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/blood_imageIV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:scaleType="centerInside"
-                tools:srcCompat="@drawable/ic_upload_image" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dataContainer"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_below="@id/dataContainer"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="12dp">
 
-                <TextView
-                    style="@style/edit_title"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="體檢資料："
-                    android:textColor="@color/MY_BLACK" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/edit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="體檢資料："
+                        android:textColor="@color/MY_BLACK" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/body_imageIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:scaleType="centerInside"
+                    tools:srcCompat="@drawable/ic_upload_image" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/body_imageIV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:scaleType="centerInside"
-                tools:srcCompat="@drawable/ic_upload_image" />
         </LinearLayout>
-
-    </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>

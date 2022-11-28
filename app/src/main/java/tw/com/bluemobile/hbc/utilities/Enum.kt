@@ -133,10 +133,11 @@ enum class DonateEnum(val englishName: String, val chineseName: String) {
 
 enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
 
-    petName("name", "名稱"),
-    type("type", "品種"),
-    blood_type_cat("blood_type_cat", "血液血型"),
-    blood_type_dog("blood_type_dog", "血液類型"),
+    petName("name", "寶貝名稱"),
+    type("type", "寶貝品種"),
+    blood_type("blood_type", "寶貝血型"),
+    blood_type_cat("blood_type_cat", "貓血型"),
+    blood_type_dog("blood_type_dog", "狗血型"),
     age("age", "年齡"),
     weight("weight", "體重"),
     IDo("IDo", "是否願意捐血"),
@@ -150,6 +151,7 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             return when (value) {
                 "name" -> petName
                 "type" -> type
+                "blood_type" -> blood_type
                 "blood_type_cat" -> blood_type_cat
                 "blood_type_dog" -> blood_type_dog
                 "age" -> age
@@ -172,7 +174,7 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): ArrayList<DonateBloodEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type_cat, blood_type_dog, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
+            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
         }
     }
 
@@ -226,6 +228,7 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
             petName -> ""
             age -> "歲"
             weight -> "公斤"
+            blood_type -> "型"
             blood_type_cat -> "貓血型\n"
             blood_type_dog -> "狗血型\n"
             traffic_fee -> "元"
@@ -261,6 +264,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
     //credit_card("credit_card", "信用卡資料"),
     validate_email("validate_email", "信箱認證"),
     validate_mobile("validate_mobile", "手機認證"),
+    delete("delete", "刪除會員"),
     refresh("refresh", "重新整理");
 
     companion object {
@@ -275,6 +279,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
                 //"credit_card" -> return credit_card
                 "validate_email" -> return validate_email
                 "validate_mobile" -> return validate_mobile
+                "delete" -> return delete
                 "refresh" -> return  refresh
             }
             return account
@@ -291,13 +296,14 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
                 //5 -> return credit_card
                 6 -> return validate_email
                 7 -> return validate_mobile
-                8 -> return  refresh
+                8 -> return delete
+                9 -> return  refresh
             }
             return account
         }
 
         fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, refresh)
+            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
         }
     }
 
@@ -312,10 +318,11 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
     hospital_city_id("hospital_city_id", "醫院縣市"),
     hospital_area_id("hospital_area_id", "醫院區域"),
     hospital_road("hospital_road", "醫院住址"),
-    petName("name", "名稱"),
-    type("type", "動物類型"),
-    blood_type_cat("blood_type_cat", "血液血型"),
-    blood_type_dog("blood_type_dog", "血液類型"),
+    petName("name", "寶貝名稱"),
+    type("type", "寶貝類型"),
+    blood_type("blood_type", "寶貝血型"),
+    blood_type_cat("blood_type_cat", "寶貝貓血型"),
+    blood_type_dog("blood_type_dog", "寶貝狗血型"),
     traffic_fee("traffic_fee", "車馬費"),
     nutrient_fee("nutrient_fee", "營養費");
 
@@ -328,6 +335,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 "hospital_road" -> hospital_road
                 "name" -> petName
                 "type" -> type
+                "blood_type" -> blood_type
                 "blood_type_cat" -> blood_type_cat
                 "blood_type_dog" -> blood_type_dog
                 "traffic_fee" -> traffic_fee
@@ -344,8 +352,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 hospital_road,
                 petName,
                 type,
-                blood_type_cat,
-                blood_type_dog,
+                blood_type,
                 traffic_fee,
                 nutrient_fee
             )
@@ -378,6 +385,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
             hospital_road -> "請填寫路名等\n"
             petName -> "請選擇寶貝名稱\n"
             type -> "請選擇品種\n"
+            blood_type -> "請選擇血型\n"
             blood_type_cat -> "請選擇血型\n"
             blood_type_dog -> "請選擇血型\n"
             traffic_fee -> "請填寫車馬費\n"
@@ -389,9 +397,11 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
 
     fun getIcon(): String {
         return when (this) {
-            blood_type_cat -> "ic_blood_type"
+            blood_type -> "ic_blood_type"
             traffic_fee -> "ic_fee"
             nutrient_fee -> "ic_fee"
+            hospital_name -> "ic_hospital"
+            hospital_road -> "ic_hospital"
             else -> "ic_${this.englishName}"
         }
     }
@@ -399,6 +409,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
     fun getUnit(): String {
         return when (this) {
             petName -> ""
+            blood_type -> "血型\n"
             blood_type_cat -> "貓血型\n"
             blood_type_dog -> "狗血型\n"
             else -> ""

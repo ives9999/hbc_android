@@ -34,17 +34,23 @@ class IconText @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {
                 titleTV = it
-                it.text = typedArray.getString(R.styleable.IconText_IconTextTitleTV)
+                if (typedArray.hasValue(R.styleable.IconText_IconTextTitleTV)) {
+                    it.text = typedArray.getString(R.styleable.IconText_IconTextTitleTV)
+                }
             }
 
             view.findViewById<TextView>(R.id.valueTV) ?. let {
                 valueTV = it
-                it.text = typedArray.getString(R.styleable.IconText_IconTextValueTV)
+                if (typedArray.hasValue(R.styleable.IconText_IconTextValueTV)) {
+                    it.text = typedArray.getString(R.styleable.IconText_IconTextValueTV)
+                }
             }
 
             view.findViewById<TextView>(R.id.unitTV) ?. let {
                 unitTV = it
-                it.text = typedArray.getString(R.styleable.IconText_IconTextUnitTV)
+                if (typedArray.hasValue(R.styleable.IconText_IconTextUnitTV)) {
+                    it.text = typedArray.getString(R.styleable.IconText_IconTextUnitTV)
+                }
             }
         }
     }

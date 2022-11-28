@@ -54,6 +54,14 @@ class MemberActivity : BaseActivity() {
             //it.setOnImagePickListener(pickProfileImage, pickCameraImage)
         }
 
+        findViewById<TextView>(R.id.nicknameTV) ?. let {
+            it.text = member.nickname
+        }
+
+        findViewById<TextView>(R.id.vesionTV) ?. let {
+            it.text = version(this)
+        }
+
         val validateEmail: Boolean = member.checkEMailValidate()
         val validateMobile: Boolean = member.checkMobileValidate()
 

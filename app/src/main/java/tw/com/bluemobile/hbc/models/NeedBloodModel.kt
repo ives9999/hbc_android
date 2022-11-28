@@ -1,5 +1,7 @@
 package tw.com.bluemobile.hbc.models
 
+import tw.com.bluemobile.hbc.utilities.Zones
+
 class NeedBloodModel: BaseModel() {
 
     var hospital_name: String = ""
@@ -18,7 +20,18 @@ class NeedBloodModel: BaseModel() {
     var memberA_token: String = ""
     var memberB_token: String = ""
 
+    var hospital_city_show: String = ""
+    var hospital_area_show: String = ""
+
     override fun filterRow() {
         super.filterRow()
+
+        if (hospital_city_id != null && hospital_city_id > 0) {
+            hospital_city_show = Zones.zoneIDToName(hospital_city_id)
+        }
+
+        if (hospital_area_id != null && hospital_area_id > 0) {
+            hospital_area_show = Zones.zoneIDToName(hospital_area_id)
+        }
     }
 }

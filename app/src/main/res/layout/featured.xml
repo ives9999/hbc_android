@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
 
         <RelativeLayout
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_centerInParent="true">
+            android:layout_marginStart="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/checkIV"
@@ -40,7 +42,30 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/nicknameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/member_home_text"
+                tools:text="列車長" />
+
+            <TextView
+                android:id="@+id/vesionTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="v1.0.0" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package tw.com.bluemobile.hbc.utilities
 
 import android.content.Context
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.PackageInfoCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import tw.com.bluemobile.hbc.R
@@ -116,6 +117,18 @@ fun getPropertyValue(instance: Any, propertyName: String): String {
 
 fun getColor(context: Context, color: Int): Int {
     return ContextCompat.getColor(context, color)
+}
+
+fun version(context: Context): String {
+    val p = context.applicationContext.packageManager.getPackageInfo(
+        context.packageName,
+        0
+    )
+    val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+    val n = p.versionName
+    val version: String = "v$n#$v"
+
+    return version
 }
 
 
