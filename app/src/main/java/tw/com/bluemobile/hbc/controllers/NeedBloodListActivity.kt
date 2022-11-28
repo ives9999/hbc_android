@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
-import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.NeedBloodModel
+import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.services.NeedBloodService
+import tw.com.bluemobile.hbc.services.OrderService
 import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 import tw.com.bluemobile.hbc.utilities.genericType
+import tw.com.bluemobile.hbc.utilities.jsonToModel
+import java.lang.Exception
 import java.lang.reflect.Type
 
 class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>() {
@@ -61,6 +64,11 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
         toNeedBloodEdit(this)
     }
 
+    override val onRowClick: ((Int) -> Unit) = { idx ->
+        val row: NeedBloodModel = rows[idx]
+        toNeedBloodShow(this, row.token)
+    }
+
     override val onEditClick: ((Int) -> Unit) = { idx ->
         val row: NeedBloodModel = rows[idx]
         toNeedBloodEdit(this, row.token)
@@ -88,6 +96,64 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
     }
 
     val onAcceptClick: ((Int) -> Unit) = { idx ->
-        println(idx)
+        if (!member.isLoggedIn) {
+            warning("請先登入！！", "登入") {
+                toLogin(this)
+            }
+        } else {
+            val row: NeedBloodModel = rows[idx]
+            if (row.status == "online") {
+                info("是否確定寵物要做捐血", "確定捐血") {
+                    insertBloodProcess(idx)
+                }
+            } else if (row.status == "process") {
+                if (member.token != row.memberA_token && member.token != row.memberB_token) {
+                    warning("您不是該捐需血的主人，無法檢視進行中的流程!!")
+                } else {
+                    toBloodProcess(this, row.order_token)
+                }
+            }
+        }
+    }
+
+    private fun insertBloodProcess(idx: Int) {
+        val row: NeedBloodModel = rows[idx]
+        val params: HashMap<String, String> = hashMapOf(
+            "need_blood_token" to row.token,
+            "memberA_token" to member.token!!,
+            "memberB_token" to row.member_token,
+            "product_type" to "blood"
+        )
+        //println(params);
+
+        loading.show()
+        OrderService.update(this, params) { success ->
+            runOnUiThread {
+                loading.hide()
+            }
+            if (success) {
+                runOnUiThread {
+                    try {
+                        //println(DonateBloodService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                val orderModel: OrderModel = successModel.model!!
+                                success("已經建立此筆訂單，是否前往後續流程服務頁面？", "是") {
+                                    toBloodProcess(this, orderModel.token)
+                                }
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
+                    }
+                }
+            }
+        }
     }
 }

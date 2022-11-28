@@ -24,9 +24,12 @@ class IconText @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
             view.findViewById<ImageView>(R.id.iconIV) ?. let { IV ->
                 iconIV = IV
-                typedArray.getString(R.styleable.IconText_IconTextIconIV)
-                    ?.let { icon -> IV.setImage(icon) }
-                    ?: ""
+                if (typedArray.hasValue(R.styleable.IconText_IconTextIconIV)) {
+                    typedArray.getString(R.styleable.IconText_IconTextIconIV)
+                        ?.let { icon ->
+                            IV.setImage(icon) }
+                        ?: ""
+                }
             }
 
             view.findViewById<TextView>(R.id.titleTV) ?. let {

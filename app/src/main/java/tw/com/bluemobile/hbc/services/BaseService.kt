@@ -208,8 +208,8 @@ open class BaseService {
         val url: String = getUpdateURL()
 
         val _params: Map<String, String> = composeParams(params)
-//        println(url)
-//        println(_params.toJSON())
+        println(url)
+        println(_params.toJSON())
 
         _simpleService(context, url, _params, complete)
     }

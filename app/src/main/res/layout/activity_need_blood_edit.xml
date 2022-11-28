@@ -59,6 +59,14 @@
                 app:key="hospital_road"
                 app:titleTV="路、街，巷等" />
 
+            <tw.com.bluemobile.hbc.views.EditTextNormal
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/formitem_container_height"
+                android:layout_marginTop="@dimen/formitem_container_marginTop"
+                app:key="name"
+                app:titleTV="寶貝名稱" />
+
             <tw.com.bluemobile.hbc.views.TwoRadio
                 android:id="@+id/type"
                 android:layout_width="match_parent"
@@ -66,7 +74,7 @@
                 app:noRadioTitle="@string/dog"
                 app:twoKey="type"
                 app:twoRadioStarIV="true"
-                app:twoRadioTitleTV="動物類型"
+                app:twoRadioTitleTV="寶貝類型"
                 app:twoRadioTitleWidth="130"
                 app:yesRadioTitle="@string/cat" />
 

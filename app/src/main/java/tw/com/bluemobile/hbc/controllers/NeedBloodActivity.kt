@@ -125,6 +125,11 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
         toNeedBloodEdit(this)
     }
 
+    override val onRowClick: ((Int) -> Unit) = { idx ->
+        val row: NeedBloodModel = rows[idx]
+        toNeedBloodShow(this, row.token)
+    }
+
     override val onEditClick: ((Int) -> Unit) = { idx ->
         val row: NeedBloodModel = rows[idx]
         toNeedBloodEdit(this, row.token)

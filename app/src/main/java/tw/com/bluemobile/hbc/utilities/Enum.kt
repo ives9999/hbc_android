@@ -312,6 +312,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
     hospital_city_id("hospital_city_id", "醫院縣市"),
     hospital_area_id("hospital_area_id", "醫院區域"),
     hospital_road("hospital_road", "醫院住址"),
+    petName("name", "名稱"),
     type("type", "動物類型"),
     blood_type_cat("blood_type_cat", "血液血型"),
     blood_type_dog("blood_type_dog", "血液類型"),
@@ -325,6 +326,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 "hospital_city_id" -> hospital_city_id
                 "hospital_area_id" -> hospital_area_id
                 "hospital_road" -> hospital_road
+                "name" -> petName
                 "type" -> type
                 "blood_type_cat" -> blood_type_cat
                 "blood_type_dog" -> blood_type_dog
@@ -340,6 +342,7 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 hospital_city_id,
                 hospital_area_id,
                 hospital_road,
+                petName,
                 type,
                 blood_type_cat,
                 blood_type_dog,
@@ -373,12 +376,31 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
             hospital_city_id -> "請選擇縣市\n"
             hospital_area_id -> "請選擇區域\n"
             hospital_road -> "請填寫路名等\n"
+            petName -> "請選擇寶貝名稱\n"
             type -> "請選擇品種\n"
             blood_type_cat -> "請選擇血型\n"
             blood_type_dog -> "請選擇血型\n"
             traffic_fee -> "請填寫車馬費\n"
             nutrient_fee -> "請填寫營養費\n"
 
+            else -> ""
+        }
+    }
+
+    fun getIcon(): String {
+        return when (this) {
+            blood_type_cat -> "ic_blood_type"
+            traffic_fee -> "ic_fee"
+            nutrient_fee -> "ic_fee"
+            else -> "ic_${this.englishName}"
+        }
+    }
+
+    fun getUnit(): String {
+        return when (this) {
+            petName -> ""
+            blood_type_cat -> "貓血型\n"
+            blood_type_dog -> "狗血型\n"
             else -> ""
         }
     }

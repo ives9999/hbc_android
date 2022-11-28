@@ -30,13 +30,13 @@ class NeedBloodEditActivity : EditActivity() {
     private val formItems: ArrayList<HashMap<NeedBloodEnum, MyLayout>> = arrayListOf()
 
     private val initData: MutableMap<String, String> = mutableMapOf(
-//        NeedBloodEnum.hospital_name.englishName to "忍者貓侍",
-//        NeedBloodEnum.hospital_city_id.englishName to "218",
-//        NeedBloodEnum.hospital_area_id.englishName to "219",
-//        NeedBloodEnum.hospital_road.englishName to "南華街101號8樓",
-//        NeedBloodEnum.traffic_fee.englishName to "100",
-//        NeedBloodEnum.nutrient_fee.englishName to "200",
-//
+        NeedBloodEnum.hospital_name.englishName to "忍者貓侍",
+        NeedBloodEnum.hospital_city_id.englishName to "218",
+        NeedBloodEnum.hospital_area_id.englishName to "219",
+        NeedBloodEnum.hospital_road.englishName to "南華街101號8樓",
+        NeedBloodEnum.traffic_fee.englishName to "100",
+        NeedBloodEnum.nutrient_fee.englishName to "200",
+        NeedBloodEnum.petName.englishName to "來福",
         NeedBloodEnum.type.englishName to "貓",
         NeedBloodEnum.blood_type_cat.englishName to "A"
     )
