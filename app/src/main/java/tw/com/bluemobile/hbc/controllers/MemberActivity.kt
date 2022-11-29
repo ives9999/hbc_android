@@ -99,6 +99,18 @@ class MemberActivity : BaseActivity() {
         }
     }
 
+    private fun delete() {
+        warning("是否確定要刪除自己的帳號？", "刪除") {
+            loading.show()
+            MemberService.postDelete(this, member.token!!) { success ->
+                loading.hide()
+                if (success) {
+                    logout()
+                }
+            }
+        }
+    }
+
     private fun logout() {
         member.isLoggedIn = false
         member.reset()
@@ -117,6 +129,7 @@ class MemberActivity : BaseActivity() {
             MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)
             MemberHomeEnum.validate_mobile -> toValidate(this, ValidateEnum.mobile)
             MemberHomeEnum.bank_account -> toBankAccount(this)
+            MemberHomeEnum.delete -> delete()
             MemberHomeEnum.refresh -> refresh()
             else -> {}
         }

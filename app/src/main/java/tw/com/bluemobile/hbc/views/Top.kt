@@ -17,7 +17,7 @@ class Top @JvmOverloads constructor(context: Context, attrs: AttributeSet? = nul
     private var prevIB: ImageButton = view.findViewById(R.id.prevIB)
     private var addIB: ImageButton = view.findViewById(R.id.addIB)
     private var editIB: ImageButton = view.findViewById(R.id.editIB)
-    private var titleTV: TextView = view.findViewById(R.id.title)
+    private var titleTV: TextView = view.findViewById(R.id.titleTV)
 
     init {
         (context as? BaseActivity) ?. let { delegate->

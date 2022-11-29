@@ -12,6 +12,10 @@ import java.util.*
 
 object MemberService: BaseService() {
 
+    override fun getDeleteURL(): String {
+        return URL_HOME + "member/postDelete"
+    }
+
     override fun getOneURL(): String {
         return URL_HOME + "member/postOne"
     }

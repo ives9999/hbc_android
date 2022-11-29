@@ -13,18 +13,50 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_height" />
 
-    <tw.com.bluemobile.hbc.views.Featured
-        android:id="@+id/featured"
+    <LinearLayout
+        android:id="@+id/featured_container"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_below="@id/top" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:orientation="horizontal">
+
+        <tw.com.bluemobile.hbc.views.Featured
+            android:id="@+id/featured"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginStart="12dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nicknameTV"
+                style="@style/member_home_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="列車長" />
+
+            <TextView
+                android:id="@+id/vesionTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="v1.0.0" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/logout_container"
-        android:layout_below="@id/featured"
+        android:layout_below="@id/featured_container"
         android:columnWidth="@dimen/member_home_gridview_column_width"
         android:gravity="center"
         android:numColumns="2"
