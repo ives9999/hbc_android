@@ -13,6 +13,12 @@ class DonateBloodModel: BaseModel() {
     var nutrient_fee: Int = 0
     var blood_image: String = ""
     var body_image: String = ""
+    var member_token: String = ""
+    var member_nickname: String = ""
+
+    var order_token: String = ""
+    var memberA_token: String = ""
+    var memberB_token: String = ""
 
     override fun filterRow() {
         super.filterRow()

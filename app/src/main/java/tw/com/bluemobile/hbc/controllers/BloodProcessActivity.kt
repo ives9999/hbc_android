@@ -150,11 +150,11 @@ class BloodProcessActivity : ShowActivity() {
     private val changeProcess: (BloodProcessEnum) -> Unit = { enum ->
         //println(it)
 
-        val clickNode = getNodeFromEnum(enum)
+        val clickNode = getNodeFromEnum(enum) //取得按下去的節點
         if (clickNode != null && clickNode.isOn) {
             warning("此步驟已經執行過了!!")
         } else {
-            if (isNextCanOnNode(enum)) {
+            if (isNextCanOnNode(enum)) { //如果下一個節點可以按
                 if (enum == BloodProcessEnum.traffic_feeA || enum == BloodProcessEnum.traffic_feeB) {
                     showCreditCardLayer()
                 } else {

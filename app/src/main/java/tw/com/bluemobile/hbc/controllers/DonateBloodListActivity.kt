@@ -10,15 +10,14 @@ import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.adapters.viewHolder
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
-import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.DonateBloodModel
+import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.utilities.Loading
-import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
-import tw.com.bluemobile.hbc.utilities.TabEnum
-import tw.com.bluemobile.hbc.utilities.genericType
+import tw.com.bluemobile.hbc.services.OrderService
+import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.Bottom
+import java.lang.Exception
 import java.lang.reflect.Type
 
 class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, DonateBloodModel>() {
@@ -130,8 +129,66 @@ class DonateBloodListActivity : ListActivity<DonateBloodListViewHolder, DonateBl
         }
     }
 
-    val onAcceptClick: ((Int) -> Unit) = { idx ->
-        println(idx)
+    private val onAcceptClick: ((Int) -> Unit) = { idx ->
+        if (!member.isLoggedIn) {
+            warning("請先登入！！", "登入") {
+                toLogin(this)
+            }
+        } else {
+            val row: DonateBloodModel = rows[idx]
+            if (row.status == "online") {
+                info("是否確定寵物需要捐血", "確定需要") {
+                    insertBloodProcess(idx)
+                }
+            } else if (row.status == "process") {
+                if (member.token != row.memberA_token && member.token != row.memberB_token) {
+                    warning("您不是該捐需血的主人，無法檢視進行中的流程!!")
+                } else {
+                    toBloodProcess(this, row.order_token)
+                }
+            }
+        }
+    }
+
+    private fun insertBloodProcess(idx: Int) {
+        val row: DonateBloodModel = rows[idx]
+        val params: HashMap<String, String> = hashMapOf(
+            "abProcess_donate_blood_token" to row.token,
+            "abProcess_memberA_token" to member.token!!,
+            "abProcess_memberB_token" to row.member_token,
+            "product_type" to "blood"
+        )
+        //println(params);
+
+        loading.show()
+        OrderService.update(this, params) { success ->
+            runOnUiThread {
+                loading.hide()
+            }
+            if (success) {
+                runOnUiThread {
+                    try {
+                        //println(DonateBloodService.jsonString)
+                        val successModel =
+                            jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
+                        if (successModel != null) {
+                            if (successModel.success) {
+                                val orderModel: OrderModel = successModel.model!!
+                                success("已經建立此筆訂單，是否前往後續流程服務頁面？", "是") {
+                                    toBloodProcess(this, orderModel.token)
+                                }
+                            } else {
+                                warning(successModel.msgs.parseErrmsg())
+                            }
+                        } else {
+                            warning("app無法解析系統傳回值，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        warning(e.localizedMessage)
+                    }
+                }
+            }
+        }
     }
 }
 

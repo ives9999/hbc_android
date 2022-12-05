@@ -180,9 +180,9 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     private fun insertBloodProcess(idx: Int) {
         val row: NeedBloodModel = rows[idx]
         val params: HashMap<String, String> = hashMapOf(
-            "need_blood_token" to row.token,
-            "memberA_token" to member.token!!,
-            "memberB_token" to row.member_token,
+            "abProcess_need_blood_token" to row.token,
+            "abProcess_memberA_token" to row.member_token,
+            "abProcess_memberB_token" to member.token!!,
             "product_type" to "blood"
         )
         //println(params);
@@ -268,7 +268,6 @@ class NeedBloodListViewHolder(
             }
         }
 
-
         setIV(R.id.typeIV, "ic_${row.type}")
 
         val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
@@ -289,6 +288,17 @@ class NeedBloodListViewHolder(
                 val size: Int = 12
                 it.textSize = size.toFloat()
                 it.setTextColor(getColor(context, R.color.MY_WHITE))
+            }
+        } else if (row.status == "online") {
+            view.findViewById<LinearLayout>(R.id.acceptLL) ?. let {
+                it.background = ContextCompat.getDrawable(context, R.drawable.circle)
+            }
+
+            view.findViewById<TextView>(R.id.acceptTV)?.let {
+                it.text = "接受"
+                val size: Int = 12
+                it.textSize = size.toFloat()
+                it.setTextColor(getColor(context, R.color.MY_BLACK))
             }
         }
     }
