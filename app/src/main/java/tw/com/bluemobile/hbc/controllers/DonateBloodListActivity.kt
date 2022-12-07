@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
@@ -253,6 +255,30 @@ class DonateBloodListViewHolder(
         setTV(R.id.created_at, row.created_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
+
+        if (row.status == "process") {
+            view.findViewById<LinearLayout>(R.id.acceptLL) ?. let {
+                it.background = ContextCompat.getDrawable(context, R.drawable.circle_blue)
+            }
+
+            view.findViewById<TextView>(R.id.acceptTV)?.let {
+                it.text = "進行中..."
+                val size: Int = 12
+                it.textSize = size.toFloat()
+                it.setTextColor(getColor(context, R.color.MY_WHITE))
+            }
+        } else if (row.status == "online") {
+            view.findViewById<LinearLayout>(R.id.acceptLL) ?. let {
+                it.background = ContextCompat.getDrawable(context, R.drawable.circle)
+            }
+
+            view.findViewById<TextView>(R.id.acceptTV)?.let {
+                it.text = "接受"
+                val size: Int = 12
+                it.textSize = size.toFloat()
+                it.setTextColor(getColor(context, R.color.MY_BLACK))
+            }
+        }
     }
 
     fun setOnAcceptClickListener(idx: Int, onAcceptClick: ((Int) -> Unit)?) {

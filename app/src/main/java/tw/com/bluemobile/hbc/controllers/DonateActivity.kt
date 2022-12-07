@@ -24,15 +24,15 @@ class DonateActivity : EditActivity() {
     var creditCardCVV: CreditCardCVV? = null
 
     private val initData: MutableMap<String, String> = mutableMapOf(
-        DonateEnum.amount.englishName to "500",
-        DonateEnum.realname.englishName to "王大銘",
-        DonateEnum.tax_no.englishName to "12335",
-        DonateEnum.email.englishName to "john@gmail.tw",
-        DonateEnum.tel.englishName to "13457",
-        DonateEnum.receipt.englishName to "是",
-        DonateEnum.city_id.englishName to "218",
-        DonateEnum.area_id.englishName to "219",
-        DonateEnum.road.englishName to "南華街101號8樓"
+//        DonateEnum.amount.englishName to "500",
+//        DonateEnum.realname.englishName to "王大銘",
+//        DonateEnum.tax_no.englishName to "12335",
+//        DonateEnum.email.englishName to "john@gmail.tw",
+//        DonateEnum.tel.englishName to "13457",
+//        DonateEnum.receipt.englishName to "是",
+//        DonateEnum.city_id.englishName to "218",
+//        DonateEnum.area_id.englishName to "219",
+//        DonateEnum.road.englishName to "南華街101號8樓"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

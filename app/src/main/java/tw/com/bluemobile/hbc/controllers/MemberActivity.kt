@@ -125,6 +125,7 @@ class MemberActivity : BaseActivity() {
             MemberHomeEnum.account -> toRegister(this)
             MemberHomeEnum.pet -> toDonateBloodList(this, "member")
             MemberHomeEnum.need_blood -> toNeedBloodList(this, "member")
+            MemberHomeEnum.donate_blood -> toDonateBloodList(this, "member")
             MemberHomeEnum.reset_password -> toPassword(this, PasswordEnum.reset)
             MemberHomeEnum.validate_email -> toValidate(this, ValidateEnum.email)
             MemberHomeEnum.validate_mobile -> toValidate(this, ValidateEnum.mobile)

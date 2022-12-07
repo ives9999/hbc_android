@@ -7,8 +7,13 @@ import com.google.gson.annotations.SerializedName
 import tw.com.bluemobile.hbc.extensions.dump
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.*
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 import kotlin.reflect.full.createType
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.jvmErasure
 
 class MemberModel: BaseModel() {
 
@@ -245,12 +250,16 @@ class Member(val context: Context) {
         Member::class.memberProperties.forEach {
 
             val name = it.name
-            val t = it.returnType
-            if (t == String::class.createType()) {
+            val t = it.returnType.jvmErasure
+            //val t1 = String::class
+
+            //val b = it.returnType.jvmErasure.isSubclassOf(String::class)
+
+            if (t == String::class) {
                 session.edit().putString(name, "").apply()
-            } else if (t == Int::class.createType()) {
+            } else if (t == Int::class) {
                 session.edit().putInt(name, 0).apply()
-            } else if (t == Boolean::class.createType()) {
+            } else if (t == Boolean::class) {
                 session.edit().putBoolean(name, false).apply()
             }
             session.edit().putString("dob", "").apply()

@@ -95,6 +95,9 @@ class RegisterActivity : BaseActivity() {
                 submit()
             }
         }
+
+        //member.reset()
+        //member.dump()
     }
 
     // set setting after city and area click.

@@ -22,8 +22,8 @@ class LoginActivity : BaseActivity() {
     private var editTextPassword: EditTextNormal? = null
 
     private val initData: HashMap<String, String> = hashMapOf(
-        EMAIL_KEY to "ives@bluemobile.com.tw",
-        PASSWORD_KEY to "1234",
+//        EMAIL_KEY to "ives@bluemobile.com.tw",
+//        PASSWORD_KEY to "1234",
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

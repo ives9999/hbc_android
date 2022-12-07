@@ -17,6 +17,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
         android:text="捐款方式"
+        android:textColor="@color/MY_BLACK"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
