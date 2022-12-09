@@ -174,7 +174,7 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): ArrayList<DonateBloodEnum> {
-            return arrayListOf(petName, type, age, weight, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
+            return arrayListOf(petName, type, age, weight, blood_type_cat, blood_type_dog, blood_type, IDo, traffic_fee, nutrient_fee, blood_image, body_image)
         }
     }
 

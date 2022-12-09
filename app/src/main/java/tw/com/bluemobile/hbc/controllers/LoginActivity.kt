@@ -138,7 +138,10 @@ class LoginActivity : BaseActivity() {
                                 warning(successModel.msgs.parseErrmsg())
                             } else {
                                 val memberModel = successModel.model
+                                memberModel?.filterRow()
+                                //memberModel?.dump()
                                 memberModel?.toSession(this, true)
+                                //member.dump()
                                 toMemberHome(this)
                             }
                         }

@@ -43,15 +43,18 @@ class DonateBloodEditActivity : EditActivity() {
     var dogBloodTypeRadio: TwoRadio? = null
     var iDoRadio: TwoRadio? = null
 
+    var type: String = ""
+    var blood_type: String = ""
+
     private val initData: MutableMap<String, String> = mutableMapOf(
-//        DonateBloodEnum.petName.englishName to "幸運貓",
-        DonateBloodEnum.type.englishName to "貓",
-        DonateBloodEnum.blood_type_cat.englishName to "A",
-//        DonateBloodEnum.age.englishName to "5",
-//        DonateBloodEnum.weight.englishName to "10",
+//         DonateBloodEnum.petName.englishName to "幸運貓",
+        DonateBloodEnum.type.englishName to "狗",
+        DonateBloodEnum.blood_type_cat.englishName to "DEA1陰性",
+//         DonateBloodEnum.age.englishName to "5",
+//         DonateBloodEnum.weight.englishName to "10",
         DonateBloodEnum.IDo.englishName to "願意",
-//        DonateBloodEnum.traffic_fee.englishName to "100",
-//        DonateBloodEnum.nutrient_fee.englishName to "200"
+//         DonateBloodEnum.traffic_fee.englishName to "100",
+//         DonateBloodEnum.nutrient_fee.englishName to "200"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,23 +124,22 @@ class DonateBloodEditActivity : EditActivity() {
 
                     if (initData.containsKey(key)) {
                         it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+                        type = it.value
                     }
 
-                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
-                    formItems.add(h)
+//                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
+//                    formItems.add(h)
                 } else if (enum == DonateBloodEnum.blood_type_cat) {
                     catBloodTypeRadio = it as ThreeRadio
 
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
+//                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
+//                    formItems.add(h)
 
                 } else if (enum == DonateBloodEnum.blood_type_dog) {
                     dogBloodTypeRadio = it as TwoRadio
 
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
+//                    val h: HashMap<DonateBloodEnum, MyLayout> = hashMapOf(enum to it)
+//                    formItems.add(h)
 
                 } else if (enum == DonateBloodEnum.IDo) {
                     iDoRadio = it as TwoRadio
@@ -159,6 +161,13 @@ class DonateBloodEditActivity : EditActivity() {
                 }
             }
         }
+
+        initData[DonateBloodEnum.type.englishName]?.let {
+            typeChange(it)
+        }
+
+        dogBloodTypeRadio?.setOnGroupCheckedChangeListener(dogChanged)
+        catBloodTypeRadio?.setOnGroupCheckedChangeListener(catChanged)
 
         if (donateBloodModel != null) {
             top!!.setTitle(donateBloodModel!!.name)
@@ -185,10 +194,38 @@ class DonateBloodEditActivity : EditActivity() {
         if (type == "狗") {
             dogBloodTypeRadio?.visibility = View.VISIBLE
             catBloodTypeRadio?.visibility = View.GONE
+
+            if (initData[DonateBloodEnum.type.englishName] == type) {
+                dogBloodTypeRadio?.setCheck(DonateBloodEnum.blood_type_dog.englishName)
+                blood_type = dogBloodTypeRadio?.value.toString()
+            } else {
+                dogBloodTypeRadio?.setCheck("DEA1陽性")
+                blood_type = "DEA1陽性"
+            }
+
+            this.type = "dog"
         } else {
             dogBloodTypeRadio?.visibility = View.GONE
             catBloodTypeRadio?.visibility = View.VISIBLE
+
+            if (initData[DonateBloodEnum.type.englishName] == type) {
+                catBloodTypeRadio?.setCheck(DonateBloodEnum.blood_type_cat.englishName)
+                blood_type = catBloodTypeRadio?.value.toString()
+            } else {
+                catBloodTypeRadio?.setCheck("A")
+                blood_type = "A"
+            }
+
+            this.type = "cat"
         }
+    }
+
+    private val dogChanged: (String)-> Unit = {
+        this.blood_type = it
+    }
+
+    private val catChanged: (String)-> Unit = {
+        this.blood_type = it
     }
 
     private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res: ActivityResult ->
@@ -289,9 +326,18 @@ class DonateBloodEditActivity : EditActivity() {
                 } else {
                     val k = enum.englishName
                     var v = layout.value
-                    if (enum == DonateBloodEnum.type || enum == DonateBloodEnum.IDo) {
+                    if (enum == DonateBloodEnum.IDo) {
                         v = enum.radioTextToDBName(v)
                     }
+
+//                    if (type == "cat" && enum == DonateBloodEnum.blood_type_cat) {
+//                        v = enum.radioTextToDBName(v)
+//                    }
+//
+//                    if (type == "dog" && enum == DonateBloodEnum.blood_type_dog) {
+//                        v = enum.radioTextToDBName(v)
+//                    }
+
                     val temp: HashMap<String, String> =
                         hashMapOf(k to v)
                     params.putAll(temp)
@@ -303,6 +349,18 @@ class DonateBloodEditActivity : EditActivity() {
             warning(msg)
             return
         }
+
+        params[DonateBloodEnum.type.englishName] = type
+        params[DonateBloodEnum.blood_type.englishName] = blood_type
+
+//        type = params[DonateBloodEnum.type.englishName]!!
+//        if (type == "貓" && params.containsKey(DonateBloodEnum.blood_type_cat.englishName)) {
+//            params[DonateBloodEnum.blood_type.englishName] = params[DonateBloodEnum.blood_type_cat.englishName]!!
+//            val n = params.remove(DonateBloodEnum.blood_type_cat.englishName)
+//        } else if (type == "狗" && params.containsKey(DonateBloodEnum.blood_type_dog.englishName)) {
+//            params[DonateBloodEnum.blood_type.englishName] = params[DonateBloodEnum.blood_type_dog.englishName]!!
+//            val n = params.remove(DonateBloodEnum.blood_type_dog.englishName)
+//        }
 
         if (donateBloodToken != null) {
             params.put("token", donateBloodToken!!)

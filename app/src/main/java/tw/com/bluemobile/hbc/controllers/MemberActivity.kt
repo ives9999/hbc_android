@@ -138,13 +138,17 @@ class MemberActivity : BaseActivity() {
 
     override fun refresh() {
         loading.show()
-        MemberService.getOne(this, hashMapOf()) { success ->
+        val params: HashMap<String, String> = hashMapOf("token" to member.token!!)
+        MemberService.getOne(this, params) { success ->
             if (success) {
                 //println(MemberService.jsonString)
                 val successModel = jsonToModel<SuccessModel<MemberModel>>(MemberService.jsonString)
                 if (successModel != null) {
                     member.reset()
-                    successModel.model?.toSession(this, true)
+                    val memberModel = successModel.model
+                    memberModel?.filterRow()
+                    //memberModel?.dump()
+                    memberModel?.toSession(this, true)
                     //member.dump()
                     runOnUiThread {
                         init()

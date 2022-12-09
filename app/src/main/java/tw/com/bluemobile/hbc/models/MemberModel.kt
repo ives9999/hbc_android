@@ -227,11 +227,11 @@ class Member(val context: Context) {
         set(value) {
             session.edit().putString(BRANCH_KEY, value).apply()
         }
-    var bank_code: Int?
-        get() = session.getInt(BANK_CODE_KEY, 0)
+    var bank_code: String?
+        get() = session.getString(BANK_CODE_KEY, "")
         set(value) {
             if (value != null) {
-                session.edit().putInt(BANK_CODE_KEY, value).apply()
+                session.edit().putString(BANK_CODE_KEY, value).apply()
             }
         }
     var bank_account: String?
@@ -267,8 +267,6 @@ class Member(val context: Context) {
         }
         //member.dump()
     }
-
-
 
     fun checkEMailValidate(): Boolean {
 

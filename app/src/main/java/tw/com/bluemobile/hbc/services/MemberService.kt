@@ -4,6 +4,8 @@ import android.content.Context
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
+import tw.com.bluemobile.hbc.extensions.toJSON
+import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.utilities.*
 import java.io.File
 import java.io.IOException
@@ -31,8 +33,8 @@ object MemberService: BaseService() {
 
         val _params: Map<String, String> = composeParams(params, true)
 
-//        println(url)
-//        println(_params.toJSON())
+        //println(url)
+        //println(_params.toJSON())
 
         val request: Request = getRequest(url, _params)
 
@@ -66,6 +68,10 @@ object MemberService: BaseService() {
         var _params: Map<String, String> = hashMapOf()
         _params = _params.mergeWith(PARAMS)
         _params = _params.mergeWith(mapOf(EMAIL_KEY to email))
+        _params = _params.mergeWith(mapOf("token" to member.token!!))
+
+//        println(url)
+//        println(_params)
 
         val request: Request = getRequest(url, _params)
 
@@ -200,7 +206,7 @@ object MemberService: BaseService() {
         getBaseUrl()
         val url = URL_HOME + "member/postResetPassword"
 
-        val params: MutableMap<String, String> = mutableMapOf(PASSWORD_KEY to password, REPASSWORD_KEY to password)
+        val params: MutableMap<String, String> = mutableMapOf(PASSWORD_KEY to password, REPASSWORD_KEY to password, TOKEN_KEY to member.token!!)
         val _params: Map<String, String> = composeParams(params, true)
 
 //        println(url)
@@ -234,11 +240,11 @@ object MemberService: BaseService() {
         getBaseUrl()
         val url = URL_HOME + "member/postValidate"
 
-        val params: MutableMap<String, String> = mutableMapOf("code" to code, "type" to type.englishName)
+        val params: MutableMap<String, String> = mutableMapOf("code" to code, "type" to type.englishName, "token" to member.token!!)
         val _params: Map<String, String> = composeParams(params, true)
 
-//        println(url)
-//        println(_params.toJSON())
+        //println(url)
+        //println(_params)
 
         val request: Request = getRequest(url, _params)
 

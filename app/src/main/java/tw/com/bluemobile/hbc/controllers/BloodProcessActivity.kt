@@ -30,8 +30,12 @@ class BloodProcessActivity : ShowActivity() {
 
     var orderModel: OrderModel? = null
 
-    var creditCardMy: CreditCardMY? = null
+    var creditCardNO: CreditCardNO? = null
+    var creditCardMY: CreditCardMY? = null
     var creditCardCVV: CreditCardCVV? = null
+    var amountET: EditTextNormal? = null
+
+    var clickEnum: BloodProcessEnum = BloodProcessEnum.send_information
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,6 +154,7 @@ class BloodProcessActivity : ShowActivity() {
     private val changeProcess: (BloodProcessEnum) -> Unit = { enum ->
         //println(it)
 
+        clickEnum = enum
         val clickNode = getNodeFromEnum(enum) //取得按下去的節點
         if (clickNode != null && clickNode.isOn) {
             warning("此步驟已經執行過了!!")
@@ -171,7 +176,7 @@ class BloodProcessActivity : ShowActivity() {
     }
 
     val MYFocus: ()->Unit = {
-        creditCardMy?.initFocus()
+        creditCardMY?.initFocus()
     }
 
     val showWarning: (String)-> Unit = {
@@ -224,12 +229,17 @@ class BloodProcessActivity : ShowActivity() {
         params.topMargin = 100
         creditCardView.layoutParams = params
 
+        creditCardView.findViewById<EditTextNormal>(R.id.amount) ?. let {
+            amountET = it
+        }
+
         //設定輸完4位數後，往下一個輸入框
         creditCardView.findViewById<CreditCardNO>(R.id.credit_card_no) ?. let {
+            creditCardNO = it
             it.myRequestFocus(MYFocus)
         }
         creditCardView.findViewById<CreditCardMY>(R.id.credit_card_my) ?. let {
-            creditCardMy = it
+            creditCardMY = it
             it.setOnChangeListener(showWarning)
             it.myRequestFocus(CVVFocus)
         }
@@ -240,11 +250,17 @@ class BloodProcessActivity : ShowActivity() {
         val bottomView: LinearLayout = blackView.bottom2ButtonView(this, creditCardSubmit, creditCardCancel)
     }
 
-    private fun updateProcess(process: BloodProcessEnum) {
-        val params: HashMap<String, String> = hashMapOf(
+    private fun updateProcess(process: BloodProcessEnum, amount: String = "", credit_card_no: String = "", credit_card_my: String = "", credit_card_cvv: String = "") {
+        val params: MutableMap<String, String> = hashMapOf(
             "token" to orderModel!!.token,
             "abProcess_process" to process.englishName
         )
+
+        if (credit_card_no.isNotEmpty()) {
+            params.put("abProcess_credit_card_no", credit_card_no)
+            params.put("abProcess_credit_card_my", credit_card_my)
+            params.put("abProcess_credit_card_cvv", credit_card_cvv)
+        }
         //println(params);
 
         loading.show()
@@ -278,7 +294,32 @@ class BloodProcessActivity : ShowActivity() {
     }
 
     val creditCardSubmit: ()->Unit = {
-        println("aaa")
+        //println(clickEnum)
+
+        var amount: String = ""
+        amountET ?. let {
+            amount = it.value
+        }
+
+        var credit_card_no: String = ""
+        creditCardNO ?. let {
+            credit_card_no = it.value
+        }
+
+        var credit_card_my: String = ""
+        creditCardMY ?. let {
+            credit_card_my = it.value
+        }
+
+        var credit_card_cvv: String = ""
+        creditCardCVV ?. let {
+            credit_card_cvv = it.value
+        }
+
+        updateProcess(clickEnum, amount, credit_card_no, credit_card_my, credit_card_cvv)
+
+        val view = window.decorView.rootView as ViewGroup
+        view.unmask()
     }
 
     val creditCardCancel: ()->Unit = {

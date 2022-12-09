@@ -268,6 +268,7 @@ class NeedBloodListViewHolder(
             }
         }
 
+        setTV(R.id.nameTV, row.name)
         setIV(R.id.typeIV, "ic_${row.type}")
 
         val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)

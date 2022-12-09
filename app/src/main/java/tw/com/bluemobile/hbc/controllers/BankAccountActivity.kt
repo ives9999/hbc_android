@@ -94,7 +94,8 @@ class BankAccountActivity : BaseActivity() {
             "bank" to editTextBank!!.value,
             "branch" to editTextBranch!!.value,
             "bank_code" to editTextBankCode!!.value,
-            "bank_account" to editTextBankAccount!!.value
+            "bank_account" to editTextBankAccount!!.value,
+            "token" to member.token!!
         )
 
         loading.show()

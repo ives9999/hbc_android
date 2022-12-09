@@ -6,9 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
-import tw.com.bluemobile.hbc.models.MemberModel
-import tw.com.bluemobile.hbc.models.NeedBloodModel
-import tw.com.bluemobile.hbc.models.SuccessModel
+import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
@@ -22,6 +20,9 @@ class NeedBloodEditActivity : EditActivity() {
     var typeRadio: TwoRadio? = null
     var catBloodTypeRadio: ThreeRadio? = null
     var dogBloodTypeRadio: TwoRadio? = null
+
+    var type: String = ""
+    var blood_type: String = ""
 
     var moreDialog: MoreDialog? = null
     var token: String? = null
@@ -155,21 +156,22 @@ class NeedBloodEditActivity : EditActivity() {
 
                     if (initData.containsKey(key)) {
                         it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+                        type = it.value
                     }
 
                 } else if (enum == NeedBloodEnum.blood_type_cat) {
                     catBloodTypeRadio = it as ThreeRadio
 
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
+//                    if (initData.containsKey(key)) {
+//                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+//                    }
 
                 } else if (enum == NeedBloodEnum.blood_type_dog) {
                     dogBloodTypeRadio = it as TwoRadio
 
-                    if (initData.containsKey(key)) {
-                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
-                    }
+//                    if (initData.containsKey(key)) {
+//                        it.setCheck(enum.DBNameToRadioText(initData[key]!!))
+//                    }
 
                 } else {
                     if (initData.containsKey(key)) {
@@ -181,6 +183,17 @@ class NeedBloodEditActivity : EditActivity() {
             }
         }
 
+        initData[DonateBloodEnum.type.englishName]?.let {
+            typeChange(it)
+        }
+
+        dogBloodTypeRadio?.setOnGroupCheckedChangeListener(dogChanged)
+        catBloodTypeRadio?.setOnGroupCheckedChangeListener(catChanged)
+
+        if (needBloodModel != null) {
+            top!!.setTitle(needBloodModel!!.name)
+        }
+
         findViewById<LinearLayout>(R.id.submitLL) ?. let {
             it.setOnClickListener {
                 submit()
@@ -188,14 +201,52 @@ class NeedBloodEditActivity : EditActivity() {
         }
     }
 
+    override fun modelToInitData(model: BaseModel) {
+
+        val donateBloodModel = model as DonateBloodModel
+        for (enum in DonateBloodEnum.getAllEnum()) {
+            val name = enum.englishName
+            val value = getPropertyValue(donateBloodModel, name)
+            initData.put(name, value)
+        }
+    }
+
     private fun typeChange(type: String) {
         if (type == "狗") {
             dogBloodTypeRadio?.visibility = View.VISIBLE
             catBloodTypeRadio?.visibility = View.GONE
+
+            if (initData[DonateBloodEnum.type.englishName] == type) {
+                dogBloodTypeRadio?.setCheck(DonateBloodEnum.blood_type_dog.englishName)
+                blood_type = dogBloodTypeRadio?.value.toString()
+            } else {
+                dogBloodTypeRadio?.setCheck("DEA1陽性")
+                blood_type = "DEA1陽性"
+            }
+
+            this.type = "dog"
         } else {
             dogBloodTypeRadio?.visibility = View.GONE
             catBloodTypeRadio?.visibility = View.VISIBLE
+
+            if (initData[DonateBloodEnum.type.englishName] == type) {
+                catBloodTypeRadio?.setCheck(DonateBloodEnum.blood_type_cat.englishName)
+                blood_type = catBloodTypeRadio?.value.toString()
+            } else {
+                catBloodTypeRadio?.setCheck("A")
+                blood_type = "A"
+            }
+
+            this.type = "cat"
         }
+    }
+
+    private val dogChanged: (String)-> Unit = {
+        this.blood_type = it
+    }
+
+    private val catChanged: (String)-> Unit = {
+        this.blood_type = it
     }
 
     // set setting after city and area click.
@@ -217,7 +268,7 @@ class NeedBloodEditActivity : EditActivity() {
 
         val params: MutableMap<String, String> = hashMapOf()
 
-        var type: String = "" //cat or dog
+//        var type: String = "" //cat or dog
         for (formItem in formItems) {
             for ((enum, layout) in formItem) {
                 if (layout.isEmpty()) {
@@ -225,10 +276,10 @@ class NeedBloodEditActivity : EditActivity() {
                 } else {
                     val k = enum.englishName
                     var v = layout.value
-                    if (enum == NeedBloodEnum.type) {
-                        v = enum.radioTextToDBName(v)
-                        type = v
-                    }
+//                    if (enum == NeedBloodEnum.type) {
+//                        v = enum.radioTextToDBName(v)
+//                        type = v
+//                    }
                     val temp: HashMap<String, String> =
                         hashMapOf(k to v)
                     params.putAll(temp)
@@ -236,26 +287,29 @@ class NeedBloodEditActivity : EditActivity() {
             }
         }
 
-        var blood_type: String = ""
+//        var blood_type: String = ""
+//
+//        for (formItem in formItems) {
+//            for ((enum, layout) in formItem) {
+//                if (enum.englishName == "blood_type_${type}") {
+//                    if (layout.value.isEmpty()) {
+//                        msg += "請選擇血液血型\n"
+//                    } else {
+//                        blood_type = layout.value
+//                    }
+//                }
+//            }
+//        }
+//
+//        params.put("blood_type", blood_type)
+//        if (token != null) {
+//            params.put(TOKEN_KEY, token!!)
+//        }
+//        params.remove("blood_type_cat")
+//        params.remove("blood_type_dog")
 
-        for (formItem in formItems) {
-            for ((enum, layout) in formItem) {
-                if (enum.englishName == "blood_type_${type}") {
-                    if (layout.value.isEmpty()) {
-                        msg += "請選擇血液血型\n"
-                    } else {
-                        blood_type = layout.value
-                    }
-                }
-            }
-        }
-
-        params.put("blood_type", blood_type)
-        if (token != null) {
-            params.put(TOKEN_KEY, token!!)
-        }
-        params.remove("blood_type_cat")
-        params.remove("blood_type_dog")
+        params[DonateBloodEnum.type.englishName] = type
+        params[DonateBloodEnum.blood_type.englishName] = blood_type
 
         //println(params)
 

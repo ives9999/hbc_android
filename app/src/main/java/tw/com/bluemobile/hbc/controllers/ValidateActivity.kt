@@ -3,6 +3,7 @@ package tw.com.bluemobile.hbc.controllers
 import android.os.Bundle
 import android.widget.TextView
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
 import tw.com.bluemobile.hbc.services.MemberService
@@ -85,7 +86,7 @@ class ValidateActivity : BaseActivity() {
                                     prev()
                                 }
                             } else {
-                                warning(successModel.msg)
+                                warning(successModel.msgs.parseErrmsg())
                             }
                         } else {
                             warning("app無法解析系統傳回值，請洽管理員")

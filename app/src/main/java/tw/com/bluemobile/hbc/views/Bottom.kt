@@ -32,13 +32,7 @@ class Bottom @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
                     when (enum) {
                         TabEnum.need_blood -> delegate.toNeedBlood(delegate)
                         TabEnum.donate_blood -> delegate.toDonateBloodList(delegate, "home")
-                        TabEnum.member -> {
-                            if (member.isLoggedIn) {
-                                delegate.toMemberHome(delegate)
-                            } else {
-                                delegate.toLogin(delegate)
-                            }
-                        }
+                        TabEnum.member -> delegate.toMemberHome(delegate)
                         TabEnum.donate -> delegate.toDonate(delegate)
 
                         else -> delegate.toMemberHome(delegate)

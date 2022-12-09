@@ -148,7 +148,11 @@ class RegisterActivity : BaseActivity() {
             featured!!.setOnImagePickListener(pickProfileImage, pickCameraImage)
         }
 
+
         val allEnums: ArrayList<RegisterEnum> = RegisterEnum.getRegisterAllEnum()
+//        if (member.isLoggedIn) {
+//            allEnums = RegisterEnum.getUpdateAllEnum()
+//        }
 
         for (enum in allEnums) {
 
@@ -338,10 +342,11 @@ class RegisterActivity : BaseActivity() {
     override fun submit() {
 
         val params: MutableMap<String, String> = hashMapOf()
+        msg = ""
 
         for (formItem in formItems) {
             for ((enum, layout) in formItem) {
-                if (layout.isEmpty() || layout.value == "0") {
+                if ((layout.isEmpty() || layout.value == "0") && layout.visibility == View.VISIBLE) {
                     msg += enum.errMsg()
                 } else {
                     if (layout.visibility == View.VISIBLE) {
@@ -365,6 +370,9 @@ class RegisterActivity : BaseActivity() {
             return
         }
         //println(params)
+        if (member.isLoggedIn) {
+            params["token"] = member.token!!
+        }
 
         loading.show()
 
