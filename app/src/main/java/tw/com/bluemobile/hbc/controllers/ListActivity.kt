@@ -91,6 +91,9 @@ open class ListActivity<T: BaseViewHolder<U>, U: BaseModel>: BaseActivity() {
         if (baseModels != null && page == 1) {
             totalCount = baseModels.totalCount
             countTotalPage()
+        } else {
+            warning("無法解析伺服器傳回的字串")
+            return
         }
 
         rows += baseModels?.rows .let { baseModels!!.rows  }

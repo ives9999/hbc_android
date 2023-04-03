@@ -252,6 +252,7 @@ class BloodProcessActivity : ShowActivity() {
 
     private fun updateProcess(process: BloodProcessEnum, amount: String = "", credit_card_no: String = "", credit_card_my: String = "", credit_card_cvv: String = "") {
         val params: MutableMap<String, String> = hashMapOf(
+            //order token，只要傳此token代表要更新process
             "token" to orderModel!!.token,
             "abProcess_process" to process.englishName
         )

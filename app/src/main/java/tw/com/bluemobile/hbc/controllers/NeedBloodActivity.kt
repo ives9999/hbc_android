@@ -14,19 +14,17 @@ import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
 import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
-import tw.com.bluemobile.hbc.extensions.dpToPx
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.*
 import tw.com.bluemobile.hbc.services.DonateBloodService
-import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.services.OrderService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
 import java.lang.reflect.Type
 
-class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>() {
+class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodModel>() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -95,7 +93,7 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     override fun init() {
-        adapter = NeedBloodListAdapter(R.layout.list_need_blood, ::NeedBloodListViewHolder, source, onAcceptClick)
+        adapter = DonateBloodListAdapter(R.layout.list_donate_blood, ::DonateBloodListViewHolder, source, onAcceptClick)
         super.init()
 
         refresh()
@@ -109,12 +107,13 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
         if (source == "member") {
             params.putAll(hashMapOf("member_token" to member.token!!))
         }
-        NeedBloodService.getList(this, params, page, perPage) { success ->
-            runOnUiThread {
-                //println(NeedBloodService.jsonString)
 
-                val modelType: Type = genericType<BaseModels<NeedBloodModel>>()
-                parseJSON(NeedBloodService.jsonString, modelType)
+        DonateBloodService.getList(this, params, page, perPage) { success ->
+            runOnUiThread {
+                //println(DonateBloodService.jsonString)
+
+                val modelType: Type = genericType<BaseModels<DonateBloodModel>>()
+                parseJSON(DonateBloodService.jsonString, modelType)
                 loading.hide()
             }
         }
@@ -126,17 +125,17 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     override val onRowClick: ((Int) -> Unit) = { idx ->
-        val row: NeedBloodModel = rows[idx]
-        toNeedBloodShow(this, row.token)
+        val row: DonateBloodModel = rows[idx]
+        toDonateBloodShow(this, row.token)
     }
 
     override val onEditClick: ((Int) -> Unit) = { idx ->
-        val row: NeedBloodModel = rows[idx]
-        toNeedBloodEdit(this, row.token)
+        val row: DonateBloodModel = rows[idx]
+        toDonateBloodEdit(this, row.token)
     }
 
     override val onDeleteClick: ((Int) -> Unit) = { idx ->
-        val row: NeedBloodModel = rows[idx]
+        val row: DonateBloodModel = rows[idx]
         warning("是否確定要刪除?", "刪除") {
             delete(row.token)
         }
@@ -144,7 +143,7 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
 
     private fun delete(token: String) {
         loading.show()
-        NeedBloodService.postDelete(this, token) {
+        DonateBloodService.postDelete(this, token) {
             runOnUiThread {
                 //println(MemberService.jsonString)
 
@@ -162,9 +161,9 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
                 toLogin(this)
             }
         } else {
-            val row: NeedBloodModel = rows[idx]
+            val row: DonateBloodModel = rows[idx]
             if (row.status == "online") {
-                info("是否確定寵物要做捐血", "確定捐血") {
+                info("是否確定要接受此寵物的捐血", "確定") {
                     insertBloodProcess(idx)
                 }
             } else if (row.status == "process") {
@@ -178,11 +177,15 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 
     private fun insertBloodProcess(idx: Int) {
-        val row: NeedBloodModel = rows[idx]
+        val row: DonateBloodModel = rows[idx]
         val params: HashMap<String, String> = hashMapOf(
-            "abProcess_need_blood_token" to row.token,
-            "abProcess_memberA_token" to row.member_token,
-            "abProcess_memberB_token" to member.token!!,
+            //捐血記錄的token
+            "abProcess_donate_blood_token" to row.token,
+            //需血方的會員token
+            "abProcess_memberA_token" to member.token!!,
+            //捐血方的會員token
+            "abProcess_memberB_token" to row.member_token,
+            //產品類型，目前一律為"blood"
             "product_type" to "blood"
         )
         //println(params);
@@ -219,38 +222,38 @@ class NeedBloodActivity : ListActivity<NeedBloodListViewHolder, NeedBloodModel>(
     }
 }
 
-class NeedBloodListAdapter(
+class DonateBloodListAdapter(
     override val resource: Int,
-    override val viewHolderConstructor: viewHolder<NeedBloodListViewHolder>,
+    override val viewHolderConstructor: viewHolder<DonateBloodListViewHolder>,
     val source: String,
     val onAcceptClick: ((Int) -> Unit)?):
-    BaseAdapter<NeedBloodListViewHolder, NeedBloodModel>(resource, viewHolderConstructor) {
+    BaseAdapter<DonateBloodListViewHolder, DonateBloodModel>(resource, viewHolderConstructor) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NeedBloodListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DonateBloodListViewHolder {
 
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(resource, parent, false)
-        val viewHolder: NeedBloodListViewHolder = viewHolderConstructor(parent.context, view)
+        val viewHolder: DonateBloodListViewHolder = viewHolderConstructor(parent.context, view)
         viewHolder.source = source
 
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: NeedBloodListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DonateBloodListViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 
         holder.setOnAcceptClickListener(position, onAcceptClick)
     }
 }
 
-class NeedBloodListViewHolder(
+class DonateBloodListViewHolder(
     context: Context,
-    view: View
-): BaseViewHolder<NeedBloodModel>(context, view) {
+    view: View,
+): BaseViewHolder<DonateBloodModel>(context, view) {
 
     var source: String = ""
 
-    override fun bind(row: NeedBloodModel, idx: Int) {
+    override fun bind(row: DonateBloodModel, idx: Int) {
 
         row.filterRow()
         super.bind(row, idx)
@@ -268,13 +271,15 @@ class NeedBloodListViewHolder(
             }
         }
 
-        setTV(R.id.nameTV, row.name)
         setIV(R.id.typeIV, "ic_${row.type}")
 
         val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
         setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
 
+        setTV(R.id.nameTV, row.name)
         setTV(R.id.blood_typeTV, row.blood_type)
+        setTV(R.id.ageTV, row.age.toString())
+        setTV(R.id.weightTV, row.weight.toString())
         setTV(R.id.created_at, row.created_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
@@ -311,5 +316,4 @@ class NeedBloodListViewHolder(
             }
         }
     }
-
 }

@@ -62,14 +62,15 @@ open class BaseService {
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
+                println(e.localizedMessage)
+                complete(false)
             }
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
 
                 try {
                     jsonString = response.body!!.string()
-//                    println(jsonString)
+                    println(jsonString)
                     success = true
                 } catch (e: Exception) {
                     success = false
@@ -85,6 +86,11 @@ open class BaseService {
         isEmulator = _isEmulator()
         //isEmulator = true
         BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
+//        if (isEmulator) {
+//            BASE_URL = LOCALHOST_BASE_URL
+//        } else {
+//            BASE_URL = REMOTE_BASE_URL
+//        }
         URL_HOME = "$BASE_URL/"
     }
 

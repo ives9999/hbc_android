@@ -102,31 +102,56 @@
                 app:twoRadioTitleWidth="210"
                 app:yesRadioTitle="願意" />
 
-            <tw.com.bluemobile.hbc.views.EditTextUnit
-                android:id="@+id/traffic_fee"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/formitem_container_height"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:unit="元"
-                app:unitKeyboard="number"
-                app:unitStarIV="false"
-                app:unitTitleLLWidth="210"
-                app:unitTitleTV="車馬費設定(每500公尺)"
-                app:unitValueETWidth="80"
-                app:unitValueLLWidth="150" />
+                android:orientation="vertical">
+                <tw.com.bluemobile.hbc.views.EditTextUnit
+                    android:id="@+id/traffic_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:unit="元"
+                    app:unitKeyboard="number"
+                    app:unitStarIV="false"
+                    app:unitTitleLLWidth="210"
+                    app:unitTitleTV="車馬費設定(每500公尺)"
+                    app:unitValueETWidth="80"
+                    app:unitValueLLWidth="150" />
 
-            <tw.com.bluemobile.hbc.views.EditTextUnit
-                android:id="@+id/nutrient_fee"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/formitem_container_height"
-                android:layout_marginTop="@dimen/formitem_container_marginTop"
-                app:unit="元"
-                app:unitKeyboard="number"
-                app:unitStarIV="false"
-                app:unitTitleLLWidth="210"
-                app:unitTitleTV="營養費費設定(50CC共)"
-                app:unitValueETWidth="80"
-                app:unitValueLLWidth="150" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:textColor="@color/red_600"
+                    android:text="(可配對後再行約定)" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/formitem_container_marginTop"
+            android:orientation="vertical">
+                <tw.com.bluemobile.hbc.views.EditTextUnit
+                    android:id="@+id/nutrient_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:unit="元"
+                    app:unitKeyboard="number"
+                    app:unitStarIV="false"
+                    app:unitTitleLLWidth="210"
+                    app:unitTitleTV="營養費費設定(50CC共)"
+                    app:unitValueETWidth="80"
+                    app:unitValueLLWidth="150" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:textColor="@color/red_600"
+                    android:text="(可配對後再行約定)" />
+
+            </LinearLayout>
 
             <tw.com.bluemobile.hbc.views.UploadImage
                 android:id="@+id/blood_image"
