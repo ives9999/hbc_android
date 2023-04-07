@@ -272,7 +272,7 @@ class BloodProcessActivity : ShowActivity() {
             if (success) {
                 runOnUiThread {
                     try {
-                        //println(DonateBloodService.jsonString)
+                        //println(OrderService.jsonString)
                         val successModel =
                             jsonToModel<SuccessModel<OrderModel>>(OrderService.jsonString)
                         if (successModel != null) {
