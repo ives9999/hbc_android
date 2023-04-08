@@ -79,7 +79,7 @@ class PasswordActivity : BaseActivity() {
         } else {
             msg = ""
             if (editTextPassword!!.value.isEmpty()) {
-                msg += "密碼不能為空白\n"
+                msg += "新密碼不能為空白\n"
             }
 
             if (editTextRePassword!!.value.isEmpty()) {

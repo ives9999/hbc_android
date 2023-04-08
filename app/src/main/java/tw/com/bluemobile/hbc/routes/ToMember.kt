@@ -22,6 +22,17 @@ interface ToMember {
         activity.startActivity(i)
     }
 
+    fun toMemberNeedBloodList(activity: BaseActivity) {
+        val i = Intent(activity, MemberNeedBloodListActivity::class.java)
+        activity.startActivity(i)
+    }
+
+    fun toMemberDonateBloodList(activity: BaseActivity) {
+        val i = Intent(activity, MemberDonateBloodListActivity::class.java)
+        activity.startActivity(i)
+    }
+
+
 //    fun toMemberPetEdit(activity: BaseActivity, token: String? = null) {
 //        val i = Intent(activity, MemberPetEditActivity::class.java)
 //        i.putExtra("memberPetToken", token)

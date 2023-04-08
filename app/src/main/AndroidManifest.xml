@@ -29,6 +29,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.MemberDonateBloodListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.MemberNeedBloodListActivity"
+            android:exported="false" />
+        <activity
             android:name=".controllers.NeedBloodShowActivity"
             android:exported="false" />
         <activity

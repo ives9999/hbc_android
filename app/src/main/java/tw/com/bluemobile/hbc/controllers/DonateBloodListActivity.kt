@@ -70,7 +70,7 @@ class DonateBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodM
         if (source == "member") {
             params.putAll(hashMapOf("member_token" to member.token!!))
         } else if (source == "home") {
-            params.putAll(hashMapOf("IDo" to "1"))
+            params.putAll(hashMapOf("IDo" to "1", "status" to "online"))
         }
 
         NeedBloodService.getList(this, params, page, perPage) { success ->
@@ -181,7 +181,7 @@ class DonateBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodM
                         if (successModel != null) {
                             if (successModel.success) {
                                 val orderModel: OrderModel = successModel.model!!
-                                success("已經建立此筆訂單，是否前往後續流程服務頁面？", "是") {
+                                success("已經建立此筆流程，是否前往後續流程服務頁面？", "是") {
                                     toBloodProcess(this, orderModel.token)
                                 }
                             } else {

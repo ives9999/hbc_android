@@ -204,7 +204,7 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
                         if (successModel != null) {
                             if (successModel.success) {
                                 val orderModel: OrderModel = successModel.model!!
-                                success("已經建立此筆訂單，是否前往後續流程服務頁面？", "是") {
+                                success("已經建立此筆流程，是否前往後續流程服務頁面？", "是") {
                                     toBloodProcess(this, orderModel.token)
                                 }
                             } else {
