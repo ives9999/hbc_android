@@ -251,8 +251,7 @@ class NeedBloodListViewHolder(
         setTV(R.id.nameTV, row.name)
         setIV(R.id.typeIV, "ic_${row.type}")
 
-        val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(row.type)
-        setTV(R.id.typeTV, typeEnum.DBNameToRadioText(row.type))
+        setTV(R.id.typeTV, row.type_show)
 
         setTV(R.id.blood_typeTV, row.blood_type)
         setTV(R.id.created_at, row.created_at_show)

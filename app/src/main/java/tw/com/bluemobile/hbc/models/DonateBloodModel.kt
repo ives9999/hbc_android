@@ -1,6 +1,8 @@
 package tw.com.bluemobile.hbc.models
 
 import tw.com.bluemobile.hbc.utilities.BASE_URL
+import tw.com.bluemobile.hbc.utilities.DonateBloodEnum
+import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 
 class DonateBloodModel: BaseModel() {
     var member_id: Int = 0
@@ -19,6 +21,8 @@ class DonateBloodModel: BaseModel() {
     var order_token: String = ""
     var memberA_token: String = ""
     var memberB_token: String = ""
+
+    var type_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
@@ -40,5 +44,8 @@ class DonateBloodModel: BaseModel() {
         } else {
             body_image = "$BASE_URL/images/nophoto.png"
         }
+
+        val typeEnum: DonateBloodEnum = DonateBloodEnum.enumFromString(type)
+        type_show = typeEnum.DBNameToRadioText(type)
     }
 }

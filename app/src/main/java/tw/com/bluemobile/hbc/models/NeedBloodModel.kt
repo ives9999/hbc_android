@@ -1,5 +1,7 @@
 package tw.com.bluemobile.hbc.models
 
+import tw.com.bluemobile.hbc.utilities.DonateBloodEnum
+import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 import tw.com.bluemobile.hbc.utilities.Zones
 
 class NeedBloodModel: BaseModel() {
@@ -22,6 +24,7 @@ class NeedBloodModel: BaseModel() {
 
     var hospital_city_show: String = ""
     var hospital_area_show: String = ""
+    var type_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
@@ -33,5 +36,8 @@ class NeedBloodModel: BaseModel() {
         if (hospital_area_id != null && hospital_area_id > 0) {
             hospital_area_show = Zones.zoneIDToName(hospital_area_id)
         }
+
+        val typeEnum: NeedBloodEnum = NeedBloodEnum.enumFromString(type)
+        type_show = typeEnum.DBNameToRadioText(type)
     }
 }

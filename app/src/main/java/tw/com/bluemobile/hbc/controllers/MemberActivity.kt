@@ -123,7 +123,7 @@ class MemberActivity : BaseActivity() {
         //println(idx)
         when (memberHomeEnum) {
             MemberHomeEnum.account -> toRegister(this)
-            MemberHomeEnum.process -> toMemberProcess(this)
+            MemberHomeEnum.pair -> toMemberPair(this)
             MemberHomeEnum.pet -> toMemberDonateBloodList(this)
             MemberHomeEnum.need_blood -> toMemberNeedBloodList(this)
             //MemberHomeEnum.donate_blood -> toMemberDonateBloodList(this)

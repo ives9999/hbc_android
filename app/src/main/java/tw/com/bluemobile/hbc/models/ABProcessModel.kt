@@ -1,5 +1,6 @@
 package tw.com.bluemobile.hbc.models
 
+import tw.com.bluemobile.hbc.extensions.mobileShow
 import tw.com.bluemobile.hbc.extensions.noSec
 
 class ABProcessModel: BaseModel() {
@@ -23,6 +24,14 @@ class ABProcessModel: BaseModel() {
     var nutrient_feeB_at: String = ""
     var complete_at: String = ""
 
+    var memberA_nickname: String = ""
+    var memberA_mobile: String = ""
+    var memberA_token: String = ""
+    var memberB_nickname: String = ""
+    var memberB_mobile: String = ""
+    var memberB_token: String = ""
+    var order_token: String = ""
+
     var send_information_at_show: String = ""
     var arrive_hospitalA_at_show: String = ""
     var arrive_hospitalB_at_show: String = ""
@@ -35,6 +44,12 @@ class ABProcessModel: BaseModel() {
     var nutrient_feeP_at_show: String = ""
     var nutrient_feeB_at_show: String = ""
     var complete_at_show: String = ""
+
+    var memberA_mobile_show: String = ""
+    var memberB_mobile_show: String = ""
+
+    var needBloodModel: NeedBloodModel? = null
+    var donateBloodModel: DonateBloodModel? = null
 
     override fun filterRow() {
         super.filterRow()
@@ -74,6 +89,22 @@ class ABProcessModel: BaseModel() {
         }
         if (complete_at != null) {
             complete_at_show = complete_at.noSec()
+        }
+
+        if (memberA_mobile != null && memberA_mobile.length > 0) {
+            memberA_mobile_show = memberA_mobile.mobileShow()
+        }
+
+        if (memberB_mobile != null && memberB_mobile.length > 0) {
+            memberB_mobile_show = memberB_mobile.mobileShow()
+        }
+
+        if (needBloodModel != null) {
+            needBloodModel!!.filterRow()
+        }
+
+        if (donateBloodModel != null) {
+            donateBloodModel!!.filterRow()
         }
     }
 }

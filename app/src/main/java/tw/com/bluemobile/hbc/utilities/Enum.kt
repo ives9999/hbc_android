@@ -256,7 +256,7 @@ enum class KeyEnum(val englishName: String, val chineseName: String) {
 enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
     account("account", "帳戶資料"),
-    process("process", "我的配對"),
+    pair("pair", "我的配對"),
     pet("pet", "我的寶貝"),
     //donate_blood("donate_blood", "我的捐血"),
     need_blood("need_blood", "我需要血"),
@@ -272,7 +272,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromString(value: String): MemberHomeEnum {
             when (value) {
                 "account" -> return account
-                "process" ->return process
+                "pair" ->return pair
                 "pet" ->return pet
                 "need_blood" -> return need_blood
                 //"donate_blood" -> return donate_blood
@@ -290,7 +290,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromIdx(idx: Int): MemberHomeEnum {
             when (idx) {
                 0 -> return account
-                1 -> return process
+                1 -> return pair
                 2 -> return pet
                 3 -> return need_blood
                 //3 -> return donate_blood
@@ -307,7 +307,7 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
         fun getAllEnum(): Array<MemberHomeEnum> {
             //return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
-            return arrayOf(account, process, pet, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
+            return arrayOf(account, pair, pet, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
         }
     }
 

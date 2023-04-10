@@ -61,24 +61,8 @@ class MemberABProcessListActivity : ListActivity<MemberABProcessListViewHolder, 
     }
 
     private val onAcceptClick: ((Int) -> Unit) = { idx ->
-        if (!member.isLoggedIn) {
-            warning("請先登入！！", "登入") {
-                toLogin(this)
-            }
-        } else {
-//            val row: NeedBloodModel = rows[idx]
-//            if (row.status == "online") {
-//                info("是否確定要捐血給該寵物", "確定") {
-//                    //insertBloodProcess(idx)
-//                }
-//            } else if (row.status == "process") {
-//                if (member.token != row.memberA_token && member.token != row.memberB_token) {
-//                    warning("您不是該捐需血的主人，無法檢視進行中的流程!!")
-//                } else {
-//                    toBloodProcess(this, row.order_token)
-//                }
-//            }
-        }
+        val row: ABProcessModel = rows[idx]
+        toBloodProcess(this, row.order_token)
     }
 }
 
@@ -132,6 +116,15 @@ class MemberABProcessListViewHolder(
                 it.text = "捐血"
                 it.setTextColor(getColor(context, R.color.MY_WHITE))
             }
+
+            if (row.needBloodModel != null) {
+                setIV(R.id.typeIV, "ic_${row.needBloodModel!!.type}")
+                setTV(R.id.typeTV, row.needBloodModel!!.type_show)
+                setTV(R.id.nameTV, row.needBloodModel!!.name)
+            }
+
+            setTV(R.id.nicknameTV, row.memberA_nickname)
+            setTV(R.id.mobileTV, row.memberA_mobile_show)
         } else {
             view.findViewById<LinearLayout>(R.id.acceptLL) ?. let {
                 it.background = ContextCompat.getDrawable(context, R.drawable.circle)
@@ -140,6 +133,15 @@ class MemberABProcessListViewHolder(
                 it.text = "需血"
                 it.setTextColor(getColor(context, R.color.MY_BLACK))
             }
+
+            if (row.donateBloodModel != null) {
+                setIV(R.id.typeIV, "ic_${row.donateBloodModel!!.type}")
+                setTV(R.id.typeTV, row.donateBloodModel!!.type_show)
+                setTV(R.id.nameTV, row.donateBloodModel!!.name)
+            }
+
+            setTV(R.id.nicknameTV, row.memberB_nickname)
+            setTV(R.id.mobileTV, row.memberB_mobile_show)
         }
 
         setTV(R.id.created_at, row.created_at_show)

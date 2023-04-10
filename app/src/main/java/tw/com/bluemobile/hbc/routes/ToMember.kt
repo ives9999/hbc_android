@@ -22,7 +22,7 @@ interface ToMember {
         activity.startActivity(i)
     }
 
-    fun toMemberProcess(activity: BaseActivity) {
+    fun toMemberPair(activity: BaseActivity) {
         val i = Intent(activity, MemberABProcessListActivity::class.java)
         activity.startActivity(i)
     }
