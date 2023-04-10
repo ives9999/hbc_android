@@ -22,6 +22,11 @@ interface ToMember {
         activity.startActivity(i)
     }
 
+    fun toMemberProcess(activity: BaseActivity) {
+        val i = Intent(activity, MemberABProcessListActivity::class.java)
+        activity.startActivity(i)
+    }
+
     fun toMemberNeedBloodList(activity: BaseActivity) {
         val i = Intent(activity, MemberNeedBloodListActivity::class.java)
         activity.startActivity(i)

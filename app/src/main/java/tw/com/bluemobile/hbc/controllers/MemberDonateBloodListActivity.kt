@@ -14,7 +14,7 @@ class MemberDonateBloodListActivity : ListActivity<DonateBloodListViewHolder, Do
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_donate_blood_list)
 
-        setTop(false, "我的捐血")
+        setTop(false, "我的寶貝")
         top?.showAdd(true)
         top?.showPrev(true)
 

@@ -256,8 +256,9 @@ enum class KeyEnum(val englishName: String, val chineseName: String) {
 enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
     account("account", "帳戶資料"),
+    process("process", "我的配對"),
     pet("pet", "我的寶貝"),
-    donate_blood("donate_blood", "我的捐血"),
+    //donate_blood("donate_blood", "我的捐血"),
     need_blood("need_blood", "我需要血"),
     reset_password("reset_password", "更改密碼"),
     bank_account("bank", "銀行帳號"),
@@ -271,9 +272,10 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromString(value: String): MemberHomeEnum {
             when (value) {
                 "account" -> return account
+                "process" ->return process
                 "pet" ->return pet
                 "need_blood" -> return need_blood
-                "donate_blood" -> return donate_blood
+                //"donate_blood" -> return donate_blood
                 "bank_account" -> return bank_account
                 "reset_password" -> return reset_password
                 //"credit_card" -> return credit_card
@@ -288,9 +290,10 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         fun enumFromIdx(idx: Int): MemberHomeEnum {
             when (idx) {
                 0 -> return account
-                1 -> return pet
-                2 -> return need_blood
-                3 -> return donate_blood
+                1 -> return process
+                2 -> return pet
+                3 -> return need_blood
+                //3 -> return donate_blood
                 4 -> return bank_account
                 5 -> return reset_password
                 //5 -> return credit_card
@@ -303,7 +306,8 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
         }
 
         fun getAllEnum(): Array<MemberHomeEnum> {
-            return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
+            //return arrayOf(account, pet, donate_blood, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
+            return arrayOf(account, process, pet, need_blood, bank_account, reset_password, validate_email, validate_mobile, delete, refresh)
         }
     }
 

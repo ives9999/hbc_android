@@ -202,8 +202,8 @@ class DonateBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodM
 class NeedBloodListAdapter(
     override val resource: Int,
     override val viewHolderConstructor: viewHolder<NeedBloodListViewHolder>,
-    val source: String,
-    val onAcceptClick: ((Int) -> Unit)?):
+    private val source: String,
+    private val onAcceptClick: ((Int) -> Unit)?):
     BaseAdapter<NeedBloodListViewHolder, NeedBloodModel>(resource, viewHolderConstructor) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NeedBloodListViewHolder {
