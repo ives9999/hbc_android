@@ -69,9 +69,9 @@ class DonateBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodM
         val params: MutableMap<String, String> = mutableMapOf()
         if (source == "member") {
             params.putAll(hashMapOf("member_token" to member.token!!))
-        } else if (source == "home") {
-            params.putAll(hashMapOf("IDo" to "1", "status" to "online"))
         }
+
+        params.putAll(hashMapOf("status" to "online,process"))
 
         NeedBloodService.getList(this, params, page, perPage) { success ->
             runOnUiThread {

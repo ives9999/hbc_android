@@ -108,6 +108,8 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
             params.putAll(hashMapOf("member_token" to member.token!!))
         }
 
+        params.putAll(hashMapOf("status" to "online,process"))
+
         DonateBloodService.getList(this, params, page, perPage) { success ->
             runOnUiThread {
                 //println(DonateBloodService.jsonString)
