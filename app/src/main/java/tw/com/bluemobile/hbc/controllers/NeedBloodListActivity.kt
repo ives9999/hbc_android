@@ -48,6 +48,9 @@ class NeedBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodMod
         if (source == "member") {
             params.putAll(hashMapOf("member_token" to member.token!!))
         }
+
+        params.putAll(hashMapOf("status" to "online,process"))
+
         NeedBloodService.getList(this, params, page, perPage) { success ->
             runOnUiThread {
                 //println(NeedBloodService.jsonString)

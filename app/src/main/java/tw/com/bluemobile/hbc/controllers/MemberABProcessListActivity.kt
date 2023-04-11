@@ -27,7 +27,6 @@ class MemberABProcessListActivity : ListActivity<MemberABProcessListViewHolder, 
         setContentView(R.layout.activity_member_abprocess_list)
 
         setTop(false, "我的配對")
-        top?.showAdd(true)
         top?.showPrev(true)
 
         loading = Loading(this)
