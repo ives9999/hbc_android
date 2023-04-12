@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.example.awesomedialog.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.extensions.setImage
@@ -18,6 +19,7 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     private val view: View = View.inflate(context, R.layout.featured, this)
     private var featured: AppCompatImageView? = null
+    private var addButton: FloatingActionButton? = null
 
     init {
         attrs?.let {
@@ -26,6 +28,10 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
         view.findViewById<AppCompatImageView>(R.id.checkIV) ?. let {
             featured = it
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.fab_add_photo) ?. let {
+            addButton = it
         }
     }
 
@@ -49,6 +55,9 @@ class Featured @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     fun setOnImagePickListener(pickProfileImage: () -> Unit, pickCameraImage: () -> Unit) {
         featured?.setOnClickListener {
+            sourceSelectDialog(pickProfileImage, pickCameraImage)
+        }
+        addButton?.setOnClickListener {
             sourceSelectDialog(pickProfileImage, pickCameraImage)
         }
     }

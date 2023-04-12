@@ -20,11 +20,27 @@
         android:layout_below="@id/top"
         android:orientation="horizontal">
 
-        <tw.com.bluemobile.hbc.views.Featured
-            android:id="@+id/featured"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginStart="12dp" />
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/featuredIV"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/profile_bg"
+                android:padding="3dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_person" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

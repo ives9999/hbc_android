@@ -3,6 +3,7 @@ package tw.com.bluemobile.hbc.controllers
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,13 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.registerForActivityResult
+import androidx.appcompat.widget.AppCompatImageView
 import com.example.awesomedialog.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import tw.com.bluemobile.hbc.R
+import tw.com.bluemobile.hbc.extensions.setImage
+import tw.com.bluemobile.hbc.extensions.setLocalImage
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
@@ -26,7 +30,7 @@ import tw.com.bluemobile.hbc.views.Featured
 class MemberActivity : BaseActivity() {
 
     lateinit var itemList: ArrayList<GridViewModal>
-    private var featured: Featured? = null
+    private var featured: AppCompatImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -48,10 +52,14 @@ class MemberActivity : BaseActivity() {
         super.init()
         loading = Loading(this)
 
-        findViewById<Featured>(R.id.featured) ?. let {
+        findViewById<AppCompatImageView>(R.id.featuredIV) ?. let {
             featured = it
-            it.setFeatured(member.featured!!, true)
-            //it.setOnImagePickListener(pickProfileImage, pickCameraImage)
+            if (member.featured!!.contains("nophoto")) {
+                it.setImage("ic_person")
+            } else {
+                val uri: Uri = Uri.parse(member.featured!!)
+                it.setLocalImage(uri, true)
+            }
         }
 
         findViewById<TextView>(R.id.nicknameTV) ?. let {
