@@ -84,7 +84,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="傻眼貓咪"
                         android:textColor="@color/MY_BLACK" />
 
                     <LinearLayout
@@ -105,7 +104,6 @@
                             style="@style/edit_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="A"
                             android:textColor="@color/deep_orange_500" />
 
                     </LinearLayout>
@@ -128,7 +126,6 @@
                             style="@style/edit_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2022-09-30 18:00"
                             android:textColor="@color/MY_BLACK" />
                     </LinearLayout>
                 </LinearLayout>

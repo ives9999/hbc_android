@@ -101,10 +101,25 @@ class MemberABProcessListViewHolder(
         super.bind(row, idx)
 
         var type: String = ""
-        if (row.need_blood_id > 0) {
-            type = "donate"
-        } else if (row.donate_blood_id > 0) {
+        if (row.memberA_id == member.id) {
             type = "need"
+        } else if (row.memberB_id == member.id) {
+            type = "donate"
+        }
+//        if (row.need_blood_id > 0) {
+//            type = "donate"
+//        } else if (row.donate_blood_id > 0) {
+//            type = "need"
+//        }
+
+        if (row.needBloodModel != null) {
+            setIV(R.id.typeIV, "ic_${row.needBloodModel!!.type}")
+            setTV(R.id.typeTV, row.needBloodModel!!.type_show)
+            setTV(R.id.nameTV, row.needBloodModel!!.name)
+        } else if (row.donateBloodModel != null) {
+            setIV(R.id.typeIV, "ic_${row.donateBloodModel!!.type}")
+            setTV(R.id.typeTV, row.donateBloodModel!!.type_show)
+            setTV(R.id.nameTV, row.donateBloodModel!!.name)
         }
 
         if (type == "donate") {
@@ -114,12 +129,6 @@ class MemberABProcessListViewHolder(
             view.findViewById<TextView>(R.id.acceptTV)?.let {
                 it.text = "捐血"
                 it.setTextColor(getColor(context, R.color.MY_WHITE))
-            }
-
-            if (row.needBloodModel != null) {
-                setIV(R.id.typeIV, "ic_${row.needBloodModel!!.type}")
-                setTV(R.id.typeTV, row.needBloodModel!!.type_show)
-                setTV(R.id.nameTV, row.needBloodModel!!.name)
             }
 
             setTV(R.id.nicknameTV, row.memberA_nickname)
@@ -133,10 +142,10 @@ class MemberABProcessListViewHolder(
                 it.setTextColor(getColor(context, R.color.MY_BLACK))
             }
 
-            if (row.donateBloodModel != null) {
-                setIV(R.id.typeIV, "ic_${row.donateBloodModel!!.type}")
-                setTV(R.id.typeTV, row.donateBloodModel!!.type_show)
-                setTV(R.id.nameTV, row.donateBloodModel!!.name)
+            if (row.needBloodModel != null) {
+                setIV(R.id.typeIV, "ic_${row.needBloodModel!!.type}")
+                setTV(R.id.typeTV, row.needBloodModel!!.type_show)
+                setTV(R.id.nameTV, row.needBloodModel!!.name)
             }
 
             setTV(R.id.nicknameTV, row.memberB_nickname)
