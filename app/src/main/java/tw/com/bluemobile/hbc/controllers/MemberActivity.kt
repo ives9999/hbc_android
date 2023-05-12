@@ -156,9 +156,9 @@ class MemberActivity : BaseActivity() {
                     member.reset()
                     val memberModel = successModel.model
                     memberModel?.filterRow()
-                    //memberModel?.dump()
+                    memberModel?.dump()
                     memberModel?.toSession(this, true)
-                    //member.dump()
+                    member.dump()
                     runOnUiThread {
                         init()
                     }

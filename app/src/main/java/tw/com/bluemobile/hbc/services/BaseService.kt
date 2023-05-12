@@ -84,7 +84,7 @@ open class BaseService {
 
     protected fun getBaseUrl() {
         isEmulator = _isEmulator()
-        isEmulator = false
+        //isEmulator = false
         BASE_URL = (isEmulator then { LOCALHOST_BASE_URL }) ?: REMOTE_BASE_URL
 //        if (isEmulator) {
 //            BASE_URL = LOCALHOST_BASE_URL

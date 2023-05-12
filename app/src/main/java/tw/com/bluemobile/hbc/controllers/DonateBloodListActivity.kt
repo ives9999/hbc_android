@@ -93,7 +93,7 @@ class DonateBloodListActivity : ListActivity<NeedBloodListViewHolder, NeedBloodM
         }
 
         super.add()
-        toNeedBloodEdit(this)
+        toDonateBloodEdit(this)
     }
 
     override val onRowClick: ((Int) -> Unit) = { idx ->

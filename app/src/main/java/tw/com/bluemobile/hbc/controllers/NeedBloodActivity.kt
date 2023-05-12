@@ -282,7 +282,7 @@ class DonateBloodListViewHolder(
         setTV(R.id.blood_typeTV, row.blood_type)
         setTV(R.id.ageTV, row.age.toString())
         setTV(R.id.weightTV, row.weight.toString())
-        setTV(R.id.created_at, row.created_at_show)
+        setTV(R.id.updated_at, row.updated_at_show)
         setTV(R.id.traffic_feeTV, row.traffic_fee.toString())
         setTV(R.id.nutrient_feeTV, row.nutrient_fee.toString())
 
