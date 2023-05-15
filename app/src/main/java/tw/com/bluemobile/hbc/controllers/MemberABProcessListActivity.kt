@@ -11,11 +11,9 @@ import androidx.core.content.ContextCompat
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
-import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.ABProcessModel
 import tw.com.bluemobile.hbc.models.BaseModels
-import tw.com.bluemobile.hbc.models.NeedBloodModel
 import tw.com.bluemobile.hbc.services.ABProcessService
 import tw.com.bluemobile.hbc.utilities.*
 import java.lang.reflect.Type

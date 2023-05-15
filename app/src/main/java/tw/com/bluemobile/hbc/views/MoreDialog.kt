@@ -12,17 +12,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.data.SelectRow
-import tw.com.bluemobile.hbc.models.AreaModel
 import tw.com.bluemobile.hbc.utilities.KeyEnum
-import tw.com.bluemobile.hbc.utilities.Zones
+import tw.com.bluemobile.hbc.utilities.then
+import tw.com.bluemobile.hbc.utilities.viewHolder
 
-open class MoreDialog(context: Context, private val screenWidth: Int, private val keyEnum: KeyEnum, private val selected: String): Dialog(context) {
+open class MoreDialog(context: Context, private val screenWidth: Int, private val keyEnum: KeyEnum, private val selected: String, private val delegate: MoreDialogDelegate?): Dialog(context) {
 
     //var city_id: Int? = null
-    val selectRows: ArrayList<SelectRow> = arrayListOf()
-    var delegate: MoreDialogDelegate? = null
+    open lateinit var adapter: SelectSingleAdapter<SelectSingleViewHolder>
 
     fun init(isPrev: Boolean, title: String) {
 
@@ -36,6 +34,14 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
                 this.hide()
             }
         }
+
+        adapter = SelectSingleAdapter(::SelectSingleViewHolder, keyEnum, selected, delegate)
+
+        val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.adapter = adapter
+
+        //selectSingleAdapter.rows = rowBridge()
 
         setBottomButtonPadding(1, 300)
     }
@@ -78,32 +84,15 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
 //            }
 //        }
 
-        return selectRows
+        return ArrayList()
     }
 
-    open fun rowBridge(): ArrayList<SelectRow> {
-        return ArrayList<SelectRow>()
+    fun setRows(rows: ArrayList<SelectRow>) {
+        adapter.rows = rows
+        adapter.notifyDataSetChanged()
     }
 
-
-    open fun setAdapter(): SelectSingleAdapter {
-
-        val selectSingleAdapter: SelectSingleAdapter = SelectSingleAdapter(selected, keyEnum, delegate)
-
-        val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = selectSingleAdapter
-
-        selectSingleAdapter.rows = rowBridge()
-
-//        if (keyEnum == KeyEnum.city_id) {
-//            selectSingleAdapter.rows = rowBridgeForCity()
-//        } else if (keyEnum == KeyEnum.area_id) {
-//            selectSingleAdapter.rows = rowBridgeForArea()
-//        }
-        
-        return selectSingleAdapter
-    }
+    open fun rowBridge() {}
 
     fun show(padding: Int=0) {
         if (padding > 0) {
@@ -117,52 +106,65 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
     }
 }
 
-open class SelectSingleAdapter(var selected: String?, val keyEnum: KeyEnum, val delegate: MoreDialogDelegate?): RecyclerView.Adapter<SelectSingleViewHolder>() {
+//typealias selectViewHolder<T> = (View, KeyEnum, MoreDialogDelegate?)-> T
+open class SelectSingleAdapter<T: SelectSingleViewHolder>(
+    open val viewHolderConstructor: viewHolder<T>,
+    val keyEnum: KeyEnum,
+    val selected: String,
+    val delegate: MoreDialogDelegate?
+    ): RecyclerView.Adapter<T>() {
 
     var rows: ArrayList<SelectRow> = arrayListOf()
 
-    override fun onBindViewHolder(holder: SelectSingleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: T, position: Int) {
 
         val row: SelectRow = rows[position]
-        holder.title.text = row.title
-
-        if (selected == row.value) {
-            holder.selected.visibility = View.VISIBLE
-        } else {
-            holder.selected.visibility = View.INVISIBLE
-        }
-
-        holder.viewHolder.setOnClickListener {
-            cellOnClickListener(holder, row)
-//            holder.selected.visibility = View.VISIBLE
-//            delegate?.delegateCellClick(keyEnum, row.id)
-        }
+        val isSelected: Boolean = ((selected == row.value) then { true }) ?: false
+        holder.bind(row, position, isSelected)
     }
-
-    open fun cellOnClickListener(holder: SelectSingleViewHolder, row: SelectRow) {
-        holder.selected.visibility = View.VISIBLE
-    }
-
     override fun getItemCount(): Int {
         return rows.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectSingleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
 
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = inflater.inflate(R.layout.select_row, parent, false)
+        val t = viewHolderConstructor(parent.context, viewHolder)
+        t.keyEnum = keyEnum
+        t.delegate = delegate
 
-        return SelectSingleViewHolder(viewHolder)
+        return t
     }
 }
 
-class SelectSingleViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class SelectSingleViewHolder(context: Context, val view: View): RecyclerView.ViewHolder(view) {
 
-    val title: TextView = viewHolder.findViewById(R.id.title)
-    val selected: ImageView = viewHolder.findViewById(R.id.selected)
+    val titleTV: TextView = view.findViewById(R.id.title)
+    private val selectedIV: ImageView = view.findViewById(R.id.selected)
+    var keyEnum: KeyEnum? = null
+    var delegate: MoreDialogDelegate? = null
+
+    fun bind(row: SelectRow, idx: Int, isSelected: Boolean = false) {
+        titleTV.text = row.title
+
+        if (isSelected) {
+            selectedIV.visibility = View.VISIBLE
+        } else {
+            selectedIV.visibility = View.INVISIBLE
+        }
+
+        view.setOnClickListener {
+            selectedIV.visibility = View.VISIBLE
+            //println(delegate)
+            //delegate?.delegateCellClick(row.id)
+            delegate?.delegateCityClick(row.id)
+        }
+    }
 }
 
 interface MoreDialogDelegate {
 
+    fun delegateCellClick(id: Int){}
     fun delegateCityClick(id: Int){}
 }

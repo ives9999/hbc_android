@@ -15,49 +15,32 @@ class SelectCity @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     override fun toMoreDialog(screenWidth: Int, selected: String, delegate: MoreDialogDelegate?): MoreDialog {
 
-        val moreDialog = CityDialog(context, screenWidth, selected)
-        moreDialog.delegate = delegate
+        val moreDialog = CityDialog(context, screenWidth, selected, delegate)
         moreDialog.setContentView(R.layout.select_single)
         moreDialog.init(false, "縣市")
-        //moreDialog.init(false, keyEnum.chineseName)
-        moreDialog.setAdapter()
         moreDialog.show(30)
+        moreDialog.rowBridge()
 
         return moreDialog
     }
 
 }
 
-class CityDialog(context: Context, private val screenWidth: Int, private val selected: String): MoreDialog(context, screenWidth, KeyEnum.city_id, selected) {
+class CityDialog(context: Context, private val screenWidth: Int, private val selected: String, private val delegate: MoreDialogDelegate?): MoreDialog(context, screenWidth, KeyEnum.city_id, selected, delegate) {
 
-    override fun setAdapter(): SelectSingleAdapter {
-        val selectSingleAdapter: CityCSelectSingleAdapter = CityCSelectSingleAdapter(selected, KeyEnum.city_id, delegate)
-
-        val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = selectSingleAdapter
-
-        selectSingleAdapter.rows = rowBridge()
-
-        return selectSingleAdapter
-    }
-    override fun rowBridge(): ArrayList<SelectRow> {
+    override fun rowBridge() {
         val citys = Zones.getCitys()
 
+        val thisRows: ArrayList<SelectRow> = arrayListOf()
         for(city in citys) {
             val title = city.name
             val id = city.id
-            selectRows.add(SelectRow(id, title, id.toString()))
+            thisRows.add(SelectRow(id, title, id.toString()))
         }
-
-        return selectRows
+        setRows(thisRows)
     }
 }
 
-class CityCSelectSingleAdapter(selected: String?, keyEnum: KeyEnum, delegate: MoreDialogDelegate?): SelectSingleAdapter(selected, keyEnum, delegate) {
-
-    override fun cellOnClickListener(holder: SelectSingleViewHolder, row: SelectRow) {
-        super.cellOnClickListener(holder, row)
-        delegate?.delegateCityClick(row.id)
-    }
-}
+//class CityCSelectSingleAdapter(selected: String?, keyEnum: KeyEnum, delegate: MoreDialogDelegate?): SelectSingleAdapter(selected, keyEnum, delegate) {
+//
+//}

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.setImage
 import tw.com.bluemobile.hbc.models.BaseModel
+import tw.com.bluemobile.hbc.utilities.viewHolder
 
 
 //class BaseList<T: BaseViewHolder<U>, U: BaseModel>(
@@ -31,8 +32,6 @@ import tw.com.bluemobile.hbc.models.BaseModel
 //        }
 //    }
 //}
-
-typealias viewHolder<T> = (Context, View)-> T
 
 open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     open val resource: Int,
@@ -66,8 +65,7 @@ open class BaseAdapter<T: BaseViewHolder<U>, U: BaseModel> (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(resource, parent, false)
-        val viewHolder = viewHolderConstructor(parent.context, view)
-        return viewHolder
+        return viewHolderConstructor(parent.context, view)
     }
 
     fun setRows(rows: ArrayList<U>) {

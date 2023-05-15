@@ -1,6 +1,10 @@
 package tw.com.bluemobile.hbc.utilities
 
+import android.content.Context
+import android.view.View
+
 typealias CompletionHandler = (Success: Boolean) -> Unit
+typealias viewHolder<T> = (Context, View)-> T
 
 var isEmulator: Boolean = false
 val SESSION_FILENAME: String = "tw.com.bluemobile.hbc.session"

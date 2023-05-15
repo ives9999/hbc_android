@@ -11,11 +11,10 @@ class SelectArea @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     fun toMoreDialog(screenWidth: Int, city_id: Int, selected: String, delegate: BaseActivity): MoreDialog {
 
-        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.area_id, selected)
+        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.area_id, selected, null)
         //moreDialog.city_id = city_id
         moreDialog.setContentView(R.layout.select_single)
         moreDialog.init(false, keyEnum.chineseName)
-        moreDialog.setAdapter()
         moreDialog.show(30)
 
         return moreDialog

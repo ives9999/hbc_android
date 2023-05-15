@@ -126,6 +126,7 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
                         it.setOnClickListener {
                             moreDialog =
                                 it.toMoreDialog(screenWidth, it.value, this)
+                            //moreDialog!!.rowBridge()
                             //println(moreCity?.value)
                         }
 

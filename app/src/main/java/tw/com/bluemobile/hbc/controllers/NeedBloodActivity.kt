@@ -12,7 +12,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.adapters.BaseAdapter
 import tw.com.bluemobile.hbc.adapters.BaseViewHolder
-import tw.com.bluemobile.hbc.adapters.viewHolder
 import tw.com.bluemobile.hbc.databinding.ActivityMainBinding
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.member
