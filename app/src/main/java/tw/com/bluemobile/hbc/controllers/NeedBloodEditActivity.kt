@@ -7,15 +7,19 @@ import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.*
+import tw.com.bluemobile.hbc.services.DonateBloodService
+import tw.com.bluemobile.hbc.services.HospitalService
 import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
+import java.lang.reflect.Type
 
-class NeedBloodEditActivity : EditActivity() {
+class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 
-    var moreCity: More? = null
+    var moreHospital: More? = null
+    var moreCity: SelectCity? = null
     var moreArea: More? = null
     var typeRadio: TwoRadio? = null
     var catBloodTypeRadio: ThreeRadio? = null
@@ -147,6 +151,28 @@ class NeedBloodEditActivity : EditActivity() {
                         }
 
                     }
+                } else if (enum == NeedBloodEnum.hospital_name) {
+                    moreHospital = it as More
+
+                    val screenWidth = Global.getScreenWidth(resources)
+                    it.setOnClickListener {
+                        runOnUiThread{
+                            loading.show()
+                        }
+                        val params: MutableMap<String, String> = hashMapOf()
+                        val page: Int = 1
+                        val perpage: Int = 1
+                        HospitalService.getList(this, params, page, perpage) { success ->
+                            runOnUiThread {
+                                println(HospitalService.jsonString)
+
+                                val modelType: Type = genericType<BaseModels<DonateBloodModel>>()
+                                //parseJSON(DonateBloodService.jsonString, modelType)
+                                loading.hide()
+                                it.toMoreDialog(screenWidth, "0", this)
+                            }
+                        }
+                    }
                 } else if (enum == NeedBloodEnum.type) {
                     typeRadio = it as TwoRadio
 
@@ -249,6 +275,13 @@ class NeedBloodEditActivity : EditActivity() {
         this.blood_type = it
     }
 
+    override fun delegateCityClick(id: Int) {
+        //println("index:${idx}")
+        moreCity?.setText(Zones.zoneIDToName(id))
+        moreCity?.value = id.toString()
+        moreDialog?.hide()
+    }
+
     // set setting after city and area click.
     override fun cellClick(keyEnum: KeyEnum, id: Int) {
 //        println(key)
@@ -275,7 +308,7 @@ class NeedBloodEditActivity : EditActivity() {
                     msg += enum.errMsg()
                 } else {
                     val k = enum.englishName
-                    var v = layout.value
+                    val v = layout.value
 //                    if (enum == NeedBloodEnum.type) {
 //                        v = enum.radioTextToDBName(v)
 //                        type = v

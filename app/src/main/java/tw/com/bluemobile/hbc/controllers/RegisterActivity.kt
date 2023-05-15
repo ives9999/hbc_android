@@ -173,7 +173,7 @@ class RegisterActivity : BaseActivity() {
                             it.setOnClickListener() {
                                 val screenWidth = Global.getScreenWidth(resources)
                                 moreDialog =
-                                    it.toMoreDialog(screenWidth, it.value, this)
+                                    it.toMoreDialog(screenWidth, it.value)
                                 //println(moreCity?.value)
                             }
 

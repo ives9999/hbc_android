@@ -27,13 +27,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <tw.com.bluemobile.hbc.views.EditTextNormal
+            <tw.com.bluemobile.hbc.views.More
                 android:id="@+id/hospital_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
                 app:key="hospital_name"
-                app:titleTV="醫院名稱" />
+                app:moreTitleTV="醫院" />
 
             <tw.com.bluemobile.hbc.views.SelectCity
                 android:id="@+id/hospital_city_id"

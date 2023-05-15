@@ -18,10 +18,11 @@ import tw.com.bluemobile.hbc.models.AreaModel
 import tw.com.bluemobile.hbc.utilities.KeyEnum
 import tw.com.bluemobile.hbc.utilities.Zones
 
-class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: KeyEnum, private val selected: String, private val delegate: BaseActivity): Dialog(context) {
+open class MoreDialog(context: Context, private val screenWidth: Int, private val keyEnum: KeyEnum, private val selected: String): Dialog(context) {
 
-    var city_id: Int? = null
-    private val selectRows: ArrayList<SelectRow> = arrayListOf()
+    //var city_id: Int? = null
+    val selectRows: ArrayList<SelectRow> = arrayListOf()
+    var delegate: MoreDialogDelegate? = null
 
     fun init(isPrev: Boolean, title: String) {
 
@@ -67,44 +68,39 @@ class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: Ke
     }
 
     private fun rowBridgeForArea(): ArrayList<SelectRow> {
-        if (city_id != null) {
-            val areas: ArrayList<AreaModel> = Zones.getAreasByCityID(city_id!!)
-
-            for (area in areas) {
-                val title = area.name
-                val id = area.id
-                selectRows.add(SelectRow(id, title, id.toString()))
-            }
-        }
-
-        return selectRows
-    }
-
-    private fun rowBridgeForCity(): ArrayList<SelectRow> {
-        val citys = Zones.getCitys()
-
-        for(city in citys) {
-            val title = city.name
-            val id = city.id
-            selectRows.add(SelectRow(id, title, id.toString()))
-        }
+//        if (city_id != null) {
+//            val areas: ArrayList<AreaModel> = Zones.getAreasByCityID(city_id!!)
+//
+//            for (area in areas) {
+//                val title = area.name
+//                val id = area.id
+//                selectRows.add(SelectRow(id, title, id.toString()))
+//            }
+//        }
 
         return selectRows
     }
 
-    fun setAdapter(): SelectSingleAdapter {
+    open fun rowBridge(): ArrayList<SelectRow> {
+        return ArrayList<SelectRow>()
+    }
 
-        val selectSingleAdapter: SelectSingleAdapter = SelectSingleAdapter(keyEnum, selected, delegate)
+
+    open fun setAdapter(): SelectSingleAdapter {
+
+        val selectSingleAdapter: SelectSingleAdapter = SelectSingleAdapter(selected, keyEnum, delegate)
 
         val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = selectSingleAdapter
 
-        if (keyEnum == KeyEnum.city_id) {
-            selectSingleAdapter.rows = rowBridgeForCity()
-        } else if (keyEnum == KeyEnum.area_id) {
-            selectSingleAdapter.rows = rowBridgeForArea()
-        }
+        selectSingleAdapter.rows = rowBridge()
+
+//        if (keyEnum == KeyEnum.city_id) {
+//            selectSingleAdapter.rows = rowBridgeForCity()
+//        } else if (keyEnum == KeyEnum.area_id) {
+//            selectSingleAdapter.rows = rowBridgeForArea()
+//        }
         
         return selectSingleAdapter
     }
@@ -121,7 +117,7 @@ class MoreDialog(context: Context, private val screenWidth: Int, val keyEnum: Ke
     }
 }
 
-class SelectSingleAdapter(val keyEnum: KeyEnum, var selected: String?, val delegate: BaseActivity): RecyclerView.Adapter<SelectSingleViewHolder>() {
+open class SelectSingleAdapter(var selected: String?, val keyEnum: KeyEnum, val delegate: MoreDialogDelegate?): RecyclerView.Adapter<SelectSingleViewHolder>() {
 
     var rows: ArrayList<SelectRow> = arrayListOf()
 
@@ -137,9 +133,14 @@ class SelectSingleAdapter(val keyEnum: KeyEnum, var selected: String?, val deleg
         }
 
         holder.viewHolder.setOnClickListener {
-            holder.selected.visibility = View.VISIBLE
-            delegate.cellClick(keyEnum, row.id)
+            cellOnClickListener(holder, row)
+//            holder.selected.visibility = View.VISIBLE
+//            delegate?.delegateCellClick(keyEnum, row.id)
         }
+    }
+
+    open fun cellOnClickListener(holder: SelectSingleViewHolder, row: SelectRow) {
+        holder.selected.visibility = View.VISIBLE
     }
 
     override fun getItemCount(): Int {
@@ -159,4 +160,9 @@ class SelectSingleViewHolder(val viewHolder: View): RecyclerView.ViewHolder(view
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val selected: ImageView = viewHolder.findViewById(R.id.selected)
+}
+
+interface MoreDialogDelegate {
+
+    fun delegateCityClick(id: Int){}
 }

@@ -8,6 +8,7 @@ import android.widget.TextView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.controllers.BaseActivity
 import tw.com.bluemobile.hbc.extensions.isInt
+import tw.com.bluemobile.hbc.utilities.CITY_ID_KEY
 import tw.com.bluemobile.hbc.utilities.KeyEnum
 import tw.com.bluemobile.hbc.utilities.Zones
 
@@ -16,7 +17,7 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     protected val view: View = View.inflate(context, R.layout.more, this)
     var keyEnum: KeyEnum = KeyEnum.city_id
-    private var valueTV: TextView? = null
+    var valueTV: TextView? = null
     private var cancelIV: ImageView? = null
 
     init {
@@ -88,9 +89,10 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         }
     }
 
-    fun toMoreDialog(screenWidth: Int, selected: String, delegate: BaseActivity): MoreDialog {
+    open fun toMoreDialog(screenWidth: Int, selected: String, delegate: MoreDialogDelegate? = null): MoreDialog {
 
-        val moreDialog = MoreDialog(context, screenWidth, keyEnum, selected, delegate)
+        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.city_id, selected)
+        moreDialog.delegate = delegate
         moreDialog.setContentView(R.layout.select_single)
         moreDialog.init(false, keyEnum.chineseName)
         moreDialog.setAdapter()

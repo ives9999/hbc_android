@@ -239,6 +239,7 @@ enum class DonateBloodEnum(val englishName: String, val chineseName: String) {
 }
 
 enum class KeyEnum(val englishName: String, val chineseName: String) {
+    hospital_id(HOSPITAL_ID_KEY, "醫院"),
     city_id(CITY_ID_KEY, "縣市"),
     area_id(AREA_ID_KEY, "區域");
 
