@@ -88,15 +88,4 @@ open class More @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             return false
         }
     }
-
-    open fun toMoreDialog(screenWidth: Int, selected: String, delegate: MoreDialogDelegate? = null): MoreDialog {
-
-        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.city_id, selected, delegate)
-        moreDialog.setContentView(R.layout.select_single)
-        moreDialog.init(false, keyEnum.chineseName)
-        moreDialog.show(30)
-
-        return moreDialog
-    }
-
 }

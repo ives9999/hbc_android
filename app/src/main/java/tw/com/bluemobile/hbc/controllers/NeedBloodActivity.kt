@@ -33,7 +33,7 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
     var catBloodTypeRadio: ThreeRadio? = null
     var dogBloodTypeRadio: TwoRadio? = null
 
-    var moreDialog: MoreDialog? = null
+    var moreDialog: MoreDialog<SelectSingleViewHolder>? = null
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
     var source: String = "home"

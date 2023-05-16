@@ -15,9 +15,9 @@ class DonateActivity : EditActivity() {
 
     private val formItems: ArrayList<HashMap<DonateEnum, MyLayout>> = arrayListOf()
 
-    private var moreCity: SelectCity? = null
-    private var moreArea: SelectArea? = null
-    var moreDialog: MoreDialog? = null
+    private var moreCity: More? = null
+    private var moreArea: More? = null
+    var moreDialog: MoreDialog<SelectSingleViewHolder>? = null
 
     var creditCardNO: CreditCardNO? = null
     var creditCardMy: CreditCardMY? = null
@@ -76,11 +76,10 @@ class DonateActivity : EditActivity() {
                     creditCardCVV = it as CreditCardCVV
                 } else if (enum == DonateEnum.city_id || enum == DonateEnum.area_id) {
                     if (enum == DonateEnum.city_id) {
-                        moreCity = it as SelectCity
+                        moreCity = it as More
                         it.setOnClickListener() {
-                            val screenWidth = Global.getScreenWidth(resources)
-                            moreDialog =
-                                it.toMoreDialog(screenWidth, it.value)
+                            //val screenWidth = Global.getScreenWidth(resources)
+                            //moreDialog = it.toMoreDialog(screenWidth, it.value)
                             //println(moreCity?.value)
                         }
 
@@ -89,19 +88,19 @@ class DonateActivity : EditActivity() {
                             moreArea?.clear()
                         }
                     } else {
-                        moreArea = it as SelectArea
+                        moreArea = it as More
                         it.setOnClickListener {
                             if (moreCity == null || moreCity!!.value.isEmpty()) {
                                 warning("請先選擇縣市")
                             } else {
                                 val screenWidth = Global.getScreenWidth(resources)
                                 val city_id: Int = moreCity?.value?.toInt() ?: 0
-                                moreDialog = it.toMoreDialog(
-                                    screenWidth,
-                                    city_id,
-                                    moreArea!!.value,
-                                    this
-                                )
+//                                moreDialog = it.toMoreDialog(
+//                                    screenWidth,
+//                                    city_id,
+//                                    moreArea!!.value,
+//                                    this
+//                                )
                             }
                         }
                     }

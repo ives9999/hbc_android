@@ -16,13 +16,13 @@ class SelectHospital @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
-    override fun toMoreDialog(
-        screenWidth: Int,
-        selected: String,
-        delegate: MoreDialogDelegate?
-    ): MoreDialog {
-        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.hospital_id, selected, null)
-
-        return moreDialog
-    }
+//    override fun toMoreDialog(
+//        screenWidth: Int,
+//        selected: String,
+//        delegate: MoreDialogDelegate?
+//    ): MoreDialog {
+//        val moreDialog = MoreDialog(context, screenWidth, KeyEnum.hospital_id, selected, null)
+//
+//        return moreDialog
+//    }
 }

@@ -128,7 +128,7 @@
                 app:keyboard="email"
                 app:titleTV="Email" />
 
-            <tw.com.bluemobile.hbc.views.SelectCity
+            <tw.com.bluemobile.hbc.views.More
                 android:id="@+id/city_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
@@ -137,7 +137,7 @@
                 app:moreStarTV="false"
                 app:moreTitleTV="縣市" />
 
-            <tw.com.bluemobile.hbc.views.SelectArea
+            <tw.com.bluemobile.hbc.views.More
                 android:id="@+id/area_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"

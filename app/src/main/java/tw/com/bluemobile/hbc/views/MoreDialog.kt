@@ -14,15 +14,32 @@ import androidx.recyclerview.widget.RecyclerView
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.data.SelectRow
 import tw.com.bluemobile.hbc.utilities.KeyEnum
+import tw.com.bluemobile.hbc.utilities.Zones
 import tw.com.bluemobile.hbc.utilities.then
 import tw.com.bluemobile.hbc.utilities.viewHolder
+import java.security.Key
 
-open class MoreDialog(context: Context, private val screenWidth: Int, private val keyEnum: KeyEnum, private val selected: String, private val delegate: MoreDialogDelegate?): Dialog(context) {
+typealias selectViewHolder<T> = (View, KeyEnum?, MoreDialogDelegate?)-> T
+
+open class MoreDialog<T: SelectSingleViewHolder>(
+        context: Context,
+        private val screenWidth: Int,
+        private val viewHolderConstructor: selectViewHolder<T>,
+        private val keyEnum: KeyEnum,
+        private val selected: String,
+        private val delegate: MoreDialogDelegate?
+    ): Dialog(context) {
 
     //var city_id: Int? = null
-    open lateinit var adapter: SelectSingleAdapter<SelectSingleViewHolder>
+    open lateinit var adapter: SelectSingleAdapter<T>
 
-    fun init(isPrev: Boolean, title: String) {
+    init {
+
+    }
+
+    open fun init(isPrev: Boolean, title: String) {
+
+        setContentView(R.layout.select_single)
 
         findViewById<Top>(R.id.top) ?. let { itTop->
             itTop.showPrev(isPrev)
@@ -35,15 +52,15 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
             }
         }
 
-        adapter = SelectSingleAdapter(::SelectSingleViewHolder, keyEnum, selected, delegate)
+        adapter = SelectSingleAdapter<T>(viewHolderConstructor, keyEnum, selected, delegate)
 
         val recyclerView: RecyclerView? = this.findViewById<RecyclerView>(R.id.tableView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = adapter
 
-        //selectSingleAdapter.rows = rowBridge()
-
         setBottomButtonPadding(1, 300)
+
+        rowBridge()
     }
 
     private fun setBottomButtonPadding(bottom_button_count: Int, button_width: Int) {
@@ -73,26 +90,22 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
         }
     }
 
-    private fun rowBridgeForArea(): ArrayList<SelectRow> {
-//        if (city_id != null) {
-//            val areas: ArrayList<AreaModel> = Zones.getAreasByCityID(city_id!!)
-//
-//            for (area in areas) {
-//                val title = area.name
-//                val id = area.id
-//                selectRows.add(SelectRow(id, title, id.toString()))
-//            }
-//        }
-
-        return ArrayList()
-    }
-
     fun setRows(rows: ArrayList<SelectRow>) {
         adapter.rows = rows
         adapter.notifyDataSetChanged()
     }
 
-    open fun rowBridge() {}
+    open fun rowBridge() {
+//        val citys = Zones.getCitys()
+//
+//        val thisRows: ArrayList<SelectRow> = arrayListOf()
+//        for(city in citys) {
+//            val title = city.name
+//            val id = city.id
+//            thisRows.add(SelectRow(id, title, id.toString()))
+//        }
+//        setRows(thisRows)
+    }
 
     fun show(padding: Int=0) {
         if (padding > 0) {
@@ -108,10 +121,10 @@ open class MoreDialog(context: Context, private val screenWidth: Int, private va
 
 //typealias selectViewHolder<T> = (View, KeyEnum, MoreDialogDelegate?)-> T
 open class SelectSingleAdapter<T: SelectSingleViewHolder>(
-    open val viewHolderConstructor: viewHolder<T>,
-    val keyEnum: KeyEnum,
-    val selected: String,
-    val delegate: MoreDialogDelegate?
+    open val viewHolderConstructor: selectViewHolder<T>,
+    private val keyEnum: KeyEnum? = null,
+    private val selected: String? = null,
+    private val delegate: MoreDialogDelegate? = null
     ): RecyclerView.Adapter<T>() {
 
     var rows: ArrayList<SelectRow> = arrayListOf()
@@ -130,20 +143,16 @@ open class SelectSingleAdapter<T: SelectSingleViewHolder>(
 
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = inflater.inflate(R.layout.select_row, parent, false)
-        val t = viewHolderConstructor(parent.context, viewHolder)
-        t.keyEnum = keyEnum
-        t.delegate = delegate
+        val t = viewHolderConstructor(viewHolder, keyEnum, delegate)
 
         return t
     }
 }
 
-class SelectSingleViewHolder(context: Context, val view: View): RecyclerView.ViewHolder(view) {
+open class SelectSingleViewHolder(val view: View, val keyEnum: KeyEnum? = null, private val delegate: MoreDialogDelegate? = null): RecyclerView.ViewHolder(view) {
 
     val titleTV: TextView = view.findViewById(R.id.title)
     private val selectedIV: ImageView = view.findViewById(R.id.selected)
-    var keyEnum: KeyEnum? = null
-    var delegate: MoreDialogDelegate? = null
 
     fun bind(row: SelectRow, idx: Int, isSelected: Boolean = false) {
         titleTV.text = row.title
@@ -156,10 +165,12 @@ class SelectSingleViewHolder(context: Context, val view: View): RecyclerView.Vie
 
         view.setOnClickListener {
             selectedIV.visibility = View.VISIBLE
-            //println(delegate)
-            //delegate?.delegateCellClick(row.id)
-            delegate?.delegateCityClick(row.id)
+            rowSetOnclickListener(row)
         }
+    }
+
+    open fun rowSetOnclickListener(row: SelectRow) {
+        delegate?.delegateCellClick(row.id)
     }
 }
 
@@ -167,4 +178,5 @@ interface MoreDialogDelegate {
 
     fun delegateCellClick(id: Int){}
     fun delegateCityClick(id: Int){}
+    fun delegateAreaClick(id: Int){}
 }

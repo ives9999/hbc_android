@@ -1,15 +1,12 @@
 package tw.com.bluemobile.hbc.controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import tw.com.bluemobile.hbc.R
 import tw.com.bluemobile.hbc.extensions.parseErrmsg
 import tw.com.bluemobile.hbc.models.*
-import tw.com.bluemobile.hbc.services.DonateBloodService
 import tw.com.bluemobile.hbc.services.HospitalService
-import tw.com.bluemobile.hbc.services.MemberService
 import tw.com.bluemobile.hbc.services.NeedBloodService
 import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
@@ -19,7 +16,7 @@ import java.lang.reflect.Type
 class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 
     var moreHospital: More? = null
-    var moreCity: SelectCity? = null
+    var moreCity: More? = null
     var moreArea: More? = null
     var typeRadio: TwoRadio? = null
     var catBloodTypeRadio: ThreeRadio? = null
@@ -28,7 +25,8 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
     var type: String = ""
     var blood_type: String = ""
 
-    var moreDialog: MoreDialog? = null
+    private var cityDialog: SelectCityDialog? = null
+    private var areaDialog: SelectAreaDialog? = null
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
 
@@ -122,12 +120,11 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 
                     val screenWidth = Global.getScreenWidth(resources)
                     if (enum == NeedBloodEnum.hospital_city_id) {
-                        moreCity = it as SelectCity
+                        moreCity = it as More
+
                         it.setOnClickListener {
-                            moreDialog =
-                                it.toMoreDialog(screenWidth, it.value, this)
-                            //moreDialog!!.rowBridge()
-                            //println(moreCity?.value)
+                            cityDialog = SelectCityDialog(this, screenWidth, ::CitySelectSingleViewHolder, it.value, this)
+                            cityDialog!!.show(30)
                         }
 
                         it.setOnCancelClickListener {
@@ -135,19 +132,14 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
                             moreArea?.clear()
                         }
                     } else {
-                        moreArea = it as SelectArea
+                        moreArea = it as More
                         it.setOnClickListener {
                             if (moreCity == null || moreCity!!.value.isEmpty()) {
                                 warning("請先選擇縣市")
                             } else {
                                 val city_id: Int = moreCity?.value?.toInt() ?: 0
-                                it.keyEnum = KeyEnum.area_id
-                                moreDialog = it.toMoreDialog(
-                                    screenWidth,
-                                    city_id,
-                                    moreArea!!.value,
-                                    this
-                                )
+                                areaDialog = SelectAreaDialog(this, screenWidth, ::AreaSelectSingleViewHolder, moreArea!!.value, city_id, this)
+                                areaDialog!!.show(30)
                             }
                         }
 
@@ -170,7 +162,7 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
                                 val modelType: Type = genericType<BaseModels<DonateBloodModel>>()
                                 //parseJSON(DonateBloodService.jsonString, modelType)
                                 loading.hide()
-                                it.toMoreDialog(screenWidth, "0", this)
+                                //it.toMoreDialog(screenWidth, "0", this)
                             }
                         }
                     }
@@ -280,22 +272,13 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
         //println("index:${idx}")
         moreCity?.setText(Zones.zoneIDToName(id))
         moreCity?.value = id.toString()
-        moreDialog?.hide()
+        cityDialog?.hide()
     }
 
-    // set setting after city and area click.
-    override fun cellClick(keyEnum: KeyEnum, id: Int) {
-//        println(key)
-//        println(id)
-        if (keyEnum == KeyEnum.city_id) {
-            moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.value = id.toString()
-            moreDialog?.hide()
-        } else if (keyEnum == KeyEnum.area_id) {
-            moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.value = id.toString()
-            moreDialog?.hide()
-        }
+    override fun delegateAreaClick(id: Int) {
+        moreArea?.setText(Zones.zoneIDToName(id))
+        moreArea?.value = id.toString()
+        areaDialog?.hide()
     }
 
     override fun submit() {

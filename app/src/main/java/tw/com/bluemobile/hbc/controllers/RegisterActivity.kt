@@ -6,23 +6,15 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
-import com.example.awesomedialog.*
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import tw.com.bluemobile.hbc.R
-import tw.com.bluemobile.hbc.extensions.dump
 import tw.com.bluemobile.hbc.extensions.isInt
-import tw.com.bluemobile.hbc.extensions.setLocalImage
 import tw.com.bluemobile.hbc.member
 import tw.com.bluemobile.hbc.models.MemberModel
 import tw.com.bluemobile.hbc.models.SuccessModel
@@ -54,8 +46,8 @@ class RegisterActivity : BaseActivity() {
 //    var editTextName: EditTextNormal? = null
 //    var editTextNickname: EditTextNormal? = null
 //    var editTextMobile: EditTextNormal? = null
-    private var moreCity: SelectCity? = null
-    private var moreArea: SelectArea? = null
+    private var moreCity: More? = null
+    private var moreArea: More? = null
 //    var editTextRoad: EditTextNormal? = null
 //    var editTextLine: EditTextNormal? = null
     private var privacy: Privacy? = null
@@ -64,7 +56,7 @@ class RegisterActivity : BaseActivity() {
 //    val mores: ArrayList<More> = arrayListOf()
     private val formItems: ArrayList<HashMap<RegisterEnum, MyLayout>> = arrayListOf()
 
-    var moreDialog: MoreDialog? = null
+    var moreDialog: MoreDialog<SelectSingleViewHolder>? = null
 
 //    var filePath: String = ""
 
@@ -169,11 +161,10 @@ class RegisterActivity : BaseActivity() {
                         editTextRePassword = it as EditTextNormal
                     } else if (key == CITY_ID_KEY || key == AREA_ID_KEY) {
                         if (key == CITY_ID_KEY) {
-                            moreCity = it as SelectCity
+                            moreCity = it as More
                             it.setOnClickListener() {
-                                val screenWidth = Global.getScreenWidth(resources)
-                                moreDialog =
-                                    it.toMoreDialog(screenWidth, it.value)
+                                //val screenWidth = Global.getScreenWidth(resources)
+                                //moreDialog = it.toMoreDialog(screenWidth, it.value)
                                 //println(moreCity?.value)
                             }
 
@@ -182,19 +173,19 @@ class RegisterActivity : BaseActivity() {
                                 moreArea?.clear()
                             }
                         } else {
-                            moreArea = it as SelectArea
+                            moreArea = it as More
                             it.setOnClickListener {
                                 if (moreCity == null || moreCity!!.value.isEmpty()) {
                                     warning("請先選擇縣市")
                                 } else {
                                     val screenWidth = Global.getScreenWidth(resources)
                                     val city_id: Int = moreCity?.value?.toInt() ?: 0
-                                    moreDialog = it.toMoreDialog(
-                                        screenWidth,
-                                        city_id,
-                                        moreArea!!.value,
-                                        this
-                                    )
+//                                    moreDialog = it.toMoreDialog(
+//                                        screenWidth,
+//                                        city_id,
+//                                        moreArea!!.value,
+//                                        this
+//                                    )
                                 }
                             }
                         }
