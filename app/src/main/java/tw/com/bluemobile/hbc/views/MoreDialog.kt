@@ -179,4 +179,6 @@ interface MoreDialogDelegate {
     fun delegateCellClick(id: Int){}
     fun delegateCityClick(id: Int){}
     fun delegateAreaClick(id: Int){}
+
+    fun delegateHospitalClick(id: Int, name: String){}
 }

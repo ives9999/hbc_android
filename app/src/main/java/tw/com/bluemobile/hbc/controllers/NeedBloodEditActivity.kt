@@ -16,19 +16,22 @@ import java.lang.reflect.Type
 class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 
     var moreHospital: More? = null
-    var moreCity: More? = null
-    var moreArea: More? = null
     var typeRadio: TwoRadio? = null
     var catBloodTypeRadio: ThreeRadio? = null
     var dogBloodTypeRadio: TwoRadio? = null
+    private var hospitalDialog: SelectHospitalDialog? = null
 
     var type: String = ""
     var blood_type: String = ""
 
-    private var cityDialog: SelectCityDialog? = null
-    private var areaDialog: SelectAreaDialog? = null
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
+
+    open var rows: ArrayList<HospitalModel> = arrayListOf()
+    private var page: Int = 1
+    protected var perPage: Int = PERPAGE
+    protected var totalCount: Int = 0
+    protected var totalPage: Int = 0
 
     private val formItems: ArrayList<HashMap<NeedBloodEnum, MyLayout>> = arrayListOf()
 
@@ -111,60 +114,12 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
             val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
             findViewById<MyLayout>(r)?.let {
 
-                if (enum == NeedBloodEnum.hospital_city_id || enum == NeedBloodEnum.hospital_area_id) {
-
-                    if (initData.containsKey(key)) {
-                        it.value = initData[key]!!
-                        it.setZone()
-                    }
-
-                    val screenWidth = Global.getScreenWidth(resources)
-                    if (enum == NeedBloodEnum.hospital_city_id) {
-                        moreCity = it as More
-
-                        it.setOnClickListener {
-                            cityDialog = SelectCityDialog(this, screenWidth, ::CitySelectSingleViewHolder, it.value, this)
-                            cityDialog!!.show(30)
-                        }
-
-                        it.setOnCancelClickListener {
-                            it.clear()
-                            moreArea?.clear()
-                        }
-                    } else {
-                        moreArea = it as More
-                        it.setOnClickListener {
-                            if (moreCity == null || moreCity!!.value.isEmpty()) {
-                                warning("請先選擇縣市")
-                            } else {
-                                val city_id: Int = moreCity?.value?.toInt() ?: 0
-                                areaDialog = SelectAreaDialog(this, screenWidth, ::AreaSelectSingleViewHolder, moreArea!!.value, city_id, this)
-                                areaDialog!!.show(30)
-                            }
-                        }
-
-                    }
-                } else if (enum == NeedBloodEnum.hospital_name) {
+                if (enum == NeedBloodEnum.hospital_name) {
                     moreHospital = it as More
 
-                    val screenWidth = Global.getScreenWidth(resources)
                     it.setOnClickListener {
-                        runOnUiThread{
-                            loading.show()
-                        }
-                        val params: MutableMap<String, String> = hashMapOf()
-                        val page: Int = 1
-                        val perpage: Int = 1
-                        HospitalService.getList(this, params, page, perpage) { success ->
-                            runOnUiThread {
-                                println(HospitalService.jsonString)
-
-                                val modelType: Type = genericType<BaseModels<DonateBloodModel>>()
-                                //parseJSON(DonateBloodService.jsonString, modelType)
-                                loading.hide()
-                                //it.toMoreDialog(screenWidth, "0", this)
-                            }
-                        }
+                        val screenWidth = Global.getScreenWidth(resources)
+                        hospitalDialog = SelectHospitalDialog(this, screenWidth, ::HospitalSelectSingleViewHolder, it.value, this)
                     }
                 } else if (enum == NeedBloodEnum.type) {
                     typeRadio = it as TwoRadio
@@ -230,6 +185,12 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
         }
     }
 
+    override fun delegateHospitalClick(id: Int, name: String) {
+        moreHospital?.setText(name)
+        moreHospital?.value = id.toString()
+        hospitalDialog?.hide()
+    }
+
     private fun typeChange(type: String) {
         if (type == "狗") {
             dogBloodTypeRadio?.visibility = View.VISIBLE
@@ -266,19 +227,6 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 
     private val catChanged: (String)-> Unit = {
         this.blood_type = it
-    }
-
-    override fun delegateCityClick(id: Int) {
-        //println("index:${idx}")
-        moreCity?.setText(Zones.zoneIDToName(id))
-        moreCity?.value = id.toString()
-        cityDialog?.hide()
-    }
-
-    override fun delegateAreaClick(id: Int) {
-        moreArea?.setText(Zones.zoneIDToName(id))
-        moreArea?.value = id.toString()
-        areaDialog?.hide()
     }
 
     override fun submit() {

@@ -23,7 +23,7 @@ import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.io.File
 
-class RegisterActivity : BaseActivity() {
+class RegisterActivity : BaseActivity(), MoreDialogDelegate {
 
     companion object {
 
@@ -48,6 +48,8 @@ class RegisterActivity : BaseActivity() {
 //    var editTextMobile: EditTextNormal? = null
     private var moreCity: More? = null
     private var moreArea: More? = null
+    private var cityDialog: SelectCityDialog? = null
+    private var areaDialog: SelectAreaDialog? = null
 //    var editTextRoad: EditTextNormal? = null
 //    var editTextLine: EditTextNormal? = null
     private var privacy: Privacy? = null
@@ -92,19 +94,17 @@ class RegisterActivity : BaseActivity() {
         //member.dump()
     }
 
-    // set setting after city and area click.
-    override fun cellClick(keyEnum: KeyEnum, id: Int) {
-//        println(key)
-//        println(id)
-        if (keyEnum == KeyEnum.city_id) {
-            moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.value = id.toString()
-            moreDialog?.hide()
-        } else if (keyEnum == KeyEnum.area_id) {
-            moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.value = id.toString()
-            moreDialog?.hide()
-        }
+    override fun delegateCityClick(id: Int) {
+        //println("index:${idx}")
+        moreCity?.setText(Zones.zoneIDToName(id))
+        moreCity?.value = id.toString()
+        cityDialog?.hide()
+    }
+
+    override fun delegateAreaClick(id: Int) {
+        moreArea?.setText(Zones.zoneIDToName(id))
+        moreArea?.value = id.toString()
+        areaDialog?.hide()
     }
 
     private fun isUpdateEnum(enum: RegisterEnum): Boolean {
@@ -160,12 +160,12 @@ class RegisterActivity : BaseActivity() {
                     } else if (key == REPASSWORD_KEY) {
                         editTextRePassword = it as EditTextNormal
                     } else if (key == CITY_ID_KEY || key == AREA_ID_KEY) {
+                        val screenWidth = Global.getScreenWidth(resources)
                         if (key == CITY_ID_KEY) {
                             moreCity = it as More
-                            it.setOnClickListener() {
-                                //val screenWidth = Global.getScreenWidth(resources)
-                                //moreDialog = it.toMoreDialog(screenWidth, it.value)
-                                //println(moreCity?.value)
+                            it.setOnClickListener {
+                                cityDialog = SelectCityDialog(this, screenWidth, ::CitySelectSingleViewHolder, it.value, this)
+                                cityDialog!!.show(30)
                             }
 
                             it.setOnCancelClickListener {
@@ -178,14 +178,9 @@ class RegisterActivity : BaseActivity() {
                                 if (moreCity == null || moreCity!!.value.isEmpty()) {
                                     warning("請先選擇縣市")
                                 } else {
-                                    val screenWidth = Global.getScreenWidth(resources)
                                     val city_id: Int = moreCity?.value?.toInt() ?: 0
-//                                    moreDialog = it.toMoreDialog(
-//                                        screenWidth,
-//                                        city_id,
-//                                        moreArea!!.value,
-//                                        this
-//                                    )
+                                    areaDialog = SelectAreaDialog(this, screenWidth, ::AreaSelectSingleViewHolder, moreArea!!.value, city_id, this)
+                                    areaDialog!!.show(30)
                                 }
                             }
                         }

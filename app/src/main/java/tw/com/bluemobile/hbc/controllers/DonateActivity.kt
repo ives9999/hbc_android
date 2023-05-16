@@ -11,13 +11,14 @@ import tw.com.bluemobile.hbc.utilities.*
 import tw.com.bluemobile.hbc.views.*
 import java.lang.Exception
 
-class DonateActivity : EditActivity() {
+class DonateActivity : EditActivity(), MoreDialogDelegate {
 
     private val formItems: ArrayList<HashMap<DonateEnum, MyLayout>> = arrayListOf()
 
     private var moreCity: More? = null
     private var moreArea: More? = null
-    var moreDialog: MoreDialog<SelectSingleViewHolder>? = null
+    private var cityDialog: SelectCityDialog? = null
+    private var areaDialog: SelectAreaDialog? = null
 
     var creditCardNO: CreditCardNO? = null
     var creditCardMy: CreditCardMY? = null
@@ -75,12 +76,12 @@ class DonateActivity : EditActivity() {
                 } else if (enum == DonateEnum.credit_card_cvv) {
                     creditCardCVV = it as CreditCardCVV
                 } else if (enum == DonateEnum.city_id || enum == DonateEnum.area_id) {
+                    val screenWidth = Global.getScreenWidth(resources)
                     if (enum == DonateEnum.city_id) {
                         moreCity = it as More
-                        it.setOnClickListener() {
-                            //val screenWidth = Global.getScreenWidth(resources)
-                            //moreDialog = it.toMoreDialog(screenWidth, it.value)
-                            //println(moreCity?.value)
+                        it.setOnClickListener {
+                            cityDialog = SelectCityDialog(this, screenWidth, ::CitySelectSingleViewHolder, it.value, this)
+                            cityDialog!!.show(30)
                         }
 
                         it.setOnCancelClickListener {
@@ -93,14 +94,9 @@ class DonateActivity : EditActivity() {
                             if (moreCity == null || moreCity!!.value.isEmpty()) {
                                 warning("請先選擇縣市")
                             } else {
-                                val screenWidth = Global.getScreenWidth(resources)
                                 val city_id: Int = moreCity?.value?.toInt() ?: 0
-//                                moreDialog = it.toMoreDialog(
-//                                    screenWidth,
-//                                    city_id,
-//                                    moreArea!!.value,
-//                                    this
-//                                )
+                                areaDialog = SelectAreaDialog(this, screenWidth, ::AreaSelectSingleViewHolder, moreArea!!.value, city_id, this)
+                                areaDialog!!.show(30)
                             }
                         }
                     }
@@ -135,19 +131,17 @@ class DonateActivity : EditActivity() {
         creditCardMy?.initFocus()
     }
 
-    // set setting after city and area click.
-    override fun cellClick(keyEnum: KeyEnum, id: Int) {
-//        println(key)
-//        println(id)
-        if (keyEnum == KeyEnum.city_id) {
-            moreCity?.setText(Zones.zoneIDToName(id))
-            moreCity?.value = id.toString()
-            moreDialog?.hide()
-        } else if (keyEnum == KeyEnum.area_id) {
-            moreArea?.setText(Zones.zoneIDToName(id))
-            moreArea?.value = id.toString()
-            moreDialog?.hide()
-        }
+    override fun delegateCityClick(id: Int) {
+        //println("index:${idx}")
+        moreCity?.setText(Zones.zoneIDToName(id))
+        moreCity?.value = id.toString()
+        cityDialog?.hide()
+    }
+
+    override fun delegateAreaClick(id: Int) {
+        moreArea?.setText(Zones.zoneIDToName(id))
+        moreArea?.value = id.toString()
+        areaDialog?.hide()
     }
 
     override fun submit() {

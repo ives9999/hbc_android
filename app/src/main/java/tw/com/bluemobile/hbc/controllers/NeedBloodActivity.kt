@@ -121,6 +121,14 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
     }
 
     override fun add() {
+
+        if (!member.isLoggedIn) {
+            warning("請先登入") {
+                toLogin(this)
+            }
+            return
+        }
+
         super.add()
         toNeedBloodEdit(this)
     }
