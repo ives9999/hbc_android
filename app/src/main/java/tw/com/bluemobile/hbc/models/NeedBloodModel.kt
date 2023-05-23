@@ -1,5 +1,6 @@
 package tw.com.bluemobile.hbc.models
 
+import com.google.gson.annotations.SerializedName
 import tw.com.bluemobile.hbc.utilities.DonateBloodEnum
 import tw.com.bluemobile.hbc.utilities.NeedBloodEnum
 import tw.com.bluemobile.hbc.utilities.Zones
@@ -26,8 +27,11 @@ class NeedBloodModel: BaseModel() {
     var hospital_area_show: String = ""
     var type_show: String = ""
 
+    @SerializedName("hospital") var hospitalModel: HospitalModel? = null
+
     override fun filterRow() {
         super.filterRow()
+        hospitalModel?.filterRow()
 
         if (hospital_city_id != null && hospital_city_id > 0) {
             hospital_city_show = Zones.zoneIDToName(hospital_city_id)

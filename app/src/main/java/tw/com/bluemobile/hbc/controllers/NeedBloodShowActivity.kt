@@ -84,7 +84,7 @@ class NeedBloodShowActivity : ShowActivity() {
         val params: HashMap<String, String> = hashMapOf("token" to needBloodToken!!)
         NeedBloodService.getOne(this, params) { success ->
             if (success) {
-                //println(DonateBloodService.jsonString)
+                println(NeedBloodService.jsonString)
                 val modelType: Type = genericType<SuccessModel<NeedBloodModel>>()
                 needBloodModel = parseJSONAndInit<NeedBloodModel>(NeedBloodService.jsonString, modelType)
             }
