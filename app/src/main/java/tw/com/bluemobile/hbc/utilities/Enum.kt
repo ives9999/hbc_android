@@ -319,10 +319,11 @@ enum class MemberHomeEnum(val englishName: String, val chineseName: String) {
 
 enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
 
-    hospital_name("hospital_name", "醫院名稱"),
-    hospital_city_id("hospital_city_id", "醫院縣市"),
-    hospital_area_id("hospital_area_id", "醫院區域"),
-    hospital_road("hospital_road", "醫院住址"),
+//    hospital_name("hospital_name", "醫院名稱"),
+//    hospital_city_id("hospital_city_id", "醫院縣市"),
+//    hospital_area_id("hospital_area_id", "醫院區域"),
+//    hospital_road("hospital_road", "醫院住址"),
+    hospital_token("hospital_token", "醫院代碼"),
     petName("name", "寶貝名稱"),
     type("type", "寶貝類型"),
     blood_type("blood_type", "寶貝血型"),
@@ -334,10 +335,11 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
     companion object {
         fun enumFromString(value: String): NeedBloodEnum {
             return when (value) {
-                "hospital_name" -> hospital_name
-                "hospital_city_id" -> hospital_city_id
-                "hospital_area_id" -> hospital_area_id
-                "hospital_road" -> hospital_road
+//                "hospital_name" -> hospital_name
+//                "hospital_city_id" -> hospital_city_id
+//                "hospital_area_id" -> hospital_area_id
+//                "hospital_road" -> hospital_road
+                "hospital_token" -> hospital_token
                 "name" -> petName
                 "type" -> type
                 "blood_type" -> blood_type
@@ -345,16 +347,18 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 "blood_type_dog" -> blood_type_dog
                 "traffic_fee" -> traffic_fee
                 "nutrient_fee" -> nutrient_fee
-                else -> hospital_name
+                else -> petName
+//                else -> hospital_name
             }
         }
 
         fun getAllEnum(): ArrayList<NeedBloodEnum> {
             return arrayListOf(
-                hospital_name,
-                hospital_city_id,
-                hospital_area_id,
-                hospital_road,
+//                hospital_name,
+//                hospital_city_id,
+//                hospital_area_id,
+//                hospital_road,
+                hospital_token,
                 petName,
                 type,
                 blood_type,
@@ -384,10 +388,11 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
 
     fun errMsg(): String {
         return when (this) {
-            hospital_name -> "請填醫院名稱\n"
-            hospital_city_id -> "請選擇縣市\n"
-            hospital_area_id -> "請選擇區域\n"
-            hospital_road -> "請填寫路名等\n"
+//            hospital_name -> "請填醫院名稱\n"
+//            hospital_city_id -> "請選擇縣市\n"
+//            hospital_area_id -> "請選擇區域\n"
+//            hospital_road -> "請填寫路名等\n"
+            hospital_token -> "請選擇動物醫院\n"
             petName -> "請選擇寶貝名稱\n"
             type -> "請選擇品種\n"
             blood_type -> "請選擇血型\n"
@@ -405,8 +410,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
             blood_type -> "ic_blood_type"
             traffic_fee -> "ic_fee"
             nutrient_fee -> "ic_fee"
-            hospital_name -> "ic_hospital"
-            hospital_road -> "ic_hospital"
+//            hospital_name -> "ic_hospital"
+//            hospital_road -> "ic_hospital"
             else -> "ic_${this.englishName}"
         }
     }

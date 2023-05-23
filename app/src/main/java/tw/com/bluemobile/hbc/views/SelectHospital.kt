@@ -37,7 +37,8 @@ class SelectHospitalDialog(
             for(hospitalModel in baseModels!!.rows) {
                 val title = hospitalModel.name
                 val id = hospitalModel.id
-                thisRows.add(SelectRow(id, title, id.toString()))
+                val value = hospitalModel.token
+                thisRows.add(SelectRow(id, title, value))
             }
             setRows(thisRows)
             activity.runOnUiThread {
@@ -51,6 +52,6 @@ class SelectHospitalDialog(
 class HospitalSelectSingleViewHolder(view: View, keyEnum: KeyEnum?, private val delegate: MoreDialogDelegate?): SelectSingleViewHolder(view, keyEnum, delegate) {
 
     override fun rowSetOnclickListener(row: SelectRow) {
-        delegate?.delegateHospitalClick(row.id, row.title)
+        delegate?.delegateHospitalClick(row.value, row.title)
     }
 }

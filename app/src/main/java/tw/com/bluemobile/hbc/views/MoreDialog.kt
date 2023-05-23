@@ -180,5 +180,5 @@ interface MoreDialogDelegate {
     fun delegateCityClick(id: Int){}
     fun delegateAreaClick(id: Int){}
 
-    fun delegateHospitalClick(id: Int, name: String){}
+    fun delegateHospitalClick(token: String, name: String){}
 }

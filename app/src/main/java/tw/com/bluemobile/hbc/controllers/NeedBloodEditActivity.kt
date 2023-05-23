@@ -27,11 +27,11 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
 
-    open var rows: ArrayList<HospitalModel> = arrayListOf()
-    private var page: Int = 1
+    var rows: ArrayList<HospitalModel> = arrayListOf()
+    //private var page: Int = 1
     protected var perPage: Int = PERPAGE
-    protected var totalCount: Int = 0
-    protected var totalPage: Int = 0
+    //protected var totalCount: Int = 0
+    //protected var totalPage: Int = 0
 
     private val formItems: ArrayList<HashMap<NeedBloodEnum, MyLayout>> = arrayListOf()
 
@@ -114,7 +114,7 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
             val r: Int = resources.getIdentifier(enum.englishName, "id", packageName)
             findViewById<MyLayout>(r)?.let {
 
-                if (enum == NeedBloodEnum.hospital_name) {
+                if (enum == NeedBloodEnum.hospital_token) {
                     moreHospital = it as More
 
                     it.setOnClickListener {
@@ -185,9 +185,9 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
         }
     }
 
-    override fun delegateHospitalClick(id: Int, name: String) {
+    override fun delegateHospitalClick(token: String, name: String) {
         moreHospital?.setText(name)
-        moreHospital?.value = id.toString()
+        moreHospital?.value = token
         hospitalDialog?.hide()
     }
 
@@ -276,7 +276,7 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
         params[DonateBloodEnum.type.englishName] = type
         params[DonateBloodEnum.blood_type.englishName] = blood_type
 
-        //println(params)
+        println(params)
 
         if (msg.isNotEmpty()) {
             warning(msg)

@@ -28,7 +28,7 @@
             android:orientation="vertical">
 
             <tw.com.bluemobile.hbc.views.More
-                android:id="@+id/hospital_name"
+                android:id="@+id/hospital_token"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/formitem_container_height"
                 android:layout_marginTop="@dimen/formitem_container_marginTop"
