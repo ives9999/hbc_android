@@ -117,6 +117,11 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
                 if (enum == NeedBloodEnum.hospital_token) {
                     moreHospital = it as More
 
+                    if (initData.containsKey(key) && needBloodModel != null) {
+                        it.setText(needBloodModel!!.hospital_name)
+                        it.value = initData[key]!!
+                    }
+
                     it.setOnClickListener {
                         val screenWidth = Global.getScreenWidth(resources)
                         hospitalDialog = SelectHospitalDialog(this, screenWidth, ::HospitalSelectSingleViewHolder, it.value, this)
@@ -236,6 +241,7 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 //        var type: String = "" //cat or dog
         for (formItem in formItems) {
             for ((enum, layout) in formItem) {
+                println(layout.key)
                 if (layout.isEmpty()) {
                     msg += enum.errMsg()
                 } else {
@@ -273,15 +279,18 @@ class NeedBloodEditActivity : EditActivity(), MoreDialogDelegate {
 //        params.remove("blood_type_cat")
 //        params.remove("blood_type_dog")
 
-        params[DonateBloodEnum.type.englishName] = type
-        params[DonateBloodEnum.blood_type.englishName] = blood_type
-
-        println(params)
-
         if (msg.isNotEmpty()) {
             warning(msg)
             return
         }
+
+        params[DonateBloodEnum.type.englishName] = type
+        params[DonateBloodEnum.blood_type.englishName] = blood_type
+
+        if (token != null) {
+            params.put("token", token!!)
+        }
+        println(params)
 
         loading.show()
         NeedBloodService.update(this, params) { success ->

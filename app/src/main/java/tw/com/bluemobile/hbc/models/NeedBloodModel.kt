@@ -7,10 +7,13 @@ import tw.com.bluemobile.hbc.utilities.Zones
 
 class NeedBloodModel: BaseModel() {
 
+    var hospital_id: Int = 0
+    var hospital_token: String = ""
     var hospital_name: String = ""
     var hospital_city_id: Int = 0
     var hospital_area_id: Int = 0
     var hospital_road: String = ""
+
     var member_id: Int = 0
     var type: String = "cat"
     var blood_type: String = ""

@@ -361,6 +361,8 @@ enum class NeedBloodEnum(val englishName: String, val chineseName: String) {
                 hospital_token,
                 petName,
                 type,
+                blood_type_cat,
+                blood_type_dog,
                 blood_type,
                 traffic_fee,
                 nutrient_fee

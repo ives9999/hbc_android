@@ -30,7 +30,7 @@ class SelectHospitalDialog(
             activity.loading.show()
         }
         HospitalService.getList(context, params, page, perpage) { success ->
-            println(HospitalService.jsonString)
+            //println(HospitalService.jsonString)
             val modelType: Type = genericType<BaseModels<HospitalModel>>()
             val baseModels = jsonToModelForList<BaseModels<HospitalModel>>(HospitalService.jsonString, modelType)
             val thisRows: ArrayList<SelectRow> = arrayListOf()
