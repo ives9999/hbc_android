@@ -1,7 +1,10 @@
 package tw.com.bluemobile.hbc.utilities
 
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.gson.Gson
@@ -32,6 +35,10 @@ inline fun <reified U> jsonToModel(jsonString: String): U? {
     return u
 }
 
+fun askForPermission(activity: Activity, permission: String, requestCode: Int) {
+    ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
+}
+
 inline fun <reified U> jsonToModelForList(jsonString: String, modelType: Type): U? {
     var u: U? = null
     try {
@@ -41,6 +48,12 @@ inline fun <reified U> jsonToModelForList(jsonString: String, modelType: Type): 
     }
 
     return u
+}
+
+fun isPermissionGranted(context: Context, permission: String): Boolean {
+    val selfPermission: Int = ContextCompat.checkSelfPermission(context, permission)
+
+    return selfPermission == PackageManager.PERMISSION_GRANTED
 }
 
 inline fun <reified U> jsonToModelForOne(jsonString: String): U? {

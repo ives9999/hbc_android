@@ -1,5 +1,6 @@
 package tw.com.bluemobile.hbc.controllers
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -37,6 +38,8 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
     var token: String? = null
     var needBloodModel: NeedBloodModel? = null
     var source: String = "home"
+
+    val REQUEST_NOTIFICATION = 20
 
     private val formItems: ArrayList<HashMap<NeedBloodEnum, MyLayout>> = arrayListOf()
 
@@ -89,6 +92,11 @@ class NeedBloodActivity : ListActivity<DonateBloodListViewHolder, DonateBloodMod
         loading = Loading(this)
 
         init()
+
+        val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
+        if (!p) {
+            askForPermission(this, Manifest.permission.POST_NOTIFICATIONS, REQUEST_NOTIFICATION)
+        }
     }
 
     override fun init() {
