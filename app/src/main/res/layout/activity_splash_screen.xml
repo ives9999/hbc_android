@@ -10,7 +10,7 @@
         android:id="@+id/splashScreenIV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/launchscreen_640x1136"
+        android:src="@drawable/launchscreen_720x1280"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

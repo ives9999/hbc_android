@@ -12,8 +12,8 @@ android {
         applicationId "tw.com.bluemobile.hbc"
         minSdk 21
         targetSdk 33
-        versionCode 4
-        versionName "0.7.0"
+        versionCode 5
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
